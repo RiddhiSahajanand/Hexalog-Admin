@@ -806,6 +806,8 @@ body {
 
 .full-height {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .topbar-layout {
@@ -863,6 +865,7 @@ body {
   padding-left: 140px;
   /* padding-right: 35px; */
   background-color: #F8F8F8;
+
 }
 
 

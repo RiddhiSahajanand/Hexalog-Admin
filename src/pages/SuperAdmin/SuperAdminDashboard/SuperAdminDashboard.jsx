@@ -45,6 +45,8 @@ const SuperAdminDashboard = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Card 2 */}
                         <div style={{ maxWidth: '300px' }}>
                             <div className="card shadow-sm p-3 bg-white rounded text-center custom-card">
 
@@ -62,6 +64,8 @@ const SuperAdminDashboard = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Card 3 */}
                         <div style={{ maxWidth: '300px' }}>
                             <div className="card shadow-sm p-3 bg-white rounded text-center custom-card">
 

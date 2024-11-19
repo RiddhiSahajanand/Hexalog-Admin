@@ -66,10 +66,28 @@ const Register = () => {
     };
 
 
-    const handleVerifyClick = (type) => {
+    const handleVerifyClick = async (type) => {
         if ((type === 'email' && formData.email) || (type === 'mobile' && formData.mobile)) {
             setOtpType(type);
             setShowOtpModal(true);
+        }
+        if (type === 'mobile' && formData.mobile) {
+            try {
+                const res = await Axios.post("auth/send-otp", {
+                    [type === 'email' ? 'email' : 'phone']: `+91${formData.mobile}`,
+                    resend: true
+                });
+                console.log("Otp-send-Api++", res);
+
+                if (res.data.success) {
+                    toast.success(res.data.message);
+                }
+                else {
+                    toast.error(res.data.error);
+                }
+            } catch (err) {
+                console.error("Otp-send-Api++", res);
+            }
         }
     };
 
@@ -116,7 +134,7 @@ const Register = () => {
             const res = await Axios.post("/auth/otp-verify", {
                 // email: otpType === 'email' ? formData.email : '',
                 // phone: otpType === 'mobile' ? formData.mobile : '',
-                [otpType === 'email' ? 'email' : 'phone']: otpType === 'email' ? formData.email : formData.mobile,
+                [otpType === 'email' ? 'email' : 'phone']: otpType === 'email' ? formData.email : `+91${formData.mobile}`,
                 otp: enteredOtp,
                 user_type: formData.user_type,
             });

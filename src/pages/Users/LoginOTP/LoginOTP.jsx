@@ -111,8 +111,6 @@ const LoginOTP = () => {
         } catch (err) {
             console.error("Otp-Resend-Api++", res);
         }
-
-
     }
 
     const handleSubmit = async () => {
@@ -131,9 +129,6 @@ const LoginOTP = () => {
         //     navigate("/createPassword");
         // }
         const otpValue = otp.join("");
-        console.log(otpValue);
-
-
 
         // if (otpValue !== fixedOtp) {
         //     setErrorMessage("Enter valid OTP");
@@ -153,10 +148,8 @@ const LoginOTP = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
-
                 setErrorMessage("");
                 setInputError(false);
-
                 navigate("/createPassword");
             }
             else {
@@ -166,7 +159,6 @@ const LoginOTP = () => {
         } catch (err) {
             console.error("Otp-Verify-Api++", res);
         }
-
     };
 
     return (
@@ -180,7 +172,6 @@ const LoginOTP = () => {
                                 <div className="left-section">
                                     <div className="tagline">AMPLIFYING BUSINESS</div>
                                     <div className="tagline bg-color-2nd">BEYOND BOUNDARIES</div>
-
                                     <div className="features my-5">
                                         <div className="feature">
                                             <div className="feature-icon">
@@ -261,7 +252,7 @@ const LoginOTP = () => {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     );
 };

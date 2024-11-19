@@ -43,9 +43,9 @@ export function TopBar() {
 
     return (
         <>
-            <div className="align-items-center px-5 py-4   bg-white topbar">
+            <div className="align-items-center px-5 py-4 bg-white topbar">
                 <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer' }} />
-                <div className="input-group top-search-box  mx-5 w-50">
+                <div className="input-group top-search-box mx-5 w-50">
                     <span className="input-group-text bg-white border-0">
                         <img src={searchIcon} alt="" style={{ height: '16px' }} />
                     </span>
@@ -137,7 +137,6 @@ export function TopBar() {
                     </Dropdown>
                     <img
                         src={ismenu ? close : menu}
-
                         style={{
                             cursor: 'pointer',
                             width: ismenu ? '17px' : '30px',

@@ -12,63 +12,32 @@ import { Dropdown, Form } from "react-bootstrap";
 import DeleteModal from "../../../component/Modal/delete/DeleteModal";
 import toast from "react-hot-toast";
 import ViewUser from "../../../component/offcanvas/Users/ViewUser";
-import { FaFilter, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
-
-const options = [
-    { label: "Active", value: "1" },
-    { label: "Inactive", value: "0" },
-    { label: "Pending", value: "2" }
-];
 
 const SuperAdminUsers = () => {
     const navigate = useNavigate();
-    const [isMobile, setIsMobile] = useState(false);
-    const [usersData, setUsersData] = useState([]); // Fetched user data
-    const [loading, setLoading] = useState(true); // Loading state
-    const [error, setError] = useState(null); // Error state
-    const [currentPage, setCurrentPage] = useState(1); // Current page for pagination
-    const totalPages = 10; // Total number of pages
+    const [usersData, setUsersData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const totalPages = 10;
     const [selectedOption, setSelectedOption] = useState("defalut");
-    console.log("selectedOption", selectedOption);
-
-
     const [deleteShow, setDeleteShow] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
-
     const [detailData, setDetailData] = useState({});
     const [detailShow, setDetailShow] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    const toggleDropdown = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const handleOptionClick = (option) => {
-        setSelectedOption(option.label);
-        onSelect(option.value);
-        setIsOpen(false);
-    };
-
-    console.log("selectedOption", selectedOption);
-
-
-    const handleSelectChange = (event) => {
-        setSelectedOption(event.target.value);
-    };
     const handleClose = () => {
         setDeleteShow(false);
         setDetailShow(false);
     }
-
     const token = localStorage.getItem("superadmin-login-token");
+
     const fetchData = async (page) => {
-        setLoading(true); // Start loading
+        setLoading(true);
 
         try {
-            // Construct base URL
             let url = `/users?page=${page}&limit=10`;
 
             // Append 'active' parameter only if selectedOption is "1" or "0"
@@ -82,21 +51,17 @@ const SuperAdminUsers = () => {
                 },
             });
 
-            setUsersData(response.data?.users || []); // Set fetched data
+            setUsersData(response.data?.users || []);
         } catch (error) {
             if (error.response && error.response.status === 401) {
-                // Handle 401 Unauthorized
                 navigate("/super-admin/login");
             } else {
-                // Handle other errors
                 setError(error.message);
             }
         } finally {
-            setLoading(false); // Stop loading in both success and error cases
+            setLoading(false);
         }
     };
-
-
 
     const handleStatusChange = async (id, currentStatus) => {
         const newStatus = currentStatus === "ACTIVE" ? 0 : 1;
@@ -104,22 +69,19 @@ const SuperAdminUsers = () => {
         try {
             await Axios.patch(
                 `/users/${id}/status`,
-                { status: newStatus }, // Pass only the data here
+                { status: newStatus },
                 {
                     headers: {
-                        "access-token": token, // Set headers as a separate argument
+                        "access-token": token,
                     },
                 }
             );
-
-            // Update local state with new status
             setUsersData(prevData =>
                 prevData.map(user =>
                     user.id === id ? { ...user, status: newStatus === 1 ? "ACTIVE" : "INACTIVE" } : user
                 )
             );
             fetchData(1);
-
         } catch (error) {
             console.error("Error updating status: ", error);
         }
@@ -160,7 +122,7 @@ const SuperAdminUsers = () => {
             selector: row => (
                 <>
                     <div className="d-flex align-items-center">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px' }}>
+                        <div className="d-flex justify-content-between gap-3">
                             <Form.Check
                                 type="switch"
                                 id={`custom-switch-${row.id}`}
@@ -176,7 +138,8 @@ const SuperAdminUsers = () => {
                                 onClick={() => {
                                     setDetailShow(true);
                                     setDetailData(row);
-                                }}></i>
+                                }}>
+                            </i>
                         </div>
                     </div>
                 </>
@@ -214,10 +177,9 @@ const SuperAdminUsers = () => {
 
     const renderPaginationButtons = () => {
         const pageButtons = [];
-        const showEllipsis = totalPages > 5; // Show ellipsis if there are more than 5 pages
-        const maxPageDisplay = 3; // Number of pages to show around the current page
+        const showEllipsis = totalPages > 5;
+        const maxPageDisplay = 3;
 
-        // Display the first page button
         pageButtons.push(
             <div
                 key={1}
@@ -234,12 +196,10 @@ const SuperAdminUsers = () => {
             </div>
         );
 
-        // Display ellipsis if needed before current page block
         if (showEllipsis && currentPage > maxPageDisplay + 1) {
             pageButtons.push(<span key="ellipsis1" style={{ padding: '0 8px' }}>...</span>);
         }
 
-        // Show pages around the current page
         const startPage = Math.max(2, currentPage - 1);
         const endPage = Math.min(totalPages - 1, currentPage + 1);
 
@@ -261,12 +221,10 @@ const SuperAdminUsers = () => {
             );
         }
 
-        // Display ellipsis if needed after current page block
         if (showEllipsis && currentPage < totalPages - maxPageDisplay) {
             pageButtons.push(<span key="ellipsis2" style={{ padding: '0 8px' }}>...</span>);
         }
 
-        // Display the last page button if totalPages > 1
         if (totalPages > 1) {
             pageButtons.push(
                 <div
@@ -284,10 +242,8 @@ const SuperAdminUsers = () => {
                 </div>
             );
         }
-
         return pageButtons;
     };
-
 
     return (
         <div>
@@ -337,21 +293,19 @@ const SuperAdminUsers = () => {
                                                 }}>All</p>
                                             <p className="text-center" onClick={() => {
                                                 setSelectedOption("1");
-                                                document.body.click(); // Close dropdown
+                                                document.body.click();
                                             }}>Active</p>
                                             <p
                                                 className="text-center"
                                                 onClick={() => {
                                                     setSelectedOption("0");
-                                                    document.body.click(); // Close dropdown
-                                                }}
-                                            >
+                                                    document.body.click();
+                                                }}>
                                                 Deactive
                                             </p>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </div>
-
                             </div>
                             <div className="card-body ps-lg-3">
                                 {loading ? (
@@ -364,9 +318,6 @@ const SuperAdminUsers = () => {
                                             columns={columns}
                                             data={usersData}
                                             customStyles={customStyles}
-
-                                        // pagination
-                                        // paginationPerPage={10}
                                         />
                                         <div className="pagination-container">
                                             <button
@@ -381,8 +332,8 @@ const SuperAdminUsers = () => {
                                             </button>
 
                                             {/* <div className="d-flex">
-                                            {renderPaginationButtons()}
-                                        </div> */}
+                                                {renderPaginationButtons()}
+                                            </div> */}
 
                                             <button
                                                 type="button"
@@ -404,8 +355,7 @@ const SuperAdminUsers = () => {
             </div>
             <DeleteModal show={deleteShow} handleClose={handleClose} handleDelete={handleDelete} />
             <ViewUser show={detailShow} handleClose={handleClose} detailData={detailData} />
-
-        </div >
+        </div>
     );
 };
 

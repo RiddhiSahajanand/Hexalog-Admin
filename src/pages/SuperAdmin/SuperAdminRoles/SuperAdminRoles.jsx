@@ -2,6 +2,7 @@ import DataTable from 'react-data-table-component';
 import FilterIcon from "../../../assets/filter.png";
 import searchIcon from "../../../assets/search.png";
 import { useState } from "react";
+import { Dropdown } from 'react-bootstrap';
 
 const SuperAdminRoles = () => {
     const [isMobile, setIsMobile] = useState(false);
@@ -65,9 +66,35 @@ const SuperAdminRoles = () => {
                                 onBlur={(e) => e.target.classList.remove('no-border')}
                             />
                         </div>
-                        <div className="filter-btn d-flex align-items-center" style={{ padding: '8px 12px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '4px' }}>
-                            <img src={FilterIcon} className="ml-5 filter-icon" alt="Filter Icon" />
-                            Filter
+                        <div class="dropdown-center">
+                            <Dropdown>
+                                <Dropdown.Toggle id="dropdown" style={{ backgroundColor: 'transparent', border: 'none' }}>
+                                    <button id="dropdown-basic" className="px-3" style={{ paddingTop: '6px', paddingBottom: '6px', border: '2px solid #E7EAEE', borderRadius: '4px', backgroundColor: '#FFF', color: '#B4B4B4' }}  >
+                                        <img src={FilterIcon} className="filter-icon" alt="Filter Icon" style={{ marginRight: '10px' }} />
+                                        Filter</button>
+                                </Dropdown.Toggle>
+
+
+                                {/* <Dropdown.Menu style={{ borderRadius: '8px', width: '50px', color: '#4c227f', cursor: 'pointer' }} >
+                                    <p className="text-center pt-3"
+                                        onClick={() => {
+                                            setSelectedOption("defalut");
+                                            document.body.click(); // Close dropdown
+                                        }}>All</p>
+                                    <p className="text-center" onClick={() => {
+                                        setSelectedOption("1");
+                                        document.body.click();
+                                    }}>Active</p>
+                                    <p
+                                        className="text-center"
+                                        onClick={() => {
+                                            setSelectedOption("0");
+                                            document.body.click();
+                                        }}>
+                                        Deactive
+                                    </p>
+                                </Dropdown.Menu> */}
+                            </Dropdown>
                         </div>
                     </div>
                     <div className="card-body ps-lg-5">

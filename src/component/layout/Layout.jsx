@@ -4,12 +4,12 @@ import { TopBar } from "../Topbar/Topbar";
 
 export function SuperAdminLayout({ isToogle, setIsToogle }) {
     return (
-        <div className="d-flex flex-column full-height">
+        <div className="full-height">
             <div className="topbar-layout">
                 <TopBar />
             </div>
             <div className="d-flex flex-grow-1">
-                <div  >
+                <div>
                     <SuperAdminSidebar setIsToogle={setIsToogle} />
                 </div>
                 <div

@@ -21,12 +21,10 @@ const Welcomepage = () => {
                                 <p className="welcome-title">Welcome!!</p>
                                 <div className="explore-btn" onClick={handleExplore}>Explore Platform</div>
                             </div>
-
                         </div>
                     </div>
                 </div >
-                <div className="welcome-bg-three d-flex ">
-
+                <div className="welcome-bg-three d-flex">
                 </div>
             </div >
         </>
