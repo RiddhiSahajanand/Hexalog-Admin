@@ -68,9 +68,8 @@ const Login = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
-
                 naviagte("/dashboard");
-
+                localStorage.setItem("userId", res?.data?.user?.id)
                 localStorage.setItem("user-login-token", res.data.token)
             }
             else {

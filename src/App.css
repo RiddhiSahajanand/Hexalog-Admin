@@ -560,6 +560,7 @@ body {
   padding-left: 10px;
   font-weight: 500;
   font-size: 17px;
+  cursor: pointer;
 }
 
 .text-logout {
@@ -1171,4 +1172,21 @@ body {
   /* Replace with your desired color */
   opacity: 1;
   /* Ensures full visibility */
+}
+
+/* //Change Passwrod  */
+
+.change-password-title {
+  margin-bottom: 30px;
+  color: #442A59;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.change-password-text {
+  text-align: center;
+  color: #744C89;
+  margin-bottom: 40px;
 }

@@ -186,6 +186,11 @@ export function UserTopBar() {
         setDropdownOpen(false);
         navigate("/login");
     };
+    const handleChangePassword = (event) => {
+        event.stopPropagation();
+        setDropdownOpen(false);
+        navigate("/changePassword");
+    }
 
     return (
         <>
@@ -231,16 +236,17 @@ export function UserTopBar() {
                                 </div>
                             </div>
                             <p className="dropdown-text" onClick={() => setDropdownOpen(false)}>View profile</p>
+                            <p className="dropdown-text" onClick={handleChangePassword}>Change Password</p>
                             <p className="dropdown-text" onClick={() => setDropdownOpen(false)}>Settings</p>
                             <p className="dropdown-text" onClick={() => setDropdownOpen(false)}>Support</p>
                             <div className="text-logout mb-2" onClick={handleLogout}>Log out</div>
                         </Dropdown.Menu>
                     </Dropdown>
                 </div>
-            </div>
+            </div >
 
             {/* Mobile version */}
-            <div className=" align-items-center px-4 py-4 pb-2 pb-lg-5 bg-white topbar-mobile">
+            < div className=" align-items-center px-4 py-4 pb-2 pb-lg-5 bg-white topbar-mobile" >
                 <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer', height: '50px' }} />
                 <div className='d-flex gap-3'>
                     <Dropdown>

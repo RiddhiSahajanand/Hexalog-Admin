@@ -16,6 +16,7 @@ import Welcomepage from './src/pages/Users/Welcomepage/Welcomepage';
 import Dashboard from './src/pages/Users/Dashboard/Dashboard';
 import Register from './src/pages/Users/Register/Register';
 import CreateKYC from './src/pages/Users/CreateKYC/CreateKYC';
+import Changepassword from './src/pages/Users/Changepassword/Changepassword';
 
 
 const AppRoutes = () => {
@@ -42,6 +43,7 @@ const AppRoutes = () => {
             <Route path='/ForgottPassword' element={<Forgotpassword />} />
             <Route path='/OtpVerification' element={<LoginOTP />} />
             <Route path='/createPassword' element={<Createpassword />} />
+            <Route path='/changePassword' element={<Changepassword />} />
 
             <Route path='/welcome' element={<Welcomepage />} />
             <Route path="/dashboard" element={<Dashboard />} />

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import logo from "../../../assets/hexalog-logo.png";
 import LogisticIcon from "../../../assets/Logistic.png";
@@ -11,12 +10,15 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Axios } from "../../../config/config";
 import toast from "react-hot-toast";
 
-const Createpassword = () => {
+const Changepassword = () => {
 
     const navigate = useNavigate();
+    const [showOldPassword, setShowOldPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false); // For new password visibility toggle
     const [showRePassword, setShowRePassword] = useState(false); // For re-enter password visibility toggle
 
+
+    const [oldPassword, setOldPassword] = useState('');
     const [password, setPassword] = useState(''); // State for new password
     const [rePassword, setRePassword] = useState(''); // State for re-entered password
 
@@ -24,9 +26,12 @@ const Createpassword = () => {
 
     const typeValue = localStorage.getItem('loginType');
     const loginValue = localStorage.getItem('loginValue');
-
+    const userId = localStorage.getItem('userId');
 
     // Function to toggle password visibility for New Password field
+    const toggleOldPasswordVisibility = () => {
+        setShowOldPassword(!showOldPassword);
+    };
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
@@ -37,54 +42,71 @@ const Createpassword = () => {
     };
 
     // Function to handle form submission
+    // const handleSubmit = async () => {
+    //     if (!oldPassword || !password || !rePassword) {
+    //         setErrorMessage('Please enter password');
+    //         return;
+    //     }
+    //     if (password !== rePassword) {
+    //         setErrorMessage('Password do not match');
+    //         return;
+    //     }
+    //     if (password.length < 8 || password.length > 8) {
+    //         setErrorMessage('Password must be exactly 8 characters');
+    //         return;
+    //     }
+
+
+    //     const data = {
+    //         updated_password: password,
+    //     }
+
+    // };
     const handleSubmit = async () => {
-        if (!password || !rePassword) {
-            setErrorMessage('Please enter password');
+        // Validate input fields
+        if (!oldPassword || !password || !rePassword) {
+            setErrorMessage('Please enter all password fields');
             return;
         }
         if (password !== rePassword) {
-            setErrorMessage('Password do not match');
+            setErrorMessage('Passwords do not match');
             return;
         }
-        if (password.length < 8 || password.length > 8) {
+        if (password.length !== 8) {
             setErrorMessage('Password must be exactly 8 characters');
             return;
         }
 
         const data = {
-            email: loginValue,
-            password: password,
-            user_type: 3,
-        }
-        console.log(data);
+            updated_password: password,
+        };
 
+        const token = localStorage.getItem('user-login-token'); // Get the access token
 
         try {
-            const res = await Axios.post("/auth/reset-password", data, {
-                headers: {
-                    "Content-Type": "application/json"
+            const response = await Axios.patch(`/users/${userId}/password`,
+                data,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'access-token': `${token}`,
+                    },
                 }
-            });
-            console.log("Reset-Password-Api++", res);
+            );
 
-            if (res.data.success) {
-                toast.success(res.data.message);
-
-                setErrorMessage('');
-
-                navigate("/login");
+            if (response?.status === 200) {
+                toast.success(response.data.message);
+                setErrorMessage(''); // Clear any previous error messages
+                setOldPassword('');
+                setPassword('');
+                setRePassword('');
+                navigate("/dashboard");
+            } else {
+                setErrorMessage('Failed to update password');
             }
-            else {
-                toast.error(res.data.error);
-            }
-        } catch (err) {
-            console.error("Reset-Password++", res);
+        } catch (error) {
+            console.error('Error updating password:', error);
         }
-
-
-        console.log('Passwords match. Proceed with the logic.');
-        // Optionally navigate to another page
-        // navigate('/some-page');
     };
 
     return (
@@ -130,20 +152,41 @@ const Createpassword = () => {
                             </div>
                             <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-5" style={{ width: '550px', height: '650px' }} >
                                 <div className="right-section" style={{ width: '550px', height: '650px' }} >
-                                    <p className="create-password-title">Create Password</p>
-                                    <p className="create-password-text ">Enter a new password to log in to your account!</p>
+                                    <p className="change-password-title">Change Password</p>
+                                    <p className="change-password-text ">Enter a new password to change Password!</p>
                                     <form>
+                                        <div className="d-flex form-group flex-column mb-3 position-relative">
+                                            <label htmlFor="password" className="mb-1 label">Old Password</label>
+                                            <input
+                                                type={showOldPassword ? "text" : "password"}
+                                                className={`form - control custom - input ${errorMessage && !oldPassword ? 'input-error' : ''}`}
+                                                placeholder="Enter old password"
+                                                id="oldPassword"
+                                                value={oldPassword}
+                                                onChange={(e) => {
+                                                    setOldPassword(e.target.value);
+                                                    setErrorMessage('');
+                                                }}
+                                            />
+                                            <span
+                                                onClick={toggleOldPasswordVisibility}
+                                                className="position-absolute"
+                                                style={{ top: '35px', right: '10px', cursor: 'pointer' }}
+                                            >
+                                                {showOldPassword ? <FaEyeSlash /> : <FaEye />}
+                                            </span>
+                                        </div>
                                         <div className="d-flex form-group flex-column mb-3 position-relative">
                                             <label htmlFor="password" className="mb-1 label">New Password</label>
                                             <input
                                                 type={showPassword ? "text" : "password"}
-                                                className={`form-control custom-input ${errorMessage && !password ? 'input-error' : ''}`}
+                                                className={`form - control custom - input ${errorMessage && !password ? 'input-error' : ''} `}
                                                 placeholder="Enter new password"
                                                 id="password"
                                                 value={password}
                                                 onChange={(e) => {
                                                     setPassword(e.target.value);
-                                                    setErrorMessage(''); // Clear error message on input change
+                                                    setErrorMessage('');
                                                 }}
                                             />
                                             <span
@@ -159,7 +202,7 @@ const Createpassword = () => {
                                             <label htmlFor="rePassword" className="mb-1 label">Re-enter New Password</label>
                                             <input
                                                 type={showRePassword ? "text" : "password"}
-                                                className={`form-control custom-input ${errorMessage && !rePassword ? 'input-error' : ''}`}
+                                                className={`form - control custom - input ${errorMessage && !rePassword ? 'input-error' : ''} `}
                                                 placeholder="Re-enter new password"
                                                 id="rePassword"
                                                 value={rePassword}
@@ -193,7 +236,7 @@ const Createpassword = () => {
     )
 }
 
-export default Createpassword;
+export default Changepassword;
 
 
 
