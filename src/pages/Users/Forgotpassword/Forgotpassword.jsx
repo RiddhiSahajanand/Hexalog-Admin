@@ -12,36 +12,17 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import FontAwesome icons
 import { Axios } from "../../../config/config";
 import toast from "react-hot-toast";
 
+import rightArrow from "../../../assets/right-Arrow.png";
 
 const Forgotpassword = () => {
 
     const navigate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState(''); // State for username
-    // const [formData, setformData] = useState({
-    //     email: "",
-    //     user_type: 3,
-    // })
+
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
 
-    // Function to toggle password visibility
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
 
-    // // Function to handle Otp
-    // const handleOTP = () => {
-    //     if (!email) {
-    //         setErrorMessage('Enter  email address or mobile number'); // Display error if username is empty
-    //         naviagate("/OtpVerification");
-    //         return;
-    //     }
 
-    //     // Here, add your login logic, e.g., API call for authentication
-    //     // For demonstration, assume login fails
-    //     setErrorMessage('Enter Valid email address or mobile number');
-
-    // };
     const handleOTP = async () => {
         if (!email) {
             setErrorMessage('Enter valid email address or mobile number');
@@ -52,26 +33,13 @@ const Forgotpassword = () => {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const mobilePattern = /^[0-9]{10}$/; // At least 10-digit mobile numbers
 
-        // if (emailPattern.test(email)) {
-        //     // Save as email type
-        //     localStorage.setItem('loginType', 'email');
-        //     localStorage.setItem('loginValue', email);
-        //     navigate("/OtpVerification");
-        // } else if (mobilePattern.test(email)) {
-        //     // Save as mobile type
-        //     localStorage.setItem('loginType', 'mobile number');
-        //     localStorage.setItem('loginValue', email);
-        //     navigate("/OtpVerification");
-        // } else {
-        //     setErrorMessage('Enter a valid email address or mobile number');
-        // }
-
 
         if (emailPattern.test(email) || mobilePattern.test(email)) {
             const data = {
                 email: email,
                 user_type: 3
             }
+            console.log("data", data);
 
             try {
                 const res = await Axios.post("/auth/forgot-password", data, {
@@ -101,6 +69,9 @@ const Forgotpassword = () => {
         }
 
     };
+
+
+
     return (
         <>
             <div className="login-container">
@@ -140,8 +111,11 @@ const Forgotpassword = () => {
                                             <div className="fw-medium feture-text">Global <br /> Network</div>
                                         </div>
                                     </div>
-                                    <div className="schedule-demo">Schedule Demo <img src={Arrow} alt=""
-                                        style={{ width: '10px' }} /></div>
+                                    {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt=""
+                                        style={{ width: '10px' }} /></div> */}
+
+<div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
+
                                 </div>
                             </div>
 
@@ -177,6 +151,5 @@ const Forgotpassword = () => {
     )
 }
 export default Forgotpassword;
-
 
 

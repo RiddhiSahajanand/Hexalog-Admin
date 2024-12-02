@@ -10,6 +10,8 @@ import Arrow from "../../../assets/arrow.png";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import FontAwesome icons
 import { Axios } from "../../../config/config";
+import rightArrow from "../../../assets/right-Arrow.png";
+
 import toast from "react-hot-toast";
 
 
@@ -41,22 +43,72 @@ const Login = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
+        console.log("name", name, value.length);
+        if (name === username || value.length > 30) {
+            setErrorMessage("Username must be 40 characters")
+            return;
+        }
         setFormData({ ...formData, [name]: value });
         setErrorMessage("");
     };
 
     // Function to handle login
-    const handleLogin = async () => {
-        if (!formData.username) {
-            setErrorMessage('Enter valid username or password'); // Display error if username is empty
-            return;
-        }
-        if (!formData.password) {
-            setErrorMessage('Enter valid username or password'); // Display error if password is empty
-            return;
-        }
+    // const handleLogin = async () => {
+    //     if (!formData.username) {
+    //         setErrorMessage('Enter valid username or password'); // Display error if username is empty
+    //         return;
+    //     }
+    //     if (!formData.password) {
+    //         setErrorMessage('Enter valid username or password'); // Display error if password is empty
+    //         return;
+    //     }
 
+    //     try {
+    //         const res = await Axios.post("/auth/login", formData, {
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             }
+    //         });
+    //         console.log("Login-Api++", res);
+
+    //         if (res.data.success) {
+    //             toast.success(res.data.message);
+    //             naviagte("/dashboard");
+    //             localStorage.setItem("userId", res?.data?.user?.id)
+    //             localStorage.setItem("user-login-token", res.data.token)
+    //         }
+    //         else {
+    //             toast.error(res.data.error);
+    //         }
+    //     } catch (err) {
+    //         console.error("Login-Api++", res);
+    //     }
+    // };
+    const emailRegex = /^[^\s@]+@[a-z]+\.[a-z]{2,}$/; // Simple regex for lowercase emails
+
+
+    const validateInputs = () => {
+        if (!formData.username || !formData.password) {
+            return "Enter valid username or password.";
+        }
+        if (!emailRegex.test(formData.username)) {
+            return "Please enter a valid email.";
+        }
+        if (formData.username.length > 40) {
+            return "Username must be 40 characters or less.";
+        }
+        if (formData.password.length < 8) {
+            return "Password must be 8 characters";
+        }
+        return "";
+    };
+
+    const handleLogin = async () => {
+        const validationError = validateInputs();
+        if (validationError) {
+            setErrorMessage(validationError);
+            return;
+        }
 
         try {
             const res = await Axios.post("/auth/login", formData, {
@@ -69,16 +121,18 @@ const Login = () => {
             if (res.data.success) {
                 toast.success(res.data.message);
                 naviagte("/dashboard");
-                localStorage.setItem("userId", res?.data?.user?.id)
-                localStorage.setItem("user-login-token", res.data.token)
-            }
-            else {
+                localStorage.setItem("userId", res?.data?.user?.id);
+                localStorage.setItem("user-login-token", res.data.token);
+                localStorage.setItem("verificationStatus", res.data.user.verificationStatus);
+            } else {
                 toast.error(res.data.error);
             }
         } catch (err) {
-            console.error("Login-Api++", res);
+            console.error("Login-Api Error:", err);
+            setErrorMessage("Something went wrong. Please try again.");
         }
     };
+
 
     const handleForgottpssword = () => {
         naviagte("/ForgottPassword")
@@ -123,8 +177,13 @@ const Login = () => {
                                             <div className="fw-medium feture-text">Global <br /> Network</div>
                                         </div>
                                     </div>
-                                    <div className="schedule-demo">Schedule Demo <img src={Arrow} alt=""
-                                        style={{ width: '10px' }} /></div>
+                                    {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt=""
+                                        style={{ width: '10px' }} /></div> */}
+
+                <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
+
+
+
                                 </div>
                             </div>
                             <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-5" style={{ width: '500px', height: '650px' }} >
@@ -153,6 +212,7 @@ const Login = () => {
                                                 name="password"
                                                 value={formData.password} // Bind password state
                                                 onChange={handleChange} // Update password state
+                                                maxLength={8}
                                             />
                                             <span
                                                 onClick={togglePasswordVisibility}

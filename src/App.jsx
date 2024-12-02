@@ -6,15 +6,15 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 
 const App = () => {
-  return (
-    <>
-      <AppRoutes />
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
-    </>
-  )
+    return (
+        <>
+            <AppRoutes />
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
+        </>
+    )
 }
 
 export default App;

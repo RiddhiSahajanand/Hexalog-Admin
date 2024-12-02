@@ -17,6 +17,10 @@ import { useNavigate } from "react-router-dom";
 const SuperAdminUsers = () => {
     const navigate = useNavigate();
     const [usersData, setUsersData] = useState([]);
+    const [search, SetSearch] = useState("");
+    const [firstLetter, setfirstLetter] = useState("");
+    const [sort, setSort] = useState("");
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -24,9 +28,13 @@ const SuperAdminUsers = () => {
     const [selectedOption, setSelectedOption] = useState("defalut");
     const [deleteShow, setDeleteShow] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
-    const [detailData, setDetailData] = useState({});
     const [detailShow, setDetailShow] = useState(false);
+    const [detailId, setDetailId] = useState(null);
+    const [detailData, setDetailData] = useState({});
     const [isOpen, setIsOpen] = useState(false);
+
+
+    console.log(search);
 
     const handleClose = () => {
         setDeleteShow(false);
@@ -34,12 +42,15 @@ const SuperAdminUsers = () => {
     }
     const token = localStorage.getItem("superadmin-login-token");
 
-    const fetchData = async (page) => {
+    const fetchData = async (page, search, firstLetter) => {
         setLoading(true);
 
         try {
             let url = `/users?page=${page}&limit=10`;
 
+
+            if (search) url += `&search=${search}`;
+            if (firstLetter) url += `&firstLetterNameFilter=${firstLetter}`;
             // Append 'active' parameter only if selectedOption is "1" or "0"
             if (selectedOption === "1" || selectedOption === "0") {
                 url += `&active=${selectedOption}`;
@@ -55,8 +66,18 @@ const SuperAdminUsers = () => {
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 navigate("/super-admin/login");
-            } else {
+            }
+            else {
                 setError(error.message);
+            }
+
+            if (error.response.data.success === false) {
+                // alert(error.response.data.message);
+
+                toast.error(error.response.data.message);
+
+                navigate("/super-admin/login");
+
             }
         } finally {
             setLoading(false);
@@ -76,6 +97,9 @@ const SuperAdminUsers = () => {
                     },
                 }
             );
+
+            localStorage.removeItem("user-login-token");
+
             setUsersData(prevData =>
                 prevData.map(user =>
                     user.id === id ? { ...user, status: newStatus === 1 ? "ACTIVE" : "INACTIVE" } : user
@@ -88,9 +112,15 @@ const SuperAdminUsers = () => {
     };
 
 
+    const handleSort = (column, sortDirection) => {
+        // fetchData(currentPage, search, firstLetter, column.selector, sortDirection);
+        console.log(column, sortDirection);
+
+    };
+
     useEffect(() => {
-        fetchData(currentPage);
-    }, [currentPage, selectedOption]);
+        fetchData(currentPage, search, firstLetter, sort);
+    }, [currentPage, selectedOption, search, firstLetter, sort]);
 
     const handleDelete = async () => {
         try {
@@ -109,14 +139,38 @@ const SuperAdminUsers = () => {
         }
     };
 
+    const handleView = async (id) => {
+        try {
+            const { data } = await Axios.get(`/users/profile/${id}`, {
+                headers: { "access-token": token },
+            });
+            if (data?.status) {
+                // toast.success(data?.message);
+                setDetailData(data?.user_profile)
+            } else {
+                toast.error(data?.message);
+            }
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
 
     const columns = [
         { name: '', selector: (_, index) => <img src={Checkboxicn} />, width: '100px' },
         { name: 'ID', selector: (_, index) => index + 1 },
-        { name: 'Name', selector: row => row.name, width: '200px' },
-        { name: 'Email', selector: row => row.email, width: '300px' },
-        { name: 'Mobile Number', selector: row => row.phone, width: '300px' },
-        { name: 'Last Login', selector: row => row.lastlogin, width: '200px' },
+        { name: 'Name', selector: row => row.name, width: '200px', sortable: true, },
+        { name: 'Email', selector: row => row.email, width: '300px', sortable: true, },
+        { name: 'Mobile Number', selector: row => row.phone, width: '300px', sortable: true, },
+        {
+            name: 'Last Login', selector: row => {
+                const date = new Date(row.lastLoginAt);
+                const formattedDate = date.toISOString().split('T')[0];
+                const time = date.toTimeString().split(' ')[0];
+                return `${formattedDate} ${time}`;
+            },
+            width: '200px', sortable: true,
+        },
         {
             name: 'Actions',
             selector: row => (
@@ -137,7 +191,8 @@ const SuperAdminUsers = () => {
                             <i class="bi bi-eye-fill" style={{ fontSize: '1.3rem', color: '#484141', cursor: 'pointer' }}
                                 onClick={() => {
                                     setDetailShow(true);
-                                    setDetailData(row);
+                                    // setDetailId(row.id)
+                                    handleView(row.id)
                                 }}>
                             </i>
                         </div>
@@ -174,6 +229,19 @@ const SuperAdminUsers = () => {
             setCurrentPage(page);
         }
     };
+
+
+    const handleFilterLetter = (Chars) => {
+        // console.log(Chars);
+
+        if (Chars === "*") {
+            // Reset all filters to default values
+            SetSearch("");
+            setfirstLetter("");
+            setSelectedOption("defalut");
+            fetchData(1, "", "", ""); // Fetch data with cleared filters
+        }
+    }
 
     const renderPaginationButtons = () => {
         const pageButtons = [];
@@ -253,13 +321,21 @@ const SuperAdminUsers = () => {
                     <div className="d-flex ">
                         <div className="alphabet-filter d-flex flex-column me-3">
                             <span style={{ cursor: 'pointer', color: '#442A59', fontWeight: 'bold' }}>A-Z</span>
-                            <span style={{ cursor: 'pointer', color: '#744C89', fontSize: '20px' }} className="px-2">*</span>
+                            <span style={{ cursor: 'pointer', color: '#744C89', fontSize: '20px' }} className="px-2"
+                                onClick={() => handleFilterLetter("*")}
+                            >*</span>
                             {'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(letter => (
-                                <span key={letter} className="alphabet-link my-0 px-2" style={{ cursor: 'pointer', color: '#744C89' }} onClick={() =>
-                                    handleFilterLetter(letter)}>
+                                <span key={letter} className="alphabet-link my-0 px-2" style={{ cursor: 'pointer', color: '#744C89' }} onClick={() => {
+                                    handleFilterLetter(letter)
+                                    setfirstLetter(letter)
+                                }
+                                }>
                                     {letter}
                                 </span>
                             ))}
+
+
+
                         </div>
                         <div className="table-data-section">
                             <div className="d-flex align-items-center mb-5 gap-2 ps-lg-3">
@@ -272,6 +348,7 @@ const SuperAdminUsers = () => {
                                         className="form-control custom-placeholder border-0"
                                         placeholder="Search by name or ID"
                                         style={{ color: '#B4B4B4' }}
+                                        onChange={(e) => SetSearch(e.target.value)}
                                         onFocus={(e) => e.target.classList.add('no-border')}
                                         onBlur={(e) => e.target.classList.remove('no-border')}
                                     />
@@ -318,6 +395,7 @@ const SuperAdminUsers = () => {
                                             columns={columns}
                                             data={usersData}
                                             customStyles={customStyles}
+                                            onSort={handleSort}
                                         />
                                         <div className="pagination-container">
                                             <button

@@ -2,7 +2,9 @@ import DataTable from 'react-data-table-component';
 import FilterIcon from "../../../assets/filter.png";
 import searchIcon from "../../../assets/search.png";
 import { useState } from "react";
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Form } from 'react-bootstrap';
+import Deleteicon from "../../../assets/deleteicon.png";
+
 
 const SuperAdminRoles = () => {
     const [isMobile, setIsMobile] = useState(false);
@@ -13,8 +15,25 @@ const SuperAdminRoles = () => {
         { name: 'ID', selector: row => row.id, },
         { name: 'Name', selector: row => row.name, },
         { name: 'Permissions List', selector: row => row.permissions, },
-        { name: 'Actions', selector: row => row.actions, },
-    ];
+        {
+            name: 'Actions',
+            selector: row => (
+                <>
+                    <div className="d-flex align-items-center">
+                        <div className="d-flex justify-content-between gap-3">
+                            <Form.Check
+                                type="switch"
+                                id={`custom-switch-${row.id}`}
+                                checked={row.status === "ACTIVE"}
+                            />
+                            <img src={Deleteicon} alt="" style={{ height: '1.3rem', cursor: 'pointer' }} />
+                            <i class="bi bi-eye-fill" style={{ fontSize: '1.3rem', color: '#484141', cursor: 'pointer' }}></i>
+                        </div>
+                    </div>
+                </>
+            ),
+            width: '200px'
+        },];
 
     const data = [
         { id: 1, name: 'Hardik Patel', permissions: 'All', actions: 'sample text' },

@@ -9,6 +9,8 @@ import Arrow from "../../../assets/arrow.png";
 import { useNavigate } from "react-router-dom";
 import { Axios } from "../../../config/config";
 import toast from "react-hot-toast";
+import rightArrow from "../../../assets/right-Arrow.png";
+
 
 const LoginOTP = () => {
     const navigate = useNavigate();
@@ -19,7 +21,7 @@ const LoginOTP = () => {
     const [mobileLastFour, setMobileLastFour] = useState('');
     const [loginType, setLoginType] = useState('');
 
-    const [timer, setTimer] = useState(120); // Countdown timer state
+    const [timer, setTimer] = useState(10); // Countdown timer state
 
     // const [state, setstate] = useState("");
 
@@ -92,8 +94,6 @@ const LoginOTP = () => {
     const resendOtp = async () => {
         setTimer(120); // Reset the countdown
 
-        // navigate("/ForgottPassword");
-
         try {
             const res = await Axios.post("auth/send-otp", {
                 // [loginType === 'email' ? 'email' : 'phone']: mobileLastFour,
@@ -104,6 +104,7 @@ const LoginOTP = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
+                setOtp(new Array(6).fill(""));
             }
             else {
                 toast.error(res.data.error);
@@ -130,12 +131,12 @@ const LoginOTP = () => {
         // }
         const otpValue = otp.join("");
 
-        // if (otpValue !== fixedOtp) {
-        //     setErrorMessage("Enter valid OTP");
-        //     setInputError(true); // Apply error state for input boxes
-        // }
-        // else {
-        // }
+        console.log("otpValue", otpValue);
+        if (!otpValue || otpValue.length < 6) {
+            setInputError(true);
+            setErrorMessage("Enter valid OTP");
+            return;
+        }
 
         try {
             const res = await Axios.post("/auth/otp-verify", {
@@ -144,12 +145,14 @@ const LoginOTP = () => {
                 otp: otpValue,
                 user_type: 3,
             });
+
             console.log("Otp-Verify-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
                 setErrorMessage("");
                 setInputError(false);
+                setOtp(new Array(6).fill(""));
                 navigate("/createPassword");
             }
             else {
@@ -198,7 +201,10 @@ const LoginOTP = () => {
                                             <div className="fw-medium feture-text">Global <br /> Network</div>
                                         </div>
                                     </div>
-                                    <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div>
+                                    {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div> */}
+                                
+                                    <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
+
                                 </div>
                             </div>
                             <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-5" style={{ width: '550px', height: '700px' }} >
@@ -209,7 +215,7 @@ const LoginOTP = () => {
                                         and registered {loginType},
                                         Please sign up if you are a new user.
                                     </p>
-                                    <p className="otp-text-two">Did not receive the OTP in <span className="highlight">{timer}  </span> seconds? Click on
+                                    <p className="otp-text-two">Did not receive the OTP in <span className="highlight">{timer}  </span> seconds? Click on&nbsp;
                                         <span
                                             // className="highlight"
                                             // style={{ cursor: 'pointer' }}

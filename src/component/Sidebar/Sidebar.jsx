@@ -1,15 +1,15 @@
 
 import React, { useState } from 'react';
-import './Sidebar.css';
-import LeftView from "../../assets/left-view.png";
-import RightView from "../../assets/right-view.png";
-import { useLocation } from 'react-router-dom';
-import home1 from "../../assets/home1.png";
-import home2 from "../../assets/home 2.png";
-import user1 from "../../assets/user1.png";
-import user2 from "../../assets/user2.png";
-import roles1 from "../../assets/roles1.png";
-import roles2 from "../../assets/roles2.png";
+    import './Sidebar.css';
+    import LeftView from "../../assets/left-view.png";
+    import RightView from "../../assets/right-view.png";
+    import { useLocation } from 'react-router-dom';
+    import home1 from "../../assets/home1.png";
+    import home2 from "../../assets/home 2.png";
+    import user1 from "../../assets/user1.png";
+    import user2 from "../../assets/user2.png";
+    import roles1 from "../../assets/roles1.png";
+    import roles2 from "../../assets/roles2.png";
 
 const SuperAdminSidebar = ({ setIsToogle }) => {
     const [isMobile, setIsMobile] = useState(false);

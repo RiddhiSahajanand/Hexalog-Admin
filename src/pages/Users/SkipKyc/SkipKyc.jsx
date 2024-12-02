@@ -1,17 +1,22 @@
-
-
-
-import { useState } from "react";
+import React, { useState } from 'react';
 import logo from "../../../assets/hexalog-logo.png";
+import { UserTopBar } from '../../../component/Topbar/Topbar';
+import { useNavigate } from 'react-router-dom';
 import Arrow from "../../../assets/arrow.png";
-import { useNavigate } from "react-router-dom";
-import { Axios } from "../../../config/config";
-import toast from "react-hot-toast";
+import { Axios } from '../../../config/config';
+import toast from 'react-hot-toast';
 
-const CreateKYC = () => {
+const SkipKyc = () => {
+
+    // const naviagte = useNavigate();
+    // const handleExplore = () => {
+    //     naviagte("/dashboard")
+    // }
 
     const userRegisterToken = localStorage.getItem('user-register-token');
     const verificationStatus = localStorage.getItem('verificationStatus');
+    console.log(verificationStatus);
+
 
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -89,7 +94,7 @@ const CreateKYC = () => {
                 setErrorMessage(res.data.error)
             }
         } catch (err) {
-            console.error("pan-Api++", res);
+            console.error("pan-Api++", err);
         }
     }
 
@@ -123,22 +128,8 @@ const CreateKYC = () => {
         }
     }
 
-    // const validateForm = () => {
-    //     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    //     const mobileRegex = /^[0-9]{9}$/;
-    //     const isEmailValid = emailRegex.test(formData.email);
-    //     const isMobileValid = mobileRegex.test(formData.mobile);
-
-    //     setIsEmailVerified(isEmailValid);
-    //     setIsMobileVerified(isMobileValid);
-    // };
-
     const handleRegister = async () => {
-        // Check if all fields are filled
-        // if (!formData.organizationType || !formData.organizationName || !formData.name || !formData.email || !formData.mobile || !formData.password || !formData.confirmPassword) {
-        //     setErrorMessage('All fields are required.');
-        //     return;
-        // }
+
         const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9]{1}$/;
         const gstPanRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
         const accountNumberRegex = /^[0-9]{11,16}$/;
@@ -202,8 +193,6 @@ const CreateKYC = () => {
             if (res.data.success) {
                 toast.success(res.data.message);
 
-                localStorage.setItem("verificationStatus", "COMPLETED");
-                
                 navigate('/welcome');
                 // localStorage.setItem("UserToken", res.data.token)
             }
@@ -214,27 +203,28 @@ const CreateKYC = () => {
         }
     };
 
-    const handleSkip = () => {
-        navigate('/dashboard');
-        // navigate('/skipcreatekyc');
-    }
 
     return (
         <>
-            <div className="kyc-container">
-                <div className="kyc-bg-two d-flex align-items-center">
-                    <div className="container my-5 my-lg-0">
+
+            <div className="welcome-container">
+                <div className="welcome-bg-two d-flex ">
+                    <div className="container my-5">
                         <img src={logo} alt="" />
-                        <div className="row g-lg-5 ps-0 ps-lg-5">
-                            <div className="col-12 col-lg-6 pt-5 ps-5">
-                                <div className="left-section">
-                                    <div className="register-title">A digital Freight forwarding  <br /> Aggregation platform</div>
-                                    <div className="register-more">Know More </div>
-                                </div>
+
+
+                        {/* <div className="d-flex justify-content-center">
+                            <div>
+                                <p className="welcome-title">Welcome!!</p>
+                                <div className="explore-btn" onClick={handleExplore}>Explore Platform</div>
                             </div>
-                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-5" style={{ width: '550px', height: '650px' }} >
-                                <div className="right-section" style={{ width: '550px', height: '650px' }} >
-                                    <p className="register-main-title fw-bold">Create Account</p>
+                        </div> */}
+
+                        <div className="d-flex justify-content-center align-items-center px-5" >
+                            <div style={{ width: '550px', height: '530px' }} >
+
+                                <div className="right-section" style={{ width: '550px', height: '530px' }} >
+                                    <p className="register-main-title fw-bold">Complete Your KYC</p>
                                     <p className="basic-detail-text">KYC & A/C Details</p>
                                     <form>
                                         <div className="space-y-4">
@@ -324,23 +314,27 @@ const CreateKYC = () => {
                                             {errorMessage && (
                                                 <p className="text-center" style={{ color: '#F62D2D' }}>{errorMessage}</p>
                                             )}
-                                            <a className="signup mb-4" onClick={handleRegister}>Save</a>
-                                            <div className="border"></div>
-                                            <div className="login-btn" onClick={handleRegister}>Next</div>
+                                            <a className={`signup mb-4`} onClick={handleRegister}>Save</a>
+                                            {/* <div className="border"></div> */}
+                                            {/* <div className="login-btn" onClick={handleRegister}>Next</div> */}
 
-                                            <a className="forgot-password" onClick={handleSkip} >{`Skip and Continue later `}<img src={Arrow} alt=""
-                                                style={{ width: '10px' }} />
-                                            </a>
+                                            {/* <a className="forgot-password" onClick={handleSkip} >{`Skip and Continue later `}<img src={Arrow} alt=""
+                                        style={{ width: '10px' }} />
+                                    </a> */}
                                         </div>
                                     </form>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div >
+                <div className="welcome-bg-three d-flex">
+                </div>
             </div >
-        </>
-    );
-};
 
-export default CreateKYC;
+        </>
+    )
+}
+
+export default SkipKyc;

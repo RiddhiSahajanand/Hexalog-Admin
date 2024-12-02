@@ -3,6 +3,8 @@ import logo from "../../../assets/hexalog-logo.png";
 import LogisticIcon from "../../../assets/Logistic.png";
 import financeIcon from "../../../assets/Receive Dollar.png";
 import TradeIcon from "../../../assets/Hierarchy.png";
+import rightArrow from "../../../assets/right-Arrow.png";
+
 import GlobleIcon from "../../../assets/Globe Network.png";
 import Arrow from "../../../assets/arrow.png";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +29,10 @@ const Changepassword = () => {
     const typeValue = localStorage.getItem('loginType');
     const loginValue = localStorage.getItem('loginValue');
     const userId = localStorage.getItem('userId');
+
+
+    console.log(oldPassword, password, rePassword);
+
 
     // Function to toggle password visibility for New Password field
     const toggleOldPasswordVisibility = () => {
@@ -62,6 +68,8 @@ const Changepassword = () => {
     //     }
 
     // };
+
+
     const handleSubmit = async () => {
         // Validate input fields
         if (!oldPassword || !password || !rePassword) {
@@ -72,12 +80,13 @@ const Changepassword = () => {
             setErrorMessage('Passwords do not match');
             return;
         }
-        if (password.length !== 8) {
+        if (password.length < 8) {
             setErrorMessage('Password must be exactly 8 characters');
             return;
         }
 
         const data = {
+            old_password: oldPassword,
             updated_password: password,
         };
 
@@ -94,7 +103,10 @@ const Changepassword = () => {
                 }
             );
 
-            if (response?.status === 200) {
+            console.log(response);
+
+
+            if (response?.data?.status) {
                 toast.success(response.data.message);
                 setErrorMessage(''); // Clear any previous error messages
                 setOldPassword('');
@@ -102,10 +114,19 @@ const Changepassword = () => {
                 setRePassword('');
                 navigate("/dashboard");
             } else {
-                setErrorMessage('Failed to update password');
+                setErrorMessage(response.data.error);
+
             }
         } catch (error) {
             console.error('Error updating password:', error);
+
+            if (error.response.data.success === false) {
+                // alert(error.response.data.message);
+
+                toast.error(error.response.data.message);
+
+                navigate("/login");
+            }
         }
     };
 
@@ -147,7 +168,11 @@ const Changepassword = () => {
                                             <div className="fw-medium feature-text">Global <br /> Network</div>
                                         </div>
                                     </div>
-                                    <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div>
+                                    {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div> */}
+                                    <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
+
+
+
                                 </div>
                             </div>
                             <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-5" style={{ width: '550px', height: '650px' }} >

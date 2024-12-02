@@ -41,10 +41,12 @@ export function TopBar() {
         setIsShow(false);
     }
 
+    
+
     return (
         <>
             <div className="align-items-center px-5 py-4 bg-white topbar">
-                <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer' }} />
+                <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer' }}  />
                 <div className="input-group top-search-box mx-5 w-50">
                     <span className="input-group-text bg-white border-0">
                         <img src={searchIcon} alt="" style={{ height: '16px' }} />
@@ -184,18 +186,30 @@ export function UserTopBar() {
     const handleLogout = (event) => {
         event.stopPropagation();
         setDropdownOpen(false);
+
+        localStorage.removeItem("user-login-token");
+        localStorage.removeItem("verificationStatus");
         navigate("/login");
     };
+    const handleProfile = (event) => {
+        event.stopPropagation();
+        setDropdownOpen(false);
+        navigate("/profile");
+    }
     const handleChangePassword = (event) => {
         event.stopPropagation();
         setDropdownOpen(false);
         navigate("/changePassword");
     }
 
+    const handleDashboard = () => {
+        navigate('/dashboard')
+    }
+
     return (
         <>
             <div className="align-items-center px-5 py-4 pb-2 pb-lg-5 bg-white topbar">
-                <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer' }} />
+                <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer' }} onClick={handleDashboard} />
                 <div className="input-group top-search-box  mx-5 w-50">
                     <span className="input-group-text bg-white border-0">
                         <img src={searchIcon} alt="" style={{ height: '16px' }} />
@@ -235,7 +249,7 @@ export function UserTopBar() {
                                     <p className='name-label'>Hexalog <br /><span className='email-label'>hexalog@admin.com</span></p>
                                 </div>
                             </div>
-                            <p className="dropdown-text" onClick={() => setDropdownOpen(false)}>View profile</p>
+                            <p className="dropdown-text" onClick={handleProfile} >View profile</p>
                             <p className="dropdown-text" onClick={handleChangePassword}>Change Password</p>
                             <p className="dropdown-text" onClick={() => setDropdownOpen(false)}>Settings</p>
                             <p className="dropdown-text" onClick={() => setDropdownOpen(false)}>Support</p>
@@ -247,7 +261,7 @@ export function UserTopBar() {
 
             {/* Mobile version */}
             < div className=" align-items-center px-4 py-4 pb-2 pb-lg-5 bg-white topbar-mobile" >
-                <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer', height: '50px' }} />
+                <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer', height: '50px' }}  onClick={handleDashboard} />
                 <div className='d-flex gap-3'>
                     <Dropdown>
                         <Dropdown.Toggle id="dropdown-basic" style={{ backgroundColor: 'transparent', border: 'none', marginLeft: '10px' }}>
@@ -276,7 +290,7 @@ export function UserTopBar() {
                                     <p className='name-label'>Hexalog <br /><span className='email-label'>hexalog@admin.com</span></p>
                                 </div>
                             </div>
-                            <p className="dropdown-text" onClick={() => setDropdownOpen(false)}>View profile</p>
+                            <p className="dropdown-text" onClick={handleProfile} >View profile</p>
                             <p className="dropdown-text" onClick={() => setDropdownOpen(false)}>Settings</p>
                             <p className="dropdown-text" onClick={() => setDropdownOpen(false)}>Support</p>
                             <div className="text-logout mb-2" onClick={handleLogout}>Log out</div>

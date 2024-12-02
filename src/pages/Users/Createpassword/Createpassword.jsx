@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Axios } from "../../../config/config";
 import toast from "react-hot-toast";
+import rightArrow from "../../../assets/right-Arrow.png";
 
 const Createpassword = () => {
 
@@ -46,7 +47,7 @@ const Createpassword = () => {
             setErrorMessage('Password do not match');
             return;
         }
-        if (password.length < 8 || password.length > 8) {
+        if (password.length < 8) {
             setErrorMessage('Password must be exactly 8 characters');
             return;
         }
@@ -56,6 +57,7 @@ const Createpassword = () => {
             password: password,
             user_type: 3,
         }
+
         console.log(data);
 
 
@@ -78,7 +80,7 @@ const Createpassword = () => {
                 toast.error(res.data.error);
             }
         } catch (err) {
-            console.error("Reset-Password++", res);
+            console.error("Reset-Password++", err);
         }
 
 
@@ -125,7 +127,9 @@ const Createpassword = () => {
                                             <div className="fw-medium feature-text">Global <br /> Network</div>
                                         </div>
                                     </div>
-                                    <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div>
+                                    {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div> */}
+                                    <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
+
                                 </div>
                             </div>
                             <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-5" style={{ width: '550px', height: '650px' }} >
@@ -141,6 +145,7 @@ const Createpassword = () => {
                                                 placeholder="Enter new password"
                                                 id="password"
                                                 value={password}
+                                                minLength={9}
                                                 onChange={(e) => {
                                                     setPassword(e.target.value);
                                                     setErrorMessage(''); // Clear error message on input change
@@ -163,6 +168,7 @@ const Createpassword = () => {
                                                 placeholder="Re-enter new password"
                                                 id="rePassword"
                                                 value={rePassword}
+                                                minLength={9}
                                                 onChange={(e) => {
                                                     setRePassword(e.target.value);
                                                     setErrorMessage(''); // Clear error message on input change

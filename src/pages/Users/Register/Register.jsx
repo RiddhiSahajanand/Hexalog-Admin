@@ -13,8 +13,10 @@ const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false); // For re-enter password visibility toggle
     const [formData, setFormData] = useState({
+        type: '',
         organization_type: '',
         organization_name: '',
+        individual_user: false,
         name: '',
         email: '',
         mobile: '',
@@ -36,9 +38,6 @@ const Register = () => {
     const [showOtpModal, setShowOtpModal] = useState(false);
     const [otpType, setOtpType] = useState('');
     const [errorOtpMessage, setErrorOtpMessage] = useState('');
-
-
-
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -67,11 +66,24 @@ const Register = () => {
 
 
     const handleVerifyClick = async (type) => {
+        console.log("type", formData.email.length);
+
+        if (type === 'email' && formData.email.length === 0) {
+            setErrorMessage('Please enter email');
+            return; // Stop further execution if email is empty
+        } else if (type === 'mobile' && formData.mobile.length === 0) {
+            setErrorMessage('Please enter mobile');
+            return; // Stop further execution if mobile is empty
+        }
+
         if ((type === 'email' && formData.email) || (type === 'mobile' && formData.mobile)) {
+            console.log("formData.email", formData.email.length);
             setOtpType(type);
             setShowOtpModal(true);
         }
         if (type === 'mobile' && formData.mobile) {
+            console.log("formData.mobile", formData.mobile.length);
+
             try {
                 const res = await Axios.post("auth/send-otp", {
                     [type === 'email' ? 'email' : 'phone']: `+91${formData.mobile}`,
@@ -81,6 +93,8 @@ const Register = () => {
 
                 if (res.data.success) {
                     toast.success(res.data.message);
+
+
                 }
                 else {
                     toast.error(res.data.error);
@@ -90,6 +104,7 @@ const Register = () => {
             }
         }
     };
+
 
     const handleBackspace = (e, index) => {
         if (e.key === "Backspace" && otp[index] === "" && index > 0) {
@@ -117,23 +132,15 @@ const Register = () => {
     const handleOtpSubmit = async () => {
 
         const enteredOtp = otp.join("");
-
         console.log(enteredOtp);
-
 
         if (!enteredOtp) {
             setErrorOtpMessage('Enter Valid OTP');
             return;
         }
-        // else if (enteredOtp !== "123456") {
-        //     setErrorOtpMessage("Enter Valid OTP");
-        //     return;
-        // }
 
         try {
             const res = await Axios.post("/auth/otp-verify", {
-                // email: otpType === 'email' ? formData.email : '',
-                // phone: otpType === 'mobile' ? formData.mobile : '',
                 [otpType === 'email' ? 'email' : 'phone']: otpType === 'email' ? formData.email : `+91${formData.mobile}`,
                 otp: enteredOtp,
                 user_type: formData.user_type,
@@ -150,7 +157,8 @@ const Register = () => {
 
                 setOtp(["", "", "", "", "", ""]);
 
-                setErrorOtpMessage("")
+                setErrorOtpMessage("");
+                setErrorMessage("");
 
                 setShowOtpModal(false);
             } else {
@@ -170,13 +178,20 @@ const Register = () => {
         //     return;
         // }
 
-        if (!formData.organization_type) {
-            setErrorMessage('Please select organizationType ');
+        if (!formData.type) {
+            setErrorMessage('Please select Type ');
             return;
         }
-        if (!formData.organization_name) {
-            setErrorMessage('Please enter organizationName ');
-            return;
+        if (formData.type === 'organization') {
+            if (!formData.organization_type) {
+                setErrorMessage('Please select Organization Type');
+                return;
+            }
+
+            if (!formData.organization_name) {
+                setErrorMessage('Please enter Organization Name');
+                return;
+            }
         }
         if (!formData.name) {
             setErrorMessage('Please enter name ');
@@ -190,14 +205,21 @@ const Register = () => {
             setErrorMessage('Please enter mobile ');
             return;
         }
-        if (!formData.password) {
-            setErrorMessage('Please enter password ');
+        if (!formData.password || formData.password.length < 8) {
+            setErrorMessage('Password must be at least 8 characters long.');
             return;
         }
-        if (!formData.confirmPassword) {
-            setErrorMessage('Please re-rnter password ');
+
+        if (!formData.confirmPassword || formData.confirmPassword.length < 8) {
+            setErrorMessage('Confirm Password must be at least 8 characters long.');
             return;
         }
+
+        if (formData.password !== formData.confirmPassword) {
+            setErrorMessage('Passwords do not match.');
+            return;
+        }
+
         if (isEmailVerified === false) {
             setErrorMessage('Please verified email ');
             return;
@@ -207,18 +229,23 @@ const Register = () => {
             return;
         }
 
-        // Check if passwords match
-        if (formData.password !== formData.confirmPassword) {
-            setErrorMessage('Passwords do not match.');
-            return;
-        }
+        // if (!isEmailVerified) {
+        //     setErrorMessage('Please enter mobile ');
+        //     return;
+        // }
+
+        // if (!isMobileVerified) {
+        //     setErrorMessage('Please enter mobile ');
+        //     return;
+        // }
 
 
-        console.log("Register++", formData);
+        // console.log("Register++", formData);
 
         const data = {
             organization_type: formData.organization_type,
             organization_name: formData.organization_name,
+            individual_user: formData?.type === "individual" ? true : false,
             name: formData.name,
             email: formData.email,
             phone: formData.mobile,
@@ -227,6 +254,7 @@ const Register = () => {
             login_type: formData.login_type,
             role: formData.role,
         }
+        console.log("data", data);
 
         try {
             const res = await Axios.post("/auth/register", data, {
@@ -249,14 +277,7 @@ const Register = () => {
         } catch (err) {
             console.error("Register-Api++", res);
         }
-
-
-
-
-        // Clear the error message if all validations pass
         setErrorMessage('');
-
-        // Navigate to the next page
     };
 
 
@@ -284,13 +305,53 @@ const Register = () => {
                                     <div className="register-more">Know More </div>
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-3 px-lg-5" style={{ width: '550px', height: '800px', marginTop: '20px' }} >
-                                <div className="right-section" style={{ width: '550px', height: '800px' }} >
+                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-3 px-lg-5" style={{ width: '550px', height: '850px', marginTop: '20px' }} >
+                                <div className="right-section" style={{ width: '550px', height: '850px' }} >
                                     <p className="register-main-title fw-bold">Create Account</p>
                                     <p className="basic-detail-text">Basic Details</p>
                                     <form>
                                         <div className="space-y-4">
                                             <div className="form-group">
+                                                <select
+                                                    name="type"
+                                                    value={formData.type}
+                                                    onChange={handleChange}
+                                                    className={`form-control custom-input ${errorMessage && !formData.type ? 'input-error' : ''}`}
+
+                                                >
+                                                    <option value="">Select Type</option>
+                                                    <option value="individual">Individual</option>
+                                                    <option value="organization">Organization</option>
+                                                </select>
+                                            </div>
+                                            {formData.type === 'organization' && (
+                                                <>
+                                                    <div className="form-group">
+                                                        <select
+                                                            name="organization_type"
+                                                            value={formData.organization_type}
+                                                            onChange={handleChange}
+                                                            className={`form-control custom-input ${errorMessage && !formData.organization_type ? 'input-error' : ''}`}
+                                                        >
+                                                            <option value="">Organization Type</option>
+                                                            <option value="ABC">ABC</option>
+                                                            <option value="PQR">PQR</option>
+                                                            <option value="XYZ">XYZ</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <input
+                                                            type="text"
+                                                            name="organization_name"
+                                                            placeholder="Organization Name"
+                                                            value={formData.organization_name}
+                                                            onChange={handleChange}
+                                                            className={`form-control custom-input ${errorMessage && !formData.organization_name ? 'input-error' : ''}`}
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+                                            {/* <div className="form-group">
                                                 <select
                                                     name="organization_type"
                                                     value={formData.organization_type}
@@ -313,7 +374,7 @@ const Register = () => {
                                                     onChange={handleChange}
                                                     className={`form-control custom-input ${errorMessage && !formData.organization_name ? 'input-error' : ''}`}
                                                 />
-                                            </div>
+                                            </div> */}
                                             <div className="form-group">
                                                 <input
                                                     type="text"
@@ -354,6 +415,7 @@ const Register = () => {
                                                     placeholder="Mobile Number"
                                                     value={formData.mobile}
                                                     onChange={handleChange}
+                                                    maxLength={16}
                                                     className={`form-control custom-input ${errorMessage && !formData.mobile ? 'input-error' : ''}`}
                                                 />
                                                 <span
@@ -375,6 +437,7 @@ const Register = () => {
                                                     className={`form-control custom-input ${errorMessage && !formData.password ? 'input-error' : ''}`}
                                                     placeholder="Password"
                                                     value={formData.password}
+                                                    minLength={9}
                                                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                                                 />
                                                 <span
@@ -391,6 +454,7 @@ const Register = () => {
                                                     className={`form-control custom-input ${errorMessage && !formData.confirmPassword ? 'input-error' : ''}`}
                                                     placeholder="Re-enter New Password"
                                                     value={formData.confirmPassword}
+                                                    minLength={9}
                                                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                                                 />
                                                 <span

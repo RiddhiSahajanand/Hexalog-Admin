@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Route, Routes } from "react-router-dom";
 
-import { SuperAdminLayout } from './src/component/layout/Layout';
+import { SuperAdminLayout, UserLayout } from './src/component/layout/Layout';
 
 import SuperAdminLogin from './src/pages/SuperAdmin/SuperAdminLogin/SuperAdminLogin';
 import SuperAdminDashboard from './src/pages/SuperAdmin/SuperAdminDashboard/SuperAdminDashboard';
@@ -17,6 +17,8 @@ import Dashboard from './src/pages/Users/Dashboard/Dashboard';
 import Register from './src/pages/Users/Register/Register';
 import CreateKYC from './src/pages/Users/CreateKYC/CreateKYC';
 import Changepassword from './src/pages/Users/Changepassword/Changepassword';
+import Profile from './src/pages/Users/Profile/Profile';
+// import SkipKyc from './src/pages/Users/SkipKyc/SkipKyc';
 
 
 const AppRoutes = () => {
@@ -33,9 +35,7 @@ const AppRoutes = () => {
                 <Route path='/super-admin/roles' element={<SuperAdminRoles />} />
             </Route>
 
-
             {/* Users  */}
-
             <Route path='/register' element={<Register />} />
             <Route path='/createkyc' element={<CreateKYC />} />
 
@@ -43,10 +43,17 @@ const AppRoutes = () => {
             <Route path='/ForgottPassword' element={<Forgotpassword />} />
             <Route path='/OtpVerification' element={<LoginOTP />} />
             <Route path='/createPassword' element={<Createpassword />} />
-            <Route path='/changePassword' element={<Changepassword />} />
 
             <Route path='/welcome' element={<Welcomepage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+
+            <Route element={<UserLayout />}>
+                <Route path='/changePassword' element={<Changepassword />} />
+
+                {/* <Route path='/skipcreatekyc' element={<SkipKyc />} /> */}
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/profile" element={<Profile />} />
+            </Route>
+
         </Routes>
     )
 }

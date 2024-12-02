@@ -39,13 +39,13 @@
 
 //         // Check if entered username and password match the static credentials
 //         if (username === staticUsername && password === staticPassword) {
-//             naviagte("/super-admin/dashboard"); // Navigate to another screen if credentials match
+//             navigate("/super-admin/dashboard"); // Navigate to another screen if credentials match
 //         } else {
 //             setErrorMessage('Enter valid email or password'); // Display error if credentials don't match
 //         }
 //     };
 //     const handleForgottpssword = () => {
-//         naviagte("/ForgottPassword")
+//         navigate("/ForgottPassword")
 //     }
 
 //     return (
@@ -147,7 +147,7 @@
 
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../../assets/hexalog-logo.png";
 import LogisticIcon from "../../../assets/Logistic.png";
 import financeIcon from "../../../assets/Receive Dollar.png";
@@ -157,10 +157,24 @@ import Arrow from "../../../assets/arrow.png";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Axios } from "../../../config/config";
+
+import rightArrow from "../../../assets/right-Arrow.png";
+
 import toast from "react-hot-toast";
 
 const SuperAdminLogin = () => {
-    const naviagte = useNavigate();
+
+    const navigate = useNavigate();
+    const superadmintoken = localStorage.getItem("superadmin-login-token");
+
+    useEffect(() => {
+        if (superadmintoken) {
+            navigate(-1)
+        }
+    }, [superadmintoken]);
+
+
+
     const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -173,6 +187,7 @@ const SuperAdminLogin = () => {
     const staticUsername = "hexalog@admin.com";
     const staticPassword = "12345678";
 
+
     const handleLogin = async () => {
         if (!username) {
             setErrorMessage('Enter valid email or password');
@@ -182,35 +197,35 @@ const SuperAdminLogin = () => {
             setErrorMessage('Enter valid email or password');
             return;
         }
-        if (username === staticUsername && password === staticPassword) {
-            const formData = {
-                username: username,
-                password: password,
-                login_type: 1,
-                user_type: 1
-            };
+        // if (username === staticUsername && password === staticPassword) {
+        const formData = {
+            username: username,
+            password: password,
+            login_type: 1,
+            user_type: 1
+        };
 
-            try {
-                const res = await Axios.post("/auth/login", formData, {
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                });
-
-                if (res.data.success) {
-                    toast.success(res.data.message);
-                    naviagte("/super-admin/dashboard");
-                    localStorage.setItem("superadmin-login-token", res.data.token);
-                } else {
-                    toast.error(res.data.error);
+        try {
+            const res = await Axios.post("/auth/login", formData, {
+                headers: {
+                    "Content-Type": "application/json"
                 }
-            } catch (err) {
-                console.error("Login-Api++", err);
-                toast.error("Something went wrong, please try again later.");
+            });
+
+            if (res.data.success) {
+                toast.success(res.data.message);
+                navigate("/super-admin/dashboard");
+                localStorage.setItem("superadmin-login-token", res.data.token);
+            } else {
+                toast.error(res.data.error);
             }
-        } else {
-            setErrorMessage('Enter valid email or password');
+        } catch (err) {
+            console.error("Login-Api++", err);
+            toast.error("Something went wrong, please try again later.");
         }
+        // } else {
+        //     setErrorMessage('Enter valid email or password');
+        // }
     };
 
     return (
@@ -333,7 +348,10 @@ const SuperAdminLogin = () => {
                                             <div className="fw-medium feture-text">Global <br /> Network</div>
                                         </div>
                                     </div>
-                                    <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div>
+                                    {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div> */}
+
+                                    <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
+
                                 </div>
                             </div>
                             <div class="col d-flex justify-content-end">
@@ -347,7 +365,10 @@ const SuperAdminLogin = () => {
                                                     type="email"
                                                     placeholder="Enter email"
                                                     value={username}
-                                                    onChange={(e) => setUsername(e.target.value)}
+                                                    onChange={(e) => {
+                                                        setUsername(e.target.value)
+                                                        setErrorMessage("");
+                                                    }}
                                                     required
                                                     className={`form-control custom-input ${errorMessage && !username ? 'input-error' : ''}`}
                                                 />
@@ -359,7 +380,10 @@ const SuperAdminLogin = () => {
                                                     placeholder="Enter password"
                                                     id="password"
                                                     value={password}
-                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    onChange={(e) => {
+                                                        setPassword(e.target.value)
+                                                        setErrorMessage("");
+                                                    }}
                                                     className={`form-control custom-input ${errorMessage && !password ? 'input-error' : ''}`}
                                                 />
                                                 <span
