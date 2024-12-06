@@ -1,14 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserTopBar } from '../../../component/Topbar/Topbar';
+import { useLocation } from 'react-router-dom';
+import { Axios } from '../../../config/config';
+import Avatar from 'react-avatar';
 
-const Profile = () => {
+const initialState = {
+    name: '',
+    lastlogin: '',
+    email: '',
+    phone: '',
+    status: '',
+    verificationStatus: '',
+    individualUser: '',
+    gst_number: '',
+    pan_number: '',
+    account_number: '',
+    ifsc_code: '',
+}
+const UserProfile = () => {
+    const [formData, setFormData] = useState(initialState);
+    const [detailData, setDetailData] = useState({});
+
+    console.log('====================================');
+    console.log("detailData", detailData);
+    console.log('====================================');
+
+    const location = useLocation();
+    const user = location.state?.user;
+
+    const token = localStorage.getItem("superadmin-login-token");
+
+    const getUser = async () => {
+        try {
+            const { data } = await Axios.get(`/users/profile/${user}`, {
+                headers: { "access-token": token },
+            });
+            if (data?.status) {
+                // toast.success(data?.message);
+                setDetailData(data?.user_profile)
+            } else {
+                toast.error(data?.message);
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
+    useEffect(() => {
+        getUser();
+    }, [user])
     return (
         <div>
-            <UserTopBar />
+            <div className='superadmin-user-profile'>
 
-            <div className='user-profile'>
-
-                <h3 className="users-title mt-4 mb-4">My Profile</h3>
+                <h3 className="users-title mt-4 mb-4">User Profile</h3>
 
 
                 <div className="profile-top">
@@ -16,14 +60,20 @@ const Profile = () => {
                         <div className="col-lg-3 col-md-3 col-12">
                             <div className="left">
                                 <div className="d-flex align-items-center">
-                                    <img src="/user.png" alt="" className='img-fluid' />
+                                    {/* <img src="/user.png" alt="" className='img-fluid' /> */}
+                                    <Avatar
+                                        name={detailData ? detailData?.name?.charAt(0).toUpperCase() : ""}
+                                        size="80" round={true}
+                                        fgColor="#FFF"
+                                        className="custom-avatar"
+                                    />
 
                                     <div className='left-space'>
-                                        <h4>Rudra Patel</h4>
-                                        <p>rudrapatel@gmail.com</p>
+                                        <h4>{detailData?.name}</h4>
+                                        <p>{detailData?.email}</p>
                                     </div>
                                 </div>
-                                {/* <div className='image'></div> */}
+                                <div className='image'></div>
                             </div>
                         </div>
                         <div className="col-lg-8 col-md-8 col-12">
@@ -33,7 +83,7 @@ const Profile = () => {
 
                                     <div className='left-space'>
                                         <p className='mb-0'>Mobile Number:</p>
-                                        <p className='mb-0'>+91 12345 67890</p>
+                                        <p className='mb-0'>+91 {detailData.phone}</p>
                                     </div>
                                 </div>
                             </div>
@@ -51,8 +101,8 @@ const Profile = () => {
                                     <label for="username">Your Type:</label>
                                     <input
                                         type="text"
-                                        placeholder="Organization"
-                                        value="Organization"
+                                        placeholder=""
+                                        value=""
                                         className=' mb-3 mb-md-0'
                                         readOnly
                                     />
@@ -61,8 +111,8 @@ const Profile = () => {
                                     <label for="username">Organization Type:</label>
                                     <input
                                         type="text"
-                                        placeholder="Enterprises"
-                                        value="Enterprises"
+                                        placeholder=""
+                                        value=""
                                         className=' mb-3 mb-md-0'
                                         readOnly
                                     />
@@ -71,8 +121,8 @@ const Profile = () => {
                                     <label for="username">Organization Name:</label>
                                     <input
                                         type="text"
-                                        placeholder="Rudra PVT. LTD."
-                                        value="Rudra PVT. LTD."
+                                        placeholder=""
+                                        value=""
                                         className=' mb-3 mb-md-0'
                                         readOnly
                                     />
@@ -82,7 +132,7 @@ const Profile = () => {
                                     <input
                                         type="text"
                                         placeholder="Rudra Patel"
-                                        value="Rudra Patel"
+                                        value={detailData?.name}
                                         className=' mb-3 mb-md-0'
                                         readOnly
                                     />
@@ -92,7 +142,7 @@ const Profile = () => {
                                     <input
                                         type="text"
                                         placeholder="rudrapatel@gmail.com"
-                                        value="rudrapatel@gmail.com"
+                                        value={detailData?.email}
                                         className=' mb-3 mb-md-0'
                                         readOnly
                                     />
@@ -102,7 +152,7 @@ const Profile = () => {
                                     <input
                                         type="text"
                                         placeholder="+91 1 2345 67890"
-                                        value="+91 1 2345 67890"
+                                        value={detailData?.phone}
                                         className=' mb-3 mb-md-0'
                                         readOnly
                                     />
@@ -118,7 +168,7 @@ const Profile = () => {
                                     <input
                                         type="text"
                                         placeholder="24HCWTT5199S4Z4"
-                                        value="24HCWTT5199S4Z4"
+                                        value={detailData?.customerProfile?.gst_number}
                                         className=' mb-3 mb-md-0'
                                         readOnly
                                     />
@@ -128,7 +178,7 @@ const Profile = () => {
                                     <input
                                         type="text"
                                         placeholder="BAJPC4350M"
-                                        value="BAJPC4350M"
+                                        value={detailData?.customerProfile?.pan_number}
                                         className=' mb-3 mb-md-0'
                                         readOnly
                                     />
@@ -137,8 +187,8 @@ const Profile = () => {
                                     <label for="username">Account Number:</label>
                                     <input
                                         type="text"
-                                        placeholder="466715372582"
-                                        value="Account Number"
+                                        placeholder=""
+                                        value={detailData?.customerProfile?.account_number}
                                         className=' mb-3 mb-md-0'
                                         readOnly
                                     />
@@ -147,8 +197,8 @@ const Profile = () => {
                                     <label for="username">IFSC Code:</label>
                                     <input
                                         type="text"
-                                        placeholder="UTBI0DMCC46"
-                                        value="UTBI0DMCC46"
+                                        placeholder=""
+                                        value={detailData?.customerProfile?.ifsc_code}
                                         readOnly
                                     />
                                 </div>
@@ -156,9 +206,10 @@ const Profile = () => {
                                     <label for="username">KYC Status:</label>
                                     <input
                                         type="text"
-                                        placeholder="COMPLETED"
-                                        value="COMPLETED"
-                                        className='status' col-md-3
+                                        placeholder="Completed"
+                                        value={detailData?.verificationStatus}
+                                        // className='pending'
+                                        className={`${detailData?.verificationStatus === "PENDING" ? 'pending' : 'status'}`}
                                         readOnly
                                     />
                                 </div>
@@ -173,4 +224,4 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+export default UserProfile;

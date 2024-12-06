@@ -170,12 +170,9 @@ const Changepassword = () => {
                                     </div>
                                     {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div> */}
                                     <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
-
-
-
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-5" style={{ width: '550px', height: '650px' }} >
+                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center "  >
                                 <div className="right-section" style={{ width: '550px', height: '650px' }} >
                                     <p className="change-password-title">Change Password</p>
                                     <p className="change-password-text ">Enter a new password to change Password!</p>

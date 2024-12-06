@@ -7,11 +7,17 @@ import Arrow from "../../../assets/arrow.png";
 import { useNavigate } from "react-router-dom";
 import { Axios } from "../../../config/config";
 import toast from "react-hot-toast";
+import contacticon from "../../../assets/contact-icon.png";
+import ContactSupport from "../../../component/Modal/contactsupport/ContactSupport";
+
 
 const CreateKYC = () => {
 
     const userRegisterToken = localStorage.getItem('user-register-token');
     const verificationStatus = localStorage.getItem('verificationStatus');
+
+    console.log("userRegisterToken", userRegisterToken);
+
 
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -26,12 +32,25 @@ const CreateKYC = () => {
     const [isGSTVerified, setIGSTVerified] = useState(false);
     const [isPANVerified, setIsPANVerified] = useState(false);
     const [isAccNoVerified, setIsAccNoVerified] = useState(false);
+    const [isShow, setIsShow] = useState(false);
+
+    const handleClose = () => {
+        setIsShow(false);
+    }
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
         setErrorMessage("");
         // validateForm();
+        if (name === "gst_number") {
+            setIGSTVerified(false);
+        } else if (name === "pan_number") {
+            setIsPANVerified(false);
+        } else if (name === "account_number") {
+            setIsAccNoVerified(false);
+        }
     };
 
 
@@ -40,6 +59,13 @@ const CreateKYC = () => {
             setErrorMessage('Please enter gst number');
             return;
         }
+        const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z0-9]{2}$/;
+
+        if (!gstRegex.test(formData.gst_number)) {
+            setErrorMessage('Please enter a valid GST number.');
+            return;
+        }
+
         try {
             const res = await Axios.post("/auth/gst-verify", {
                 gst_number: formData.gst_number
@@ -69,6 +95,12 @@ const CreateKYC = () => {
             setErrorMessage('Please enter pan number');
             return;
         }
+        const gstPanRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+
+        if (!gstPanRegex.test(formData.pan_number)) {
+            setErrorMessage('Please enter a valid PAN number.');
+            return;
+        }
         try {
             const res = await Axios.post("/auth/pan-verify", {
                 pan_number: formData.pan_number
@@ -96,6 +128,12 @@ const CreateKYC = () => {
     const handleAccountVerify = async () => {
         if (formData.account_number.length === 0) {
             setErrorMessage('Please enter account number');
+            return;
+        }
+        const accountNumberRegex = /^[0-9]{11,16}$/;
+
+        if (!accountNumberRegex.test(formData.account_number)) {
+            setErrorMessage('Please enter a valid account number');
             return;
         }
         try {
@@ -139,7 +177,8 @@ const CreateKYC = () => {
         //     setErrorMessage('All fields are required.');
         //     return;
         // }
-        const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9]{1}$/;
+        // const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9]{1}$/;
+        const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z0-9]{2}$/;
         const gstPanRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
         const accountNumberRegex = /^[0-9]{11,16}$/;
         const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
@@ -149,15 +188,15 @@ const CreateKYC = () => {
             return;
         }
         if (!gstRegex.test(formData.gst_number)) {
-            setErrorMessage('Please enter a valid GST number in the format 29GGGGG1314R9Z6');
+            setErrorMessage('Please enter a valid GST number.');
             return;
         }
         if (!formData.pan_number) {
-            setErrorMessage('Please pan number ');
+            setErrorMessage('Please pan number');
             return;
         }
         if (!gstPanRegex.test(formData.pan_number)) {
-            setErrorMessage('Please enter a valid PAN number in the format ABCDE1234N');
+            setErrorMessage('Please enter a valid PAN number.');
             return;
         }
         if (!formData.account_number) {
@@ -203,7 +242,7 @@ const CreateKYC = () => {
                 toast.success(res.data.message);
 
                 localStorage.setItem("verificationStatus", "COMPLETED");
-                
+
                 navigate('/welcome');
                 // localStorage.setItem("UserToken", res.data.token)
             }
@@ -219,21 +258,29 @@ const CreateKYC = () => {
         // navigate('/skipcreatekyc');
     }
 
+    const handleSubmit = () => {
+        setIsShow(false);
+    }
+
     return (
         <>
             <div className="kyc-container">
                 <div className="kyc-bg-two d-flex align-items-center">
                     <div className="container my-5 my-lg-0">
-                        <img src={logo} alt="" />
-                        <div className="row g-lg-5 ps-0 ps-lg-5">
+                        {/* <img src={logo} alt="" /> */}
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <img src={logo} alt="" style={{ paddingTop: '100px' }} />
+                            <img src={contacticon} className="register-cotact-icon" onClick={() => setIsShow(true)} />
+                        </div>
+                        <div className="row g-lg-5 ps-0 ps-lg-5 pt-3">
                             <div className="col-12 col-lg-6 pt-5 ps-5">
                                 <div className="left-section">
                                     <div className="register-title">A digital Freight forwarding  <br /> Aggregation platform</div>
                                     <div className="register-more">Know More </div>
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-5" style={{ width: '550px', height: '650px' }} >
-                                <div className="right-section" style={{ width: '550px', height: '650px' }} >
+                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center"  >
+                                <div className="right-section" style={{ width: '550px', height: '700px' }} >
                                     <p className="register-main-title fw-bold">Create Account</p>
                                     <p className="basic-detail-text">KYC & A/C Details</p>
                                     <form>
@@ -337,8 +384,9 @@ const CreateKYC = () => {
                             </div>
                         </div>
                     </div>
-                </div >
-            </div >
+                </div>
+                <ContactSupport show={isShow} handleClose={handleClose} handleSubmit={handleSubmit} />
+            </div>
         </>
     );
 };

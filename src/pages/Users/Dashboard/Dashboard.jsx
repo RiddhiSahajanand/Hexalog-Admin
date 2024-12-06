@@ -1,18 +1,26 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserTopBar } from '../../../component/Topbar/Topbar';
 import { useNavigate } from 'react-router-dom';
 import Arrow from "../../../assets/arrow.png";
+import close from "../../../assets/close-icon.png";
+
 import { Axios } from '../../../config/config';
 import toast from 'react-hot-toast';
+import Kycmodal from '../../../component/Modal/Kycmodal/Kycmodal';
 
 
 const Dashboard = () => {
+    const [verificationStatusValue, setVerificationStatusValue] = useState('');
 
     const userRegisterToken = localStorage.getItem('user-register-token');
+    const userLoginToken = localStorage.getItem('user-login-token');
     const verificationStatus = localStorage.getItem('verificationStatus');
     console.log(verificationStatus);
 
+    useEffect(() => {
+        setVerificationStatusValue(verificationStatus);
+    }, [])
 
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -27,26 +35,54 @@ const Dashboard = () => {
     const [isGSTVerified, setIGSTVerified] = useState(false);
     const [isPANVerified, setIsPANVerified] = useState(false);
     const [isAccNoVerified, setIsAccNoVerified] = useState(false);
+    const [isShow, setIsShow] = useState(false);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
         setErrorMessage("");
         // validateForm();
+        if (name === "gst_number") {
+            setIGSTVerified(false);
+        } else if (name === "pan_number") {
+            setIsPANVerified(false);
+        } else if (name === "account_number") {
+            setIsAccNoVerified(false);
+        }
     };
-
 
     const handleGSTVerify = async () => {
         if (formData.gst_number.length === 0) {
             setErrorMessage('Please enter gst number');
             return;
         }
+
+        // const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9]{1}$/;
+        const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z0-9]{2}$/;
+
+
+        if (!gstRegex.test(formData.gst_number)) {
+            setErrorMessage('Please enter a valid GST number ');
+            return;
+        }
+
         try {
+            const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
+            console.log("tokenToUse", tokenToUse);
+
+            // If no token is available, handle gracefully
+            if (!tokenToUse) {
+                setErrorMessage('Authorization token not found. Please login again.');
+                navigate("/login");
+                return;
+            }
+
             const res = await Axios.post("/auth/gst-verify", {
                 gst_number: formData.gst_number
             }, {
                 headers: {
-                    "access-token": `${userRegisterToken}`,
+                    "access-token": `${tokenToUse}`,
                     "Content-Type": "application/json"
                 }
             });
@@ -60,14 +96,13 @@ const Dashboard = () => {
             else {
                 setErrorMessage(res.data.error)
             }
-            
+
         } catch (err) {
             console.error("gst-Api++", err);
 
             if (err.response.data.success === false) {
                 // alert(err.response.data.message);
                 toast.error(err.response.data.message);
-
                 navigate("/login");
             }
         }
@@ -78,12 +113,27 @@ const Dashboard = () => {
             setErrorMessage('Please enter pan number');
             return;
         }
+        const gstPanRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+
+        if (!gstPanRegex.test(formData.pan_number)) {
+            setErrorMessage('Please enter a valid PAN number');
+            return;
+        }
         try {
+            const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
+            console.log("tokenToUse", tokenToUse);
+
+            // If no token is available, handle gracefully
+            if (!tokenToUse) {
+                setErrorMessage('Authorization token not found. Please login again.');
+                navigate("/login");
+                return;
+            }
             const res = await Axios.post("/auth/pan-verify", {
                 pan_number: formData.pan_number
             }, {
                 headers: {
-                    "access-token": `${userRegisterToken}`,
+                    "access-token": `${tokenToUse}`,
                     "Content-Type": "application/json"
                 }
             });
@@ -115,13 +165,28 @@ const Dashboard = () => {
             setErrorMessage('Please enter account number');
             return;
         }
+        const accountNumberRegex = /^[0-9]{11,16}$/;
+
+        if (!accountNumberRegex.test(formData.account_number)) {
+            setErrorMessage('Please enter a valid account number');
+            return;
+        }
         try {
+            const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
+            console.log("tokenToUse", tokenToUse);
+
+            // If no token is available, handle gracefully
+            if (!tokenToUse) {
+                setErrorMessage('Authorization token not found. Please login again.');
+                navigate("/login");
+                return;
+            }
             const res = await Axios.post("/auth/account-verify", {
                 account_number: formData.account_number,
                 ifsc_code: formData.ifsc_code
             }, {
                 headers: {
-                    "access-token": `${userRegisterToken}`,
+                    "access-token": `${tokenToUse}`,
                     "Content-Type": "application/json"
                 }
             });
@@ -149,7 +214,8 @@ const Dashboard = () => {
 
     const handleRegister = async () => {
 
-        const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9]{1}$/;
+        // const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9]{1}$/;
+        const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z0-9]{2}$/;
         const gstPanRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
         const accountNumberRegex = /^[0-9]{11,16}$/;
         const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
@@ -159,7 +225,8 @@ const Dashboard = () => {
             return;
         }
         if (!gstRegex.test(formData.gst_number)) {
-            setErrorMessage('Please enter a valid GST number in the format 29GGGGG1314R9Z6');
+            setErrorMessage('Please enter a valid GST number.');
+            // setErrorMessage('Please enter a valid GST number in the format 07AAHCE8532B1ZU');
             return;
         }
         if (!formData.pan_number) {
@@ -167,7 +234,7 @@ const Dashboard = () => {
             return;
         }
         if (!gstPanRegex.test(formData.pan_number)) {
-            setErrorMessage('Please enter a valid PAN number in the format ABCDE1234N');
+            setErrorMessage('Please enter a valid PAN number');
             return;
         }
         if (!formData.account_number) {
@@ -200,10 +267,21 @@ const Dashboard = () => {
         setErrorMessage('');
         localStorage.setItem("adminType", "superadmin");
 
+        const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
+        console.log("tokenToUse", tokenToUse);
+
+        // If no token is available, handle gracefully
+
+        if (!tokenToUse) {
+            setErrorMessage('Authorization token not found. Please login again.');
+            navigate("/login");
+            return;
+        }
         try {
+
             const res = await Axios.post("/auth/complete-profile", formData, {
                 headers: {
-                    "access-token": `${userRegisterToken}`,
+                    "access-token": `${tokenToUse}`,
                     "Content-Type": "application/json"
                 }
             });
@@ -232,118 +310,168 @@ const Dashboard = () => {
         }
     };
 
+    useEffect(() => {
+        { verificationStatusValue === "PENDING" ? setIsShow(true) : setIsShow(false) }
+    }, [verificationStatusValue])
+
+    const handleClose = () => {
+        setVerificationStatusValue("");
+        setIsShow(false);
+    }
+    const handleSubmit = () => {
+
+    }
+
     return (
         <div>
             <UserTopBar />
 
             <div className='d-flex user-dashbord-bg-plan'>
+                <Kycmodal show={isShow} handleClose={handleClose} handleSubmit={handleSubmit} />
 
+                {/* {
+                    verificationStatusValue === "PENDING" ? (
+                        <Kycmodal show={isShow} handleClose={handleClose} handleSubmit={handleSubmit} />
+                        // <div
+                        //     className="d-flex justify-content-center align-items-center px-5"
+                        //     style={{ width: '550px', height: '530px', position: 'relative' }}>
+                        //     <span
+                        //         className="position-absolute"
+                        //         style={{
+                        //             top: '20px',
+                        //             right: '70px',
+                        //             cursor: 'pointer',
+                        //             fontSize: '2px',
+                        //             zIndex: 10,
 
-                {
-                    verificationStatus === "PENDING" ? (
-                        <div className="d-flex justify-content-center align-items-center px-5" style={{ width: '550px', height: '530px' }} >
-                            <div className="right-section" style={{ width: '550px', height: '530px' }} >
-                                <p className="register-main-title fw-bold">Complete Your KYC</p>
-                                <p className="basic-detail-text">KYC & A/C Details</p>
-                                <form>
-                                    <div className="space-y-4">
-                                        <div className="form-group flex-column mb-3 position-relative">
-                                            <input
-                                                type="text"
-                                                name="gst_number"
-                                                placeholder="GST Number"
-                                                value={formData.gst_number}
-                                                onChange={handleChange}
-                                                maxLength={15}
-                                                className={`form-control custom-input ${errorMessage && !formData.gst_number ? 'input-error' : ''}`}
-                                            />
-                                            <span
-                                                className="position-absolute"
-                                                style={{
-                                                    top: '7px', right: '10px',
-                                                    cursor: isGSTVerified ? "auto" : "pointer",
-                                                    backgroundColor: isGSTVerified ? 'green' : '#9261E0',
-                                                    paddingLeft: '20px', paddingRight: '20px', paddingTop: '2px',
-                                                    paddingBottom: '1px', borderRadius: '2px', color: '#fff'
-                                                }}
-                                                onClick={() => !isGSTVerified && handleGSTVerify()}
-                                            >
-                                                {isGSTVerified ? 'Verified' : 'Verify'}
-                                            </span>
-                                        </div>
-                                        <div className="form-group flex-column mb-3 position-relative">
-                                            <input
-                                                type="text"
-                                                name="pan_number"
-                                                placeholder="PAN Number"
-                                                value={formData.pan_number}
-                                                onChange={handleChange}
-                                                maxLength={10}
-                                                className={`form-control custom-input ${errorMessage && !formData.pan_number ? 'input-error' : ''}`}
-                                            />
-                                            <span
-                                                className="position-absolute"
-                                                style={{
-                                                    top: '7px', right: '10px',
-                                                    cursor: isPANVerified ? "auto" : "pointer",
-                                                    backgroundColor: isPANVerified ? 'green' : '#9261E0',
-                                                    paddingLeft: '20px', paddingRight: '20px', paddingTop: '2px',
-                                                    paddingBottom: '1px', borderRadius: '2px', color: '#fff'
-                                                }}
-                                                onClick={() => !isPANVerified && handlePANVerify()}
-                                            >
-                                                {isPANVerified ? 'Verified' : 'Verify'}
-                                            </span>
-                                        </div>
-                                        <div className="form-group flex-column mb-3 position-relative">
-                                            <input
-                                                type="text"
-                                                name="account_number"
-                                                placeholder="Account Number"
-                                                value={formData.account_number}
-                                                onChange={handleChange}
-                                                maxLength={17}
-                                                className={`form-control custom-input ${errorMessage && !formData.account_number ? 'input-error' : ''}`}
-                                            />
-                                            <span
-                                                className="position-absolute"
-                                                style={{
-                                                    top: '7px', right: '10px',
-                                                    cursor: isAccNoVerified ? "auto" : "pointer",
-                                                    backgroundColor: isAccNoVerified ? 'green' : '#9261E0',
-                                                    paddingLeft: '20px', paddingRight: '20px', paddingTop: '2px',
-                                                    paddingBottom: '1px', borderRadius: '2px', color: '#fff'
-                                                }}
-                                                onClick={() => !isAccNoVerified && handleAccountVerify()}
-                                            >
-                                                {isAccNoVerified ? 'Verified' : 'Verify'}
-                                            </span>
-                                        </div>
-                                        <div className="form-group">
-                                            <input
-                                                type="text"
-                                                name="ifsc_code"
-                                                placeholder="IFSC Code"
-                                                value={formData.ifsc_code}
-                                                maxLength={11}
-                                                className={`form-control custom-input ${errorMessage && !formData.ifsc_code ? 'input-error' : ''}`}
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        {errorMessage && (
-                                            <p className="text-center" style={{ color: '#F62D2D' }}>{errorMessage}</p>
-                                        )}
-                                        <a className={`signup mb-4`} onClick={handleRegister}>Save</a>
-                                        {/* <div className="border"></div> */}
-                                        {/* <div className="login-btn" onClick={handleRegister}>Next</div> */}
+                        //         }}
+                        //         onClick={handleClose}
+                        //     >
+                        //         <img src={close} style={{ height: 20, width: 20 }} />
+                        //     </span>
 
-                                        {/* <a className="forgot-password" onClick={handleSkip} >{`Skip and Continue later `}<img src={Arrow} alt=""
-                                        style={{ width: '10px' }} />
-                                    </a> */}
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        //     <div
+                        //         className="dashboard-right-section"
+                        //         style={{ width: '550px', height: '530px' }}
+                        //     >
+                        //         <p className="register-main-title fw-bold">Complete Your KYC</p>
+                        //         <p className="basic-detail-text">KYC & A/C Details</p>
+                        //         <form>
+                        //             <div className="space-y-4">
+                        //                 <div className="form-group flex-column mb-3 position-relative">
+                        //                     <input
+                        //                         type="text"
+                        //                         name="gst_number"
+                        //                         placeholder="GST Number"
+                        //                         value={formData.gst_number}
+                        //                         onChange={handleChange}
+                        //                         maxLength={15}
+                        //                         className={`form-control custom-input ${errorMessage && !formData.gst_number ? 'input-error' : ''
+                        //                             }`}
+                        //                     />
+                        //                     <span
+                        //                         className="position-absolute"
+                        //                         style={{
+                        //                             top: '7px',
+                        //                             right: '10px',
+                        //                             cursor: isGSTVerified ? 'auto' : 'pointer',
+                        //                             backgroundColor: isGSTVerified ? 'green' : '#9261E0',
+                        //                             paddingLeft: '20px',
+                        //                             paddingRight: '20px',
+                        //                             paddingTop: '2px',
+                        //                             paddingBottom: '1px',
+                        //                             borderRadius: '2px',
+                        //                             color: '#fff',
+                        //                         }}
+                        //                         onClick={() => !isGSTVerified && handleGSTVerify()}
+                        //                     >
+                        //                         {isGSTVerified ? 'Verified' : 'Verify'}
+                        //                     </span>
+                        //                 </div>
+                        //                 <div className="form-group flex-column mb-3 position-relative">
+                        //                     <input
+                        //                         type="text"
+                        //                         name="pan_number"
+                        //                         placeholder="PAN Number"
+                        //                         value={formData.pan_number}
+                        //                         onChange={handleChange}
+                        //                         maxLength={10}
+                        //                         className={`form-control custom-input ${errorMessage && !formData.pan_number ? 'input-error' : ''
+                        //                             }`}
+                        //                     />
+                        //                     <span
+                        //                         className="position-absolute"
+                        //                         style={{
+                        //                             top: '7px',
+                        //                             right: '10px',
+                        //                             cursor: isPANVerified ? 'auto' : 'pointer',
+                        //                             backgroundColor: isPANVerified ? 'green' : '#9261E0',
+                        //                             paddingLeft: '20px',
+                        //                             paddingRight: '20px',
+                        //                             paddingTop: '2px',
+                        //                             paddingBottom: '1px',
+                        //                             borderRadius: '2px',
+                        //                             color: '#fff',
+                        //                         }}
+                        //                         onClick={() => !isPANVerified && handlePANVerify()}
+                        //                     >
+                        //                         {isPANVerified ? 'Verified' : 'Verify'}
+                        //                     </span>
+                        //                 </div>
+                        //                 <div className="form-group flex-column mb-3 position-relative">
+                        //                     <input
+                        //                         type="text"
+                        //                         name="account_number"
+                        //                         placeholder="Account Number"
+                        //                         value={formData.account_number}
+                        //                         onChange={handleChange}
+                        //                         maxLength={17}
+                        //                         className={`form-control custom-input ${errorMessage && !formData.account_number ? 'input-error' : ''
+                        //                             }`}
+                        //                     />
+                        //                     <span
+                        //                         className="position-absolute"
+                        //                         style={{
+                        //                             top: '7px',
+                        //                             right: '10px',
+                        //                             cursor: isAccNoVerified ? 'auto' : 'pointer',
+                        //                             backgroundColor: isAccNoVerified ? 'green' : '#9261E0',
+                        //                             paddingLeft: '20px',
+                        //                             paddingRight: '20px',
+                        //                             paddingTop: '2px',
+                        //                             paddingBottom: '1px',
+                        //                             borderRadius: '2px',
+                        //                             color: '#fff',
+                        //                         }}
+                        //                         onClick={() => !isAccNoVerified && handleAccountVerify()}
+                        //                     >
+                        //                         {isAccNoVerified ? 'Verified' : 'Verify'}
+                        //                     </span>
+                        //                 </div>
+                        //                 <div className="form-group">
+                        //                     <input
+                        //                         type="text"
+                        //                         name="ifsc_code"
+                        //                         placeholder="IFSC Code"
+                        //                         value={formData.ifsc_code}
+                        //                         maxLength={11}
+                        //                         className={`form-control custom-input ${errorMessage && !formData.ifsc_code ? 'input-error' : ''
+                        //                             }`}
+                        //                         onChange={handleChange}
+                        //                     />
+                        //                 </div>
+                        //                 {errorMessage && (
+                        //                     <p className="text-center" style={{ color: '#F62D2D' }}>
+                        //                         {errorMessage}
+                        //                     </p>
+                        //                 )}
+                        //                 <a className={`signup mb-4`} onClick={handleRegister}>
+                        //                     Save
+                        //                 </a>
+                        //             </div>
+                        //         </form>
+                        //     </div>
+                        // </div>
                     ) : (
                         <div>
 
@@ -351,11 +479,10 @@ const Dashboard = () => {
                         // <div className="d-flex justify-content-center">
                         //     <div>
                         //         <p className="welcome-title">Welcome!!</p>
-                        //         {/* <div className="explore-btn" >Explore Platform</div> */}
                         //     </div>
                         // </div>
-                    )
-                }
+    )
+} */}
 
 
 

@@ -11,6 +11,9 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Axios } from "../../../config/config";
 import toast from "react-hot-toast";
 import rightArrow from "../../../assets/right-Arrow.png";
+import contacticon from "../../../assets/contact-icon.png";
+import ContactSupport from "../../../component/Modal/contactsupport/ContactSupport";
+import ScheduleDemo from "../../../component/Modal/scheduledemo/ScheduleDemo";
 
 const Createpassword = () => {
 
@@ -22,10 +25,17 @@ const Createpassword = () => {
     const [rePassword, setRePassword] = useState(''); // State for re-entered password
 
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
+    const [isShow, setIsShow] = useState(false);
+    const [isShowSheduleModal, setShowSheduleModal] = useState(false);
 
     const typeValue = localStorage.getItem('loginType');
     const loginValue = localStorage.getItem('loginValue');
 
+    const handleClose = () => {
+        setIsShow(false);
+        setShowSheduleModal(false);
+
+    }
 
     // Function to toggle password visibility for New Password field
     const togglePasswordVisibility = () => {
@@ -89,13 +99,22 @@ const Createpassword = () => {
         // navigate('/some-page');
     };
 
+    const handleConatctSubmit = () => {
+        setIsShow(false);
+    }
+    const handleScheduleDemo = () => {
+        setShowSheduleModal(false);
+    }
     return (
         <>
             <div className="login-container">
                 <div className="bg-two d-flex align-items-center">
                     <div className="container my-5 my-lg-0">
-                        <img src={logo} alt="" />
-                        <div className="row g-lg-5 ps-0 ps-lg-5">
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <img src={logo} alt="" />
+                            <img src={contacticon} className="cotact-icon" onClick={() => setIsShow(true)} />
+                        </div>
+                        <div className="row g-lg-5 ps-0 ps-lg-5 pt-3">
                             <div className="col-12 col-lg-6 pt-5 ps-5">
                                 <div className="left-section">
                                     <div className="tagline">AMPLIFYING BUSINESS</div>
@@ -128,11 +147,11 @@ const Createpassword = () => {
                                         </div>
                                     </div>
                                     {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div> */}
-                                    <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
+                                    <div className="explore-btn" onClick={() => setShowSheduleModal(true)}>Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
 
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-5" style={{ width: '550px', height: '650px' }} >
+                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center" >
                                 <div className="right-section" style={{ width: '550px', height: '650px' }} >
                                     <p className="create-password-title">Create Password</p>
                                     <p className="create-password-text ">Enter a new password to log in to your account!</p>
@@ -194,6 +213,9 @@ const Createpassword = () => {
                         </div>
                     </div>
                 </div>
+                <ContactSupport show={isShow} handleClose={handleClose} handleSubmit={handleConatctSubmit} />
+                <ScheduleDemo show={isShowSheduleModal} handleClose={handleClose} handleSubmit={handleScheduleDemo} />
+
             </div>
         </>
     )

@@ -11,16 +11,18 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import FontAwesome icons
 import { Axios } from "../../../config/config";
 import rightArrow from "../../../assets/right-Arrow.png";
-
+import contacticon from "../../../assets/contact-icon.png";
 import toast from "react-hot-toast";
+import ContactSupport from "../../../component/Modal/contactsupport/ContactSupport";
+import ScheduleDemo from "../../../component/Modal/scheduledemo/ScheduleDemo";
 
 
 const Login = () => {
 
     const naviagte = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
-    // const [username, setUsername] = useState(''); // State for username
-    // const [password, setPassword] = useState(''); // State for password
+    const [isShow, setIsShow] = useState(false);
+    const [isShowSheduleModal, setShowSheduleModal] = useState(false);
 
     const [formData, setFormData] = useState({
         username: "",
@@ -28,7 +30,6 @@ const Login = () => {
         login_type: 1,
         user_type: 3
     })
-
     const [errorMessage, setErrorMessage] = useState(''); // State for error message
 
     // Function to toggle password visibility
@@ -36,6 +37,10 @@ const Login = () => {
         setShowPassword(!showPassword);
     };
 
+    const handleClose = () => {
+        setIsShow(false);
+        setShowSheduleModal(false);
+    }
 
     const staticUsername = "test@gmail.com";
     const staticPassword = "1234";
@@ -120,10 +125,17 @@ const Login = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
+                console.log('====================================');
+                console.log("res.data", res.data.user.email); name
+                console.log('====================================');
                 naviagte("/dashboard");
                 localStorage.setItem("userId", res?.data?.user?.id);
                 localStorage.setItem("user-login-token", res.data.token);
                 localStorage.setItem("verificationStatus", res.data.user.verificationStatus);
+                localStorage.setItem("username", res.data.user.name);
+                localStorage.setItem("email", res.data.user.email)
+
+
             } else {
                 toast.error(res.data.error);
             }
@@ -140,13 +152,22 @@ const Login = () => {
     const handleSignup = () => {
         naviagte("/register")
     }
+    const handleSubmit = () => {
+        setIsShow(false);
+    }
+    const handleScheduleDemo = () => {
+        setShowSheduleModal(false);
+    }
     return (
         <>
             <div className="login-container">
                 <div className="bg-two d-flex align-items-center">
                     <div className="container my-5 my-lg-0">
-                        <img src={logo} alt="" />
-                        <div className="row g-lg-5 ps-0 ps-lg-5">
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <img src={logo} alt="" />
+                            <img src={contacticon} className="cotact-icon" onClick={() => setIsShow(true)} />
+                        </div>
+                        <div className="row g-lg-5 ps-0 ps-lg-5 pt-3">
                             <div className="col-12 col-lg-6 pt-5 ps-5">
                                 <div className="left-section">
                                     <div className="tagline">AMPLIFYING BUSINESS</div>
@@ -179,66 +200,65 @@ const Login = () => {
                                     </div>
                                     {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt=""
                                         style={{ width: '10px' }} /></div> */}
-
-                <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
-
-
-
+                                    <div className="explore-btn" onClick={() => setShowSheduleModal(true)} >Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-5" style={{ width: '500px', height: '650px' }} >
-                                <div className="right-section" style={{ width: '500px', height: '650px' }} >
-                                    <h2 className="fw-bold">Welcome!</h2>
-                                    <form>
-                                        <div className="form-group">
-                                            <label for="username">Username</label>
-                                            <input
-                                                type="text"
-                                                placeholder="Enter your username"
-                                                id="username"
-                                                name="username"
-                                                value={formData.username}
-                                                onChange={handleChange}
-                                                className={`form-control custom-input ${errorMessage && !formData.username ? 'input-error' : ''}`}
-                                            />
-                                        </div>
-                                        <div className="d-flex form-group flex-column mb-3 position-relative">
-                                            <label htmlFor="password" className="mb-1 label">Password</label>
-                                            <input
-                                                type={showPassword ? "text" : "password"}
-                                                className={`form-control custom-input ${errorMessage && !formData.password ? 'input-error' : ''}`}
-                                                placeholder="Enter password"
-                                                id="password"
-                                                name="password"
-                                                value={formData.password} // Bind password state
-                                                onChange={handleChange} // Update password state
-                                                maxLength={8}
-                                            />
-                                            <span
-                                                onClick={togglePasswordVisibility}
-                                                className="position-absolute"
-                                                style={{ top: '35px', right: '10px', cursor: 'pointer' }}
-                                            >
-                                                {showPassword ? <FaEyeSlash /> : <FaEye />}
-                                            </span>
-                                        </div>
-                                        {errorMessage && (
-                                            <p className="text-center" style={{ color: '#F62D2D' }}>{errorMessage}</p> // Display error message
-                                        )}
-                                        <div className="login-btn" onClick={handleLogin}>Login</div>
+                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center "   >
+                                <div>
+                                    <div className="right-section" style={{ width: '450px', height: '650px' }} >
+                                        <h2 className="fw-bold">Welcome!</h2>
+                                        <form>
+                                            <div className="form-group">
+                                                <label for="username">Username</label>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Enter your username"
+                                                    id="username"
+                                                    name="username"
+                                                    value={formData.username}
+                                                    onChange={handleChange}
+                                                    className={`form-control custom-input ${errorMessage && !formData.username ? 'input-error' : ''}`}
+                                                />
+                                            </div>
+                                            <div className="d-flex form-group flex-column mb-3 position-relative">
+                                                <label htmlFor="password" className="mb-1 label">Password</label>
+                                                <input
+                                                    type={showPassword ? "text" : "password"}
+                                                    className={`form-control custom-input ${errorMessage && !formData.password ? 'input-error' : ''}`}
+                                                    placeholder="Enter password"
+                                                    id="password"
+                                                    name="password"
+                                                    value={formData.password}
+                                                    onChange={handleChange}
+                                                    maxLength={8}
+                                                />
+                                                <span
+                                                    onClick={togglePasswordVisibility}
+                                                    className="position-absolute"
+                                                    style={{ top: '35px', right: '10px', cursor: 'pointer' }}>
+                                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                                </span>
+                                            </div>
+                                            {errorMessage && (
+                                                <p className="text-center" style={{ color: '#F62D2D' }}>{errorMessage}</p> // Display error message
+                                            )}
+                                            <div className="login-btn" onClick={handleLogin}>Login</div>
 
-                                        <a className="forgot-password" onClick={handleForgottpssword}>Forgot password?</a>
+                                            <a className="forgot-password" onClick={handleForgottpssword}>Forgot password?</a>
 
-                                        <div className="my-5  border-custom"></div>
+                                            <div className="my-5 border-custom"></div>
 
-                                        <a className="signup" onClick={handleSignup}>Signup</a>
-                                    </form>
+                                            <a className="signup" onClick={handleSignup}>Signup</a>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div >
-            </div >
+                </div>
+                <ContactSupport show={isShow} handleClose={handleClose} handleSubmit={handleSubmit} />
+                <ScheduleDemo show={isShowSheduleModal} handleClose={handleClose} handleSubmit={handleScheduleDemo} />
+            </div>
         </>
     )
 }

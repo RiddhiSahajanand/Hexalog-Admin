@@ -18,6 +18,7 @@ import Register from './src/pages/Users/Register/Register';
 import CreateKYC from './src/pages/Users/CreateKYC/CreateKYC';
 import Changepassword from './src/pages/Users/Changepassword/Changepassword';
 import Profile from './src/pages/Users/Profile/Profile';
+import UserProfile from './src/pages/SuperAdmin/UserProfile/UserProfile';
 // import SkipKyc from './src/pages/Users/SkipKyc/SkipKyc';
 
 
@@ -33,23 +34,20 @@ const AppRoutes = () => {
                 <Route path='/super-admin/dashboard' element={<SuperAdminDashboard />} />
                 <Route path='/super-admin/users' element={<SuperAdminUsers />} />
                 <Route path='/super-admin/roles' element={<SuperAdminRoles />} />
+                <Route path='/user-profile' element={<UserProfile />} />
             </Route>
 
             {/* Users  */}
             <Route path='/register' element={<Register />} />
             <Route path='/createkyc' element={<CreateKYC />} />
-
             <Route path="/login" element={<Login />} />
             <Route path='/ForgottPassword' element={<Forgotpassword />} />
             <Route path='/OtpVerification' element={<LoginOTP />} />
             <Route path='/createPassword' element={<Createpassword />} />
-
             <Route path='/welcome' element={<Welcomepage />} />
 
             <Route element={<UserLayout />}>
                 <Route path='/changePassword' element={<Changepassword />} />
-
-                {/* <Route path='/skipcreatekyc' element={<SkipKyc />} /> */}
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<Profile />} />
             </Route>

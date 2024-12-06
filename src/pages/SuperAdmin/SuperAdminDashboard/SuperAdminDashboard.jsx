@@ -1,11 +1,22 @@
 
+import { useNavigate } from "react-router-dom";
 import Dashboard1 from "../../../assets/dashboard-1.png";
 import Dashboard2 from "../../../assets/dashboard-2.png";
 import Dashboard3 from "../../../assets/dashboard-3.png";
 import bgRectangle from "../../../assets/Rectangle 12.png";
 
 const SuperAdminDashboard = () => {
+    const navigate = useNavigate();
 
+    const handleCardOne = () => {
+        navigate("/super-admin/users")
+    }
+    const handleCardTwo = () => {
+        // navigate("/super-admin/users")
+    }
+    const handleCardThree = () => {
+        navigate("/super-admin/users", { state: { selectedOption: "1" } });
+    }
     return (
         <div>
             <div className="d-flex dashbord-bg-plan">
@@ -28,7 +39,7 @@ const SuperAdminDashboard = () => {
                                 </div>
                             </div>
                         </div> */}
-                        <div style={{ maxWidth: '300px' }}>
+                        <div style={{ maxWidth: '300px', cursor: 'pointer' }} onClick={handleCardOne}>
                             <div className="card shadow-sm p-3 bg-white rounded text-center custom-card">
 
                                 <div className="striped-bg " style={{ backgroundImage: `url(${bgRectangle})`, position: 'relative' }}></div>
@@ -47,7 +58,7 @@ const SuperAdminDashboard = () => {
                         </div>
 
                         {/* Card 2 */}
-                        <div style={{ maxWidth: '300px' }}>
+                        <div style={{ maxWidth: '300px', cursor: 'pointer' }} onClick={handleCardTwo}>
                             <div className="card shadow-sm p-3 bg-white rounded text-center custom-card">
 
                                 <div className="striped-bg " style={{ backgroundImage: `url(${bgRectangle})`, position: 'relative' }}></div>
@@ -66,7 +77,7 @@ const SuperAdminDashboard = () => {
                         </div>
 
                         {/* Card 3 */}
-                        <div style={{ maxWidth: '300px' }}>
+                        <div style={{ maxWidth: '300px', cursor: 'pointer' }} onClick={handleCardThree}>
                             <div className="card shadow-sm p-3 bg-white rounded text-center custom-card">
 
                                 <div className="striped-bg " style={{ backgroundImage: `url(${bgRectangle})`, position: 'relative' }}></div>

@@ -12,9 +12,12 @@ import { Dropdown, Form } from "react-bootstrap";
 import DeleteModal from "../../../component/Modal/delete/DeleteModal";
 import toast from "react-hot-toast";
 import ViewUser from "../../../component/offcanvas/Users/ViewUser";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SuperAdminUsers = () => {
+    const location = useLocation();
+    console.log("location", location.state);
+
     const navigate = useNavigate();
     const [usersData, setUsersData] = useState([]);
     const [search, SetSearch] = useState("");
@@ -25,7 +28,9 @@ const SuperAdminUsers = () => {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = 10;
-    const [selectedOption, setSelectedOption] = useState("defalut");
+    const [selectedOption, setSelectedOption] = useState(
+        location.state?.selectedOption === "1" ? "1" : "default"// Use "1" as the default if null or undefined
+    );
     const [deleteShow, setDeleteShow] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
     const [detailShow, setDetailShow] = useState(false);
@@ -155,13 +160,17 @@ const SuperAdminUsers = () => {
         }
     };
 
+    const handleViewProfile = (row) => {
+        navigate('/user-profile', { state: { user: row.id } });
+    };
+
 
     const columns = [
         { name: '', selector: (_, index) => <img src={Checkboxicn} />, width: '100px' },
-        { name: 'ID', selector: (_, index) => index + 1 },
-        { name: 'Name', selector: row => row.name, width: '200px', sortable: true, },
-        { name: 'Email', selector: row => row.email, width: '300px', sortable: true, },
-        { name: 'Mobile Number', selector: row => row.phone, width: '300px', sortable: true, },
+        { name: 'ID', selector: (_, index) => index + 1, width: '100px' },
+        { name: 'Name', selector: row => row.name, sortable: true, width: '200px' },
+        { name: 'Email', selector: row => row.email, sortable: true, width: '300px' },
+        { name: 'Mobile Number', selector: row => row.phone, sortable: true, width: '200px' },
         {
             name: 'Last Login', selector: row => {
                 const date = new Date(row.lastLoginAt);
@@ -169,7 +178,7 @@ const SuperAdminUsers = () => {
                 const time = date.toTimeString().split(' ')[0];
                 return `${formattedDate} ${time}`;
             },
-            width: '200px', sortable: true,
+            width: '250px', sortable: true,
         },
         {
             name: 'Actions',
@@ -183,18 +192,15 @@ const SuperAdminUsers = () => {
                                 checked={row.status === "ACTIVE"}
                                 onChange={() => handleStatusChange(row.id, row.status)}
                             />
+                            <i class="bi bi-eye-fill" style={{ fontSize: '1.3rem', color: '#484141', cursor: 'pointer' }}
+                                onClick={() => handleViewProfile(row)}
+                            >
+                            </i>
                             <img src={Deleteicon} alt="" style={{ height: '1.3rem', cursor: 'pointer' }}
                                 onClick={() => {
                                     setDeleteShow(true);
                                     setDeleteId(row.id);
                                 }} />
-                            <i class="bi bi-eye-fill" style={{ fontSize: '1.3rem', color: '#484141', cursor: 'pointer' }}
-                                onClick={() => {
-                                    setDetailShow(true);
-                                    // setDetailId(row.id)
-                                    handleView(row.id)
-                                }}>
-                            </i>
                         </div>
                     </div>
                 </>

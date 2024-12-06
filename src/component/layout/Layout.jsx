@@ -5,8 +5,8 @@ import { useEffect } from "react";
 
 export function SuperAdminLayout({ isToogle, setIsToogle }) {
 
-    const navigate= useNavigate();
-    const superadmintoken = localStorage.getItem("superadmin-login-token");    
+    const navigate = useNavigate();
+    const superadmintoken = localStorage.getItem("superadmin-login-token");
 
     useEffect(() => {
         if (!superadmintoken) {
@@ -37,9 +37,12 @@ export function UserLayout({ isToogle, setIsToogle }) {
     const navigate = useNavigate();
 
     const userlogintoken = localStorage.getItem("user-login-token");
+    const userregistertoken = localStorage.getItem("user-register-token");
+
 
     useEffect(() => {
-        if (!userlogintoken) {
+        if (!userlogintoken && !userregistertoken) {
+            console.log("sfsdbfhsdvfsghdfv");
             navigate("/login");
         }
     }, [userlogintoken])

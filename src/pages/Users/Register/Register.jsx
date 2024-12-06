@@ -6,12 +6,17 @@ import logo from "../../../assets/hexalog-logo.png";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import FontAwesome icons
 import { Axios } from "../../../config/config";
+import contacticon from "../../../assets/contact-icon.png";
+
 import toast from "react-hot-toast";
+import ContactSupport from "../../../component/Modal/contactsupport/ContactSupport";
 
 const Register = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [showRePassword, setShowRePassword] = useState(false); // For re-enter password visibility toggle
+    const [isShow, setIsShow] = useState(false);
+
     const [formData, setFormData] = useState({
         type: '',
         organization_type: '',
@@ -46,12 +51,22 @@ const Register = () => {
         setShowRePassword(!showRePassword);
     };
 
+    const handleClose = () => {
+        setIsShow(false);
+    }
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
         validateForm();
         setErrorMessage("");
+
+        if (name === "email") {
+            setIsEmailVerified(false);
+        } else if (name === "mobile") {
+            setIsMobileVerified(false);
+        }
     };
 
     const validateForm = () => {
@@ -273,6 +288,8 @@ const Register = () => {
             }
             else {
                 toast.error(res.data.error);
+                setIsMobileVerified(false);
+                setIsEmailVerified(false);
             }
         } catch (err) {
             console.error("Register-Api++", res);
@@ -280,6 +297,9 @@ const Register = () => {
         setErrorMessage('');
     };
 
+    const handleSubmit = () => {
+        setIsShow(false);
+    }
 
     return (
         <>
@@ -294,18 +314,20 @@ const Register = () => {
                                 <img src={logo} alt="" /> */}
             <div className="register-container">
                 <div className="register-bg-two d-flex align-items-center">
-                    <div className="container my-5">
-                        {/* <div className="logo-view"> */}
-                        <img src={logo} alt="" style={{ paddingTop: '100px' }} />
-                        {/* </div> */}
-                        <div className="row g-lg-5 ps-0 ps-lg-5">
+                    <div className="container " style={{ marginTop: '50px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <img src={logo} alt="" style={{ paddingTop: '100px' }} />
+                            <img src={contacticon} className="register-cotact-icon" onClick={() => setIsShow(true)} />
+                        </div>
+                        {/* <img src={logo} alt="" style={{ paddingTop: '100px' }} /> */}
+                        <div className="row g-lg-5 ps-0 ps-lg-5 pt-5">
                             <div className="col-12 col-lg-6 pt-5 ps-5">
                                 <div className="left-section ">
                                     <div className="register-title mt-4">An End-to-End Digital freight forwarding <br /> aggregation suite with core focus on CAAS..... </div>
                                     <div className="register-more">Know More </div>
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center px-3 px-lg-5" style={{ width: '550px', height: '850px', marginTop: '20px' }} >
+                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center " style={{ marginTop: '20px' }} >
                                 <div className="right-section" style={{ width: '550px', height: '850px' }} >
                                     <p className="register-main-title fw-bold">Create Account</p>
                                     <p className="basic-detail-text">Basic Details</p>
@@ -525,8 +547,9 @@ const Register = () => {
                         </div>
                     </div>
                 )}
+                <ContactSupport show={isShow} handleClose={handleClose} handleSubmit={handleSubmit} />
 
-            </div >
+            </div>
 
         </>
     );

@@ -33,6 +33,22 @@ body {
     background-size: 60%;
 }
 
+@media (max-width:512px) {
+    .login-container {
+        font-family: "Montserrat";
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 100%;
+        background-color: #fff;
+        padding: 0px 0 40px 0;
+        background-image: url(./assets/login-bg-1.png);
+        background-repeat: no-repeat;
+        background-position: bottom left;
+        background-size: 100%;
+    }
+}
+
 .bg-two {
     width: 100%;
     min-height: 95vh;
@@ -41,6 +57,79 @@ body {
     background-position: top right;
     background-size: 10%;
 }
+
+.cotact-icon {
+    height: 56px;
+    width: 56px;
+    margin-top: 12px;
+    margin-right: -25px;
+    cursor: pointer;
+}
+
+
+
+@media (max-width:1600px) {
+    .cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 12px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+}
+
+@media (max-width:1499px) {
+    .cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 12px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+}
+
+@media (max-width:1399px) {
+    .cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 12px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+}
+
+
+
+@media (max-width:1300px) {
+    .cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 12px;
+        margin-right: -18px;
+        cursor: pointer;
+    }
+}
+
+@media (max-width:1200px) {
+    .cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 12px;
+        margin-right: -35px;
+        cursor: pointer;
+    }
+}
+
+@media (max-width:512px) {
+    .cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 12px;
+        margin-right: -40px;
+        cursor: pointer;
+    }
+}
+
 
 .login-form-view {
     margin-top: 20px;
@@ -56,6 +145,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-left: 10px;
 }
 
 .logo {
@@ -101,11 +191,93 @@ body {
     margin-left: 40px;
 }
 
+
+
 .right-section {
     background-color: #F7F2FF;
     border-radius: 20px;
     padding: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 9rem !important;
+}
+
+.super-right-section {
+    background-color: #F7F2FF;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-left: 3rem !important;
+
+}
+
+.dashboard-right-section {
+    background-color: #F7F2FF;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+    /* margin-left: 9rem !important; */
+}
+
+@media (max-width:1600px) {
+    .right-section {
+        background-color: #F7F2FF;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-left: 4rem !important;
+    }
+}
+
+@media (max-width:1400px) {
+    .right-section {
+        background-color: #F7F2FF;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-left: 2rem !important;
+    }
+}
+
+
+@media (max-width:1300px) {
+    .right-section {
+        background-color: #F7F2FF;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-left: 4rem !important;
+    }
+}
+
+
+@media (max-width:1200px) {
+    .right-section {
+        background-color: #F7F2FF;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-left: 4.8rem !important;
+    }
+}
+
+@media (max-width:512px) {
+    .right-section {
+        background-color: #F7F2FF;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-left: 1rem !important;
+        margin-right: 1rem !important;
+        margin-top: 30px;
+    }
+
+    .super-right-section {
+        background-color: #F7F2FF;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-left: 6rem !important;
+    }
 }
 
 .right-section h2 {
@@ -113,6 +285,14 @@ body {
     color: #442A59;
     text-align: center;
     margin-top: 20px;
+}
+
+.super-right-section h2 {
+    margin-bottom: 60px;
+    color: #442A59;
+    text-align: center;
+    margin-top: 20px;
+
 }
 
 .form-group {
@@ -381,7 +561,7 @@ body {
 }
 
 /* .logo-view { */
-    /* padding-top: 80px; */
+/* padding-top: 80px; */
 /* } */
 
 .kyc-container {
@@ -458,7 +638,7 @@ body {
     background-color: #442A59;
     border-radius: 4px;
     color: #fff;
-    width: 300px;
+    width: 250px;
     padding: 10px;
     display: flex;
     justify-content: center;
@@ -467,6 +647,20 @@ body {
     /* margin-top: 30px; */
     font-weight: 600;
 }
+
+.dummy-explore-btn {
+    background-color: transparent;
+    border-radius: 4px;
+    color: #fff;
+    width: 300px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    /* margin-top: 30px; */
+    font-weight: 600;
+}
+
 
 @media (max-width:512px) {
 
@@ -587,6 +781,7 @@ body {
 .email-label {
     color: #AAA;
     font-size: 16px;
+    font-weight: 500;
 }
 
 .rectangle {
@@ -1229,6 +1424,14 @@ body {
     background-color: #F8F8F8;
 }
 
+.superadmin-user-profile {
+    padding-left: 0px;
+    padding-right: 40px;
+    padding-bottom: 30px;
+    background-color: #F8F8F8;
+
+}
+
 .profile-top,
 .profile-bottom {
     border: 1px solid rgba(193, 193, 193, 1);
@@ -1247,7 +1450,7 @@ body {
 .left::after {
     content: "";
     position: absolute;
-    background-image: url('./public/line.png');
+    /* background-image: url('./public/line.png'); */
     width: 1px;
     height: 100%;
     top: 0;
@@ -1259,6 +1462,7 @@ body {
         right: -105px;
     }
 }
+
 @media (max-width: 1599px) {
     .left::after {
         right: -105px;
@@ -1319,7 +1523,7 @@ body {
 
 
 .right {
-    padding-left: 200px;
+    padding-left: 100px;
 }
 
 
@@ -1365,6 +1569,28 @@ body {
 .profile-bottom form .form-group input.status {
     border: 1px solid #19A42E;
     color: #19A42E;
+    text-transform: uppercase;
+}
+
+.profile-bottom form .form-group input.pending {
+    border: 1px solid #e1c618;
+    color: #e1c618;
+    text-transform: uppercase;
+
+}
+
+@media (max-width: 1300px) {
+    .profile-bottom form .form-group label {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 19.6px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        color: rgba(63, 63, 63, 1);
+        width: 30%;
+        padding-right: 20px;
+    }
 }
 
 
@@ -1426,6 +1652,139 @@ body {
 
     .right .left-space {
         padding-left: 20px;
+    }
+
+    .superadmin-user-profile {
+        padding-left: 20px;
+        padding-right: 40px;
+        padding-bottom: 30px;
+        background-color: #F8F8F8;
 
     }
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: var(--bs-modal-color);
+    pointer-events: auto;
+    background-color: var(--bs-modal-bg);
+    background-clip: padding-box;
+    border: none;
+    border-radius: 27px;
+    outline: 0;
+}
+
+.custom-modal {
+    background-color: transparent !important;
+    overflow: hidden;
+    /* border-radius: 120px; */
+}
+
+.custom-modal .modal-header {
+    background-color: #F7F2FF !important;
+    border-bottom: none !important;
+    /* border-radius: 20px 20px 0 0; */
+}
+
+.modal-view-section {
+    background-color: #F7F2FF;
+    border-radius: 27px;
+    padding: 60px;
+}
+
+.contact-title {
+    text-align: center;
+    font-size: 30px;
+    font-family: "Montserrat";
+    font-weight: 700;
+    color: #442A59;
+    margin-bottom: 40px;
+}
+
+.contact-btn {
+    background-color: #442A59;
+    border-radius: 5px;
+    color: #fff;
+    width: 100%;
+    padding: 17px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 60px;
+}
+
+.register-cotact-icon {
+    height: 56px;
+    width: 56px;
+    margin-top: 112px;
+    margin-right: -5px;
+    cursor: pointer;
+}
+
+@media (max-width:1600px) {
+    .register-cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 112px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+}
+
+@media (max-width:1500px) {
+    .register-cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 112px;
+        margin-right: 8px;
+        cursor: pointer;
+    }
+}
+
+@media (max-width:1400px) {
+    .register-cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 112px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+}
+
+@media (max-width:1300px) {
+    .register-cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 112px;
+        margin-right: -8px;
+        cursor: pointer;
+    }
+}
+
+@media (max-width:1200px) {
+    .register-cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 112px;
+        margin-right: -5px;
+        cursor: pointer;
+    }
+}
+
+@media (max-width:512px) {
+    .register-cotact-icon {
+        height: 56px;
+        width: 56px;
+        margin-top: 112px;
+        margin-right: -40px;
+        cursor: pointer;
+    }
+}
+
+.custom-avatar {
+    background-color: #442A59 !important;
 }

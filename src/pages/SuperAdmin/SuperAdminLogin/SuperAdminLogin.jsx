@@ -214,8 +214,11 @@ const SuperAdminLogin = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
+                console.log("data", res.data.user.email);
+
                 navigate("/super-admin/dashboard");
                 localStorage.setItem("superadmin-login-token", res.data.token);
+                localStorage.setItem("superadmin", res.data.user.email)
             } else {
                 toast.error(res.data.error);
             }
@@ -319,7 +322,7 @@ const SuperAdminLogin = () => {
                         <img src={logo} alt="" />
                         <div class="row">
                             <div className="col pt-5 ps-5">
-                                <div className="left-section">
+                                <div className="left-section ps-5">
                                     <div className="tagline">AMPLIFYING BUSINESS</div>
                                     <div className="tagline bg-color-2nd">BEYOND BOUNDARIES</div>
                                     <div className="features my-5">
@@ -350,13 +353,13 @@ const SuperAdminLogin = () => {
                                     </div>
                                     {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div> */}
 
-                                    <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
+                                    {/* <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div> */}
 
                                 </div>
                             </div>
                             <div class="col d-flex justify-content-end">
-                                <div className=" d-flex justify-content-center align-items-center px-5" style={{ width: '500px', height: '650px' }} >
-                                    <div className="right-section" style={{ width: '500px', height: '500px' }} >
+                                <div className=" d-flex justify-content-center align-items-center px-5" style={{ width: '550px', height: '650px' }} >
+                                    <div className="super-right-section" style={{ width: '500px', height: '500px' }} >
                                         <h2 className="fw-bold">Welcome!</h2>
                                         <form>
                                             <div className="form-group">
@@ -405,7 +408,7 @@ const SuperAdminLogin = () => {
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     );
 };
