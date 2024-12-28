@@ -20,7 +20,6 @@ const Welcomepage = () => {
 
     const userRegisterToken = localStorage.getItem('user-register-token');
     const verificationStatus = localStorage.getItem('verificationStatus');
-    console.log(verificationStatus);
 
 
     const navigate = useNavigate();
@@ -43,7 +42,6 @@ const Welcomepage = () => {
         setErrorMessage("");
         // validateForm();
     };
-
 
     const handleGSTVerify = async () => {
         if (formData.gst_number.length === 0) {
@@ -71,12 +69,9 @@ const Welcomepage = () => {
             }
         } catch (err) {
             console.error("gst-Api++", err);
-
             if (err.response.data.success === false) {
                 // alert(err.response.data.message);
-
                 toast.error(err.response.data.message);
-
                 navigate("/login");
             }
         }

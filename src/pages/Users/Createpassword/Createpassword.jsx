@@ -68,7 +68,6 @@ const Createpassword = () => {
             user_type: 3,
         }
 
-        console.log(data);
 
 
         try {
@@ -77,7 +76,6 @@ const Createpassword = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("Reset-Password-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);

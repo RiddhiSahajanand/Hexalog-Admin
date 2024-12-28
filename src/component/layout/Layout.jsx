@@ -42,7 +42,6 @@ export function UserLayout({ isToogle, setIsToogle }) {
 
     useEffect(() => {
         if (!userlogintoken && !userregistertoken) {
-            console.log("sfsdbfhsdvfsghdfv");
             navigate("/login");
         }
     }, [userlogintoken])

@@ -16,7 +16,6 @@ const Dashboard = () => {
     const userRegisterToken = localStorage.getItem('user-register-token');
     const userLoginToken = localStorage.getItem('user-login-token');
     const verificationStatus = localStorage.getItem('verificationStatus');
-    console.log(verificationStatus);
 
     useEffect(() => {
         setVerificationStatusValue(verificationStatus);
@@ -69,7 +68,6 @@ const Dashboard = () => {
 
         try {
             const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
-            console.log("tokenToUse", tokenToUse);
 
             // If no token is available, handle gracefully
             if (!tokenToUse) {
@@ -86,7 +84,6 @@ const Dashboard = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("gst-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
@@ -121,7 +118,6 @@ const Dashboard = () => {
         }
         try {
             const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
-            console.log("tokenToUse", tokenToUse);
 
             // If no token is available, handle gracefully
             if (!tokenToUse) {
@@ -137,7 +133,6 @@ const Dashboard = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("pan-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
@@ -173,7 +168,6 @@ const Dashboard = () => {
         }
         try {
             const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
-            console.log("tokenToUse", tokenToUse);
 
             // If no token is available, handle gracefully
             if (!tokenToUse) {
@@ -190,7 +184,6 @@ const Dashboard = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("account-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
@@ -268,7 +261,6 @@ const Dashboard = () => {
         localStorage.setItem("adminType", "superadmin");
 
         const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
-        console.log("tokenToUse", tokenToUse);
 
         // If no token is available, handle gracefully
 
@@ -285,7 +277,6 @@ const Dashboard = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("CreateKYC-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);

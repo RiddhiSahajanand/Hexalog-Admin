@@ -19,6 +19,9 @@ import CreateKYC from './src/pages/Users/CreateKYC/CreateKYC';
 import Changepassword from './src/pages/Users/Changepassword/Changepassword';
 import Profile from './src/pages/Users/Profile/Profile';
 import UserProfile from './src/pages/SuperAdmin/UserProfile/UserProfile';
+import SuperAdminCategories from './src/pages/SuperAdmin/SuperAdminCategories/SuperAdminCategories';
+import SuperAdminOrder from './src/pages/SuperAdmin/SuperAdminOrder/SuperAdminOrder';
+import OrderView from './src/pages/SuperAdmin/SuperAdminOrder/OrderView';
 // import SkipKyc from './src/pages/Users/SkipKyc/SkipKyc';
 
 
@@ -34,8 +37,12 @@ const AppRoutes = () => {
                 <Route path='/super-admin/dashboard' element={<SuperAdminDashboard />} />
                 <Route path='/super-admin/users' element={<SuperAdminUsers />} />
                 <Route path='/super-admin/roles' element={<SuperAdminRoles />} />
+                <Route path='/super-admin/categories' element={<SuperAdminCategories />} />
+                <Route path='/super-admin/orders' element={<SuperAdminOrder />} />
                 <Route path='/user-profile' element={<UserProfile />} />
             </Route>
+            <Route path='/order/view' element={<OrderView />} />
+
 
             {/* Users  */}
             <Route path='/register' element={<Register />} />

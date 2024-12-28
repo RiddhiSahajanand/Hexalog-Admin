@@ -21,10 +21,6 @@ const UserProfile = () => {
     const [formData, setFormData] = useState(initialState);
     const [detailData, setDetailData] = useState({});
 
-    console.log('====================================');
-    console.log("detailData", detailData);
-    console.log('====================================');
-
     const location = useLocation();
     const user = location.state?.user;
 

@@ -31,7 +31,6 @@ const Register = () => {
         login_type: 1,
         role: "CUSTOMER"
     });
-    console.log(formData);
 
 
     const [errorMessage, setErrorMessage] = useState('');
@@ -81,7 +80,6 @@ const Register = () => {
 
 
     const handleVerifyClick = async (type) => {
-        console.log("type", formData.email.length);
 
         if (type === 'email' && formData.email.length === 0) {
             setErrorMessage('Please enter email');
@@ -92,19 +90,16 @@ const Register = () => {
         }
 
         if ((type === 'email' && formData.email) || (type === 'mobile' && formData.mobile)) {
-            console.log("formData.email", formData.email.length);
             setOtpType(type);
             setShowOtpModal(true);
         }
         if (type === 'mobile' && formData.mobile) {
-            console.log("formData.mobile", formData.mobile.length);
 
             try {
                 const res = await Axios.post("auth/send-otp", {
                     [type === 'email' ? 'email' : 'phone']: `+91${formData.mobile}`,
                     resend: true
                 });
-                console.log("Otp-send-Api++", res);
 
                 if (res.data.success) {
                     toast.success(res.data.message);
@@ -365,7 +360,7 @@ const Register = () => {
                                                         <input
                                                             type="text"
                                                             name="organization_name"
-                                                            placeholder="Organization Name"
+                                                            placeholder="Organization name"
                                                             value={formData.organization_name}
                                                             onChange={handleChange}
                                                             className={`form-control custom-input ${errorMessage && !formData.organization_name ? 'input-error' : ''}`}
@@ -411,7 +406,7 @@ const Register = () => {
                                                 <input
                                                     type="email"
                                                     name="email"
-                                                    placeholder="Email ID"
+                                                    placeholder="Email id"
                                                     value={formData.email}
                                                     onChange={handleChange}
                                                     className={`form-control custom-input ${errorMessage && !formData.email ? 'input-error' : ''}`}
@@ -434,7 +429,7 @@ const Register = () => {
                                                 <input
                                                     type="tel"
                                                     name="mobile"
-                                                    placeholder="Mobile Number"
+                                                    placeholder="Mobile number"
                                                     value={formData.mobile}
                                                     onChange={handleChange}
                                                     maxLength={16}
@@ -474,7 +469,7 @@ const Register = () => {
                                                 <input
                                                     type={showRePassword ? "text" : "password"}
                                                     className={`form-control custom-input ${errorMessage && !formData.confirmPassword ? 'input-error' : ''}`}
-                                                    placeholder="Re-enter New Password"
+                                                    placeholder="Re-enter new password"
                                                     value={formData.confirmPassword}
                                                     minLength={9}
                                                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}

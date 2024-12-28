@@ -48,7 +48,6 @@ const Forgotpassword = () => {
                 email: email,
                 user_type: 3
             }
-            console.log("data", data);
 
             try {
                 const res = await Axios.post("/auth/forgot-password", data, {

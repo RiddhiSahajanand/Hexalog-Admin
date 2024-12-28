@@ -21,7 +21,7 @@ const SuperAdminDashboard = () => {
         <div>
             <div className="d-flex dashbord-bg-plan">
                 <div className="container ms-0" >
-                    <div className="row">
+                    <div className="row" style={{ gap: '30px' }}>
                         {/* Card 1 */}
                         {/* <div className="col-12 col-md-4 col-lg-3 mb-4">
                             <div className="card shadow-sm p-3 bg-white rounded text-center custom-card">

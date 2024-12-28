@@ -31,9 +31,6 @@ const Changepassword = () => {
     const userId = localStorage.getItem('userId');
 
 
-    console.log(oldPassword, password, rePassword);
-
-
     // Function to toggle password visibility for New Password field
     const toggleOldPasswordVisibility = () => {
         setShowOldPassword(!showOldPassword);
@@ -102,9 +99,6 @@ const Changepassword = () => {
                     },
                 }
             );
-
-            console.log(response);
-
 
             if (response?.data?.status) {
                 toast.success(response.data.message);

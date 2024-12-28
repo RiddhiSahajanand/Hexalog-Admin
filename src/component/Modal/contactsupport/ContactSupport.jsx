@@ -14,7 +14,6 @@ const ContactSupport = ({ show, handleClose, handleSubmit }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log("name", name, value.length);
         // if (name === username || value.length > 30) {
         //     setErrorMessage("Username must be 40 characters")
         //     return;
@@ -50,7 +49,6 @@ const ContactSupport = ({ show, handleClose, handleSubmit }) => {
             setErrorMessage(validationError);
             return;
         }
-        console.log("formData", formData);
         handleSubmit();
         setFormData({
             name: "",

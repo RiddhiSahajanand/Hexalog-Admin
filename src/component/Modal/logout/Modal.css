@@ -1,0 +1,47 @@
+.modal-view {
+    border-radius: 8px;
+}
+
+.modal-hedaer-view {
+    padding: 13px 38px;
+    color: #442A59;
+    font-size: 20px;
+    font-weight: 700;
+    border-bottom: 2px solid #B4B4B4;
+}
+
+.modal-body-view {
+    padding: 16px 38px 0px 38px;
+    color: #744C89;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.modal-footer-body {
+    display: flex;
+    justify-content: flex-end;
+    padding: 18px 38px;
+}
+
+.no-btn {
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #FFFFFF;
+    background: #56309B;
+    border: none;
+    width: 60px;
+    margin-right: 13px;
+}
+
+.yes-btn {
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #FFFFFF;
+    background: #FF1E1E;
+    border: none;
+    width: 60px;
+}

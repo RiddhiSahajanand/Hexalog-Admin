@@ -214,8 +214,6 @@ const SuperAdminLogin = () => {
 
             if (res.data.success) {
                 toast.success(res.data.message);
-                console.log("data", res.data.user.email);
-
                 navigate("/super-admin/dashboard");
                 localStorage.setItem("superadmin-login-token", res.data.token);
                 localStorage.setItem("superadmin", res.data.user.email)

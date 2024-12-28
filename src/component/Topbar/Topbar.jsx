@@ -29,9 +29,6 @@ export function TopBar() {
     const [isShow, setIsShow] = useState(false);
 
     const superAdmin = localStorage.getItem("superadmin");
-    console.log('====================================');
-    console.log("superAdmin", superAdmin);
-    console.log('====================================');
 
     const handleOpenmenu = () => {
         setMenu(prev => !prev);
@@ -48,10 +45,14 @@ export function TopBar() {
         setIsShow(false);
     }
 
+    const handleDashboard = () => {
+        navigate('/super-admin/dashboard')
+    }
+
     return (
         <>
             <div className="align-items-center px-5 py-4 bg-white topbar">
-                <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer' }} />
+                <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer' }} onClick={handleDashboard} />
                 <div className="input-group top-search-box mx-5 w-50">
                     <span className="input-group-text bg-white border-0">
                         <img src={searchIcon} alt="" style={{ height: '16px' }} />

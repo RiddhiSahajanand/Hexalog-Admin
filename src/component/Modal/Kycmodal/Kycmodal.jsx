@@ -11,7 +11,6 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
     const userRegisterToken = localStorage.getItem('user-register-token');
     const userLoginToken = localStorage.getItem('user-login-token');
     const verificationStatus = localStorage.getItem('verificationStatus');
-    console.log(verificationStatus);
 
     useEffect(() => {
         setVerificationStatusValue(verificationStatus);
@@ -60,7 +59,6 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
 
         try {
             const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
-            console.log("tokenToUse", tokenToUse);
 
             // If no token is available, handle gracefully
             if (!tokenToUse) {
@@ -77,7 +75,6 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("gst-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
@@ -112,7 +109,6 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
         }
         try {
             const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
-            console.log("tokenToUse", tokenToUse);
 
             // If no token is available, handle gracefully
             if (!tokenToUse) {
@@ -128,7 +124,6 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("pan-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
@@ -164,7 +159,6 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
         }
         try {
             const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
-            console.log("tokenToUse", tokenToUse);
 
             // If no token is available, handle gracefully
             if (!tokenToUse) {
@@ -181,7 +175,6 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("account-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
@@ -259,7 +252,6 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
         localStorage.setItem("adminType", "superadmin");
 
         const tokenToUse = userRegisterToken || userLoginToken; // Use userRegisterToken if available, otherwise fallback to userLoginToken
-        console.log("tokenToUse", tokenToUse);
 
         // If no token is available, handle gracefully
 
@@ -276,7 +268,6 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("CreateKYC-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
@@ -334,7 +325,7 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
                                 <input
                                     type="text"
                                     name="gst_number"
-                                    placeholder="GST Number"
+                                    placeholder="GST number"
                                     value={formData.gst_number}
                                     onChange={handleChange}
                                     maxLength={15}
@@ -364,7 +355,7 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
                                 <input
                                     type="text"
                                     name="pan_number"
-                                    placeholder="PAN Number"
+                                    placeholder="PAN number"
                                     value={formData.pan_number}
                                     onChange={handleChange}
                                     maxLength={10}
@@ -394,7 +385,7 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
                                 <input
                                     type="text"
                                     name="account_number"
-                                    placeholder="Account Number"
+                                    placeholder="Account number"
                                     value={formData.account_number}
                                     onChange={handleChange}
                                     maxLength={17}
@@ -424,7 +415,7 @@ const Kycmodal = ({ show, handleClose, handleSubmit }) => {
                                 <input
                                     type="text"
                                     name="ifsc_code"
-                                    placeholder="IFSC Code"
+                                    placeholder="IFSC code"
                                     value={formData.ifsc_code}
                                     maxLength={11}
                                     className={`form-control custom-input ${errorMessage && !formData.ifsc_code ? 'input-error' : ''

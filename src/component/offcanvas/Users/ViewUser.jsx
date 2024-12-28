@@ -20,7 +20,6 @@ const initialState = {
 
 const ViewUser = ({ show, detailData, handleClose }) => {
 
-    // console.log(detailData);
 
     const token = localStorage.getItem("adminToken");
 
@@ -46,11 +45,6 @@ const ViewUser = ({ show, detailData, handleClose }) => {
                     lastlogin = `${formattedDate} ${time}`;
                 }
             }
-
-            // console.log(formattedDate);
-            // console.log(time);
-            // console.log(lastlogin);
-
 
             setFormData({
                 name: detailData?.name,

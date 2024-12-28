@@ -48,7 +48,6 @@ const Login = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log("name", name, value.length);
         if (name === username || value.length > 30) {
             setErrorMessage("Username must be 40 characters")
             return;
@@ -74,7 +73,6 @@ const Login = () => {
     //                 "Content-Type": "application/json"
     //             }
     //         });
-    //         console.log("Login-Api++", res);
 
     //         if (res.data.success) {
     //             toast.success(res.data.message);
@@ -121,13 +119,9 @@ const Login = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("Login-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
-                console.log('====================================');
-                console.log("res.data", res.data.user.email); name
-                console.log('====================================');
                 naviagte("/dashboard");
                 localStorage.setItem("userId", res?.data?.user?.id);
                 localStorage.setItem("user-login-token", res.data.token);

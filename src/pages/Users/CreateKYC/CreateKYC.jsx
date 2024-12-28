@@ -16,9 +16,6 @@ const CreateKYC = () => {
     const userRegisterToken = localStorage.getItem('user-register-token');
     const verificationStatus = localStorage.getItem('verificationStatus');
 
-    console.log("userRegisterToken", userRegisterToken);
-
-
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         gst_number: '',
@@ -75,7 +72,6 @@ const CreateKYC = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("gst-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
@@ -110,8 +106,6 @@ const CreateKYC = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("pan-Api++", res);
-
             if (res.data.success) {
                 toast.success(res.data.message);
                 setIsPANVerified(true);
@@ -146,8 +140,6 @@ const CreateKYC = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("account-Api++", res);
-
             if (res.data.success) {
                 toast.success(res.data.message);
                 setIsAccNoVerified(true);
@@ -236,7 +228,6 @@ const CreateKYC = () => {
                     "Content-Type": "application/json"
                 }
             });
-            console.log("CreateKYC-Api++", res);
 
             if (res.data.success) {
                 toast.success(res.data.message);
@@ -289,7 +280,7 @@ const CreateKYC = () => {
                                                 <input
                                                     type="text"
                                                     name="gst_number"
-                                                    placeholder="GST Number"
+                                                    placeholder="GST number"
                                                     value={formData.gst_number}
                                                     onChange={handleChange}
                                                     maxLength={15}
@@ -313,7 +304,7 @@ const CreateKYC = () => {
                                                 <input
                                                     type="text"
                                                     name="pan_number"
-                                                    placeholder="PAN Number"
+                                                    placeholder="PAN number"
                                                     value={formData.pan_number}
                                                     onChange={handleChange}
                                                     maxLength={10}
@@ -337,7 +328,7 @@ const CreateKYC = () => {
                                                 <input
                                                     type="text"
                                                     name="account_number"
-                                                    placeholder="Account Number"
+                                                    placeholder="Account number"
                                                     value={formData.account_number}
                                                     onChange={handleChange}
                                                     maxLength={17}
@@ -361,7 +352,7 @@ const CreateKYC = () => {
                                                 <input
                                                     type="text"
                                                     name="ifsc_code"
-                                                    placeholder="IFSC Code"
+                                                    placeholder="IFSC code"
                                                     value={formData.ifsc_code}
                                                     maxLength={11}
                                                     className={`form-control custom-input ${errorMessage && !formData.ifsc_code ? 'input-error' : ''}`}
