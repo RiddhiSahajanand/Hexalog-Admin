@@ -4,6 +4,7 @@ import Dashboard1 from "../../../assets/dashboard-1.png";
 import Dashboard2 from "../../../assets/dashboard-2.png";
 import Dashboard3 from "../../../assets/dashboard-3.png";
 import bgRectangle from "../../../assets/Rectangle 12.png";
+import { useEffect, useState } from "react";
 
 const SuperAdminDashboard = () => {
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ const SuperAdminDashboard = () => {
     const handleCardThree = () => {
         navigate("/super-admin/users", { state: { selectedOption: "1" } });
     }
+
     return (
         <div>
             <div className="d-flex dashbord-bg-plan">
@@ -94,11 +96,10 @@ const SuperAdminDashboard = () => {
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 };
 

@@ -51,9 +51,9 @@ export function TopBar() {
 
     return (
         <>
-            <div className="align-items-center px-5 py-4 bg-white topbar">
+            <div className="align-items-center px-5 py-1 bg-white topbar">
                 <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer' }} onClick={handleDashboard} />
-                <div className="input-group top-search-box mx-5 w-50">
+                {/* <div className="input-group top-search-box mx-5 w-50">
                     <span className="input-group-text bg-white border-0">
                         <img src={searchIcon} alt="" style={{ height: '16px' }} />
                     </span>
@@ -65,7 +65,7 @@ export function TopBar() {
                         onFocus={(e) => e.target.classList.add('no-border')}
                         onBlur={(e) => e.target.classList.remove('no-border')}
                     />
-                </div>
+                </div> */}
                 <div className="dummy-explore-btn">
 
                 </div>
@@ -83,7 +83,7 @@ export function TopBar() {
                             /> */}
                             <Avatar
                                 name={superAdmin ? superAdmin.charAt(0).toUpperCase() : ""}
-                                size="50" round={true}
+                                size="40" round={true}
                                 fgColor="#FFF"
                                 className="custom-avatar"
                             />
@@ -183,8 +183,14 @@ export function TopBar() {
                                 <img src={users} alt="Users Icon" />
                                 <a href="/super-admin/roles" className="item-name ps-2">Roles</a>
                             </div>
-                            {/* <div className="explore-btn mb-3">Schedule Demo</div> */}
-                        </div>
+                            <div className="menu-item mb-3">
+                                <img src={users} alt="Users Icon" />
+                                <a href="/super-admin/categories" className="item-name ps-2">Document Category</a>
+                            </div>
+                            <div className="menu-item mb-3">
+                                <img src={users} alt="Users Icon" />
+                                <a href="/super-admin/orders" className="item-name ps-2">Orders</a>
+                            </div></div>
                     )}
                 </div>
                 <LogoutModal show={isShow} handleClose={handleClose} handleDelete={handleLogout} />
@@ -240,9 +246,9 @@ export function UserTopBar() {
 
     return (
         <>
-            <div className="align-items-center px-5 py-4 bg-white topbar">
+            <div className="align-items-center px-5 py-1 bg-white topbar">
                 <img src={logo} alt="logo" style={{ width: '160px', cursor: 'pointer' }} onClick={handleDashboard} />
-                <div className="input-group top-search-box  mx-5 w-50">
+                {/* <div className="input-group top-search-box  mx-5 w-50">
                     <span className="input-group-text bg-white border-0">
                         <img src={searchIcon} alt="" style={{ height: '16px' }} />
                     </span>
@@ -254,22 +260,16 @@ export function UserTopBar() {
                         onFocus={(e) => e.target.classList.add('no-border')}
                         onBlur={(e) => e.target.classList.remove('no-border')}
                     />
-                </div>
-                <div className="explore-btn" onClick={() => setShowSheduleModal(true)}>Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
+                </div> */}
                 <div className="d-flex align-items-center">
+                    <div className="explore-btn" style={{ marginRight: '35px' }} onClick={() => setShowSheduleModal(true)}>Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
                     <img src={emailIcon} alt="email" className="rounded-circle px-3" />
                     <img src={notificationIcon} alt="notification" className="rounded-circle px-3" />
                     <Dropdown>
                         <Dropdown.Toggle id="dropdown-basic" style={{ backgroundColor: 'transparent', border: 'none' }}>
-                            {/* <img
-                                src={UserIcon}
-                                alt="profile"
-                                className="rounded-circle border shadow-lg  bg-body-tertiary object-fit-fill "
-                                style={{ height: '50px', width: '50px' }}
-                            /> */}
                             <Avatar
                                 name={username ? username.charAt(0).toUpperCase() : ""}
-                                size="50" round={true}
+                                size="40" round={true}
                                 fgColor="#FFF"
                                 className="custom-avatar"
                             />

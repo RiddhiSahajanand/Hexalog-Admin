@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Route, Routes } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 import { SuperAdminLayout, UserLayout } from './src/component/layout/Layout';
 
@@ -22,44 +22,50 @@ import UserProfile from './src/pages/SuperAdmin/UserProfile/UserProfile';
 import SuperAdminCategories from './src/pages/SuperAdmin/SuperAdminCategories/SuperAdminCategories';
 import SuperAdminOrder from './src/pages/SuperAdmin/SuperAdminOrder/SuperAdminOrder';
 import OrderView from './src/pages/SuperAdmin/SuperAdminOrder/OrderView';
+import Hsncodes from './src/pages/Users/HsnCodes/Hsncodes';
+import Hsncodedetail from './src/pages/Users/HsnCodes/Hsncodedetail';
+import Loader from './src/component/Loader/Loader';
 // import SkipKyc from './src/pages/Users/SkipKyc/SkipKyc';
-
 
 const AppRoutes = () => {
     const [isToogle, setIsToogle] = useState(false);
 
     return (
-        <Routes>
-            {/* Super Admin  */}
-            <Route path='/super-admin/login' element={<SuperAdminLogin />} />
+        <>
+            <Routes>
+                <Route path="/" element={<Navigate to="/login" />} />
 
-            <Route element={<SuperAdminLayout isToogle={isToogle} setIsToogle={setIsToogle} />}>
-                <Route path='/super-admin/dashboard' element={<SuperAdminDashboard />} />
-                <Route path='/super-admin/users' element={<SuperAdminUsers />} />
-                <Route path='/super-admin/roles' element={<SuperAdminRoles />} />
-                <Route path='/super-admin/categories' element={<SuperAdminCategories />} />
-                <Route path='/super-admin/orders' element={<SuperAdminOrder />} />
-                <Route path='/user-profile' element={<UserProfile />} />
-            </Route>
-            <Route path='/order/view' element={<OrderView />} />
+                {/* Super Admin  */}
+                <Route path='/super-admin/login' element={<SuperAdminLogin />} />
+
+                <Route element={<SuperAdminLayout isToogle={isToogle} setIsToogle={setIsToogle} />}>
+                    <Route path='/super-admin/dashboard' element={<SuperAdminDashboard />} />
+                    <Route path='/super-admin/users' element={<SuperAdminUsers />} />
+                    <Route path='/super-admin/roles' element={<SuperAdminRoles />} />
+                    <Route path='/super-admin/categories' element={<SuperAdminCategories />} />
+                    <Route path='/super-admin/orders' element={<SuperAdminOrder />} />
+                    <Route path='/user-profile' element={<UserProfile />} />
+                </Route>
+                <Route path='/order/view' element={<OrderView />} />
 
 
-            {/* Users  */}
-            <Route path='/register' element={<Register />} />
-            <Route path='/createkyc' element={<CreateKYC />} />
-            <Route path="/login" element={<Login />} />
-            <Route path='/ForgottPassword' element={<Forgotpassword />} />
-            <Route path='/OtpVerification' element={<LoginOTP />} />
-            <Route path='/createPassword' element={<Createpassword />} />
-            <Route path='/welcome' element={<Welcomepage />} />
-
-            <Route element={<UserLayout />}>
+                {/* Users  */}
+                <Route path='/register' element={<Register />} />
+                <Route path='/createkyc' element={<CreateKYC />} />
+                <Route path="/login" element={<Login />} />
+                <Route path='/ForgottPassword' element={<Forgotpassword />} />
+                <Route path='/OtpVerification' element={<LoginOTP />} />
+                <Route path='/createPassword' element={<Createpassword />} />
                 <Route path='/changePassword' element={<Changepassword />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path='/welcome' element={<Welcomepage />} />
+                <Route element={<UserLayout isToogle={isToogle} setIsToogle={setIsToogle} />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/hsn-codes" element={<Hsncodes />} />
+                </Route>
+                <Route path="/hsn-codes/detail" element={<Hsncodedetail />} />
                 <Route path="/profile" element={<Profile />} />
-            </Route>
-
-        </Routes>
+            </Routes>
+        </>
     )
 }
 

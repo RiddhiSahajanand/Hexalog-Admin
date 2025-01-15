@@ -197,7 +197,7 @@ const Login = () => {
                                     <div className="explore-btn" onClick={() => setShowSheduleModal(true)} >Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center "   >
+                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center">
                                 <div>
                                     <div className="right-section" style={{ width: '450px', height: '650px' }} >
                                         <h2 className="fw-bold">Welcome!</h2>

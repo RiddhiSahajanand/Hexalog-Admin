@@ -71,7 +71,7 @@ Sidebar custom styling .nav-link.active {
     top: 0;
     overflow-y: auto;
     /* padding-top: 20px; */
-    height: calc(100vh - 80px);
+    height: calc(100vh - 62px);
     /* border-right: 1px solid #AAAAAA; */
 }
 

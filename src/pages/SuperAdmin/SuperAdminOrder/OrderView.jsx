@@ -13,6 +13,10 @@ import product3 from "../../../assets/product3.png";
 import invoice1 from "../../../assets/invoice-1.png";
 import invoice2 from "../../../assets/invoice-2.png";
 import invoice3 from "../../../assets/invoice-3.png";
+
+import pdficon from "../../../assets/pdf.png";
+import wordicon from "../../../assets/word.png";
+
 import { useEffect, useRef, useState } from "react";
 import { Axios } from "../../../config/config";
 import { useLocation } from "react-router-dom";
@@ -26,21 +30,25 @@ const OrderView = () => {
     const OrderId = order?.state?.id;
     const [openView, setOpenView] = useState(1);
     const [document, setDocument] = useState([]);
-
+    const [uploadedDocument, setUploadedDocument] = useState([]);
+    const [fieldData, setFieldData] = useState({});
+    console.log("fieldData", fieldData);
 
     const toggleView = (view) => {
         setOpenView(view);
     };
-
-    const fetchDocument = async (id) => {
+    const getOrderDetail = async (id) => {
         try {
-            let url = `/documents/orders/${id}`;
+            let url = `/orders/${id}`;
 
             const response = await Axios.get(url, {
                 headers: {
                     "access-token": `${token}`,
                 },
             });
+            console.log('====================================');
+            console.log("getOrderDetailresponse", response);
+            console.log('====================================');
 
             // setCategoriesData(response.data?.categories || []);
         } catch (error) {
@@ -57,19 +65,67 @@ const OrderView = () => {
         }
     }
 
+    const fetchDocument = async (id) => {
+        try {
+            let url = `/documents/orders/${id}`;
+            const response = await Axios.get(url, {
+                headers: {
+                    "access-token": `${token}`,
+                },
+            });
+            console.log("response:----", response)
+            setUploadedDocument(response?.data?.documents || [])
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                navigate("/super-admin/login");
+            }
+            else {
+                setError(error.message);
+            }
+            if (error.response.data.success === false) {
+                toast.error(error.response.data.message);
+                navigate("/super-admin/login");
+            }
+        }
+    }
+
     useEffect(() => {
-        fetchDocument(OrderId)
+        fetchDocument(OrderId);
+        getOrderDetail(OrderId)
     }, [OrderId])
     const handleAddDocument = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
     };
+    const extractFieldsApi = async (files) => {
+        const formData = new FormData();
+        files.forEach((file) => {
+            formData.append("documentFile", file);
+        });
+        try {
+            // Call POST API
+            const response = await Axios.post("/documents/extract-fields", formData, {
+                headers: {
+                    "access-token": `${token}`,
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            console.log("responseresponse12312121", response);
+            if (response?.status === 200) {
+                setFieldData(response?.data?.extractedFields);
+            } else {
+                toast.error(response?.data?.error)
+            }
+        } catch (error) {
+            console.error("Error uploading documents:", error);
+            setErrorMessage("Failed to upload documents. Please try again.");
+        }
+    }
 
     const handleFileChange = async (event) => {
         const files = Array.from(event.target.files);
         setDocument(files);
-
 
         // Prepare data for API
         const formData = new FormData();
@@ -88,12 +144,15 @@ const OrderView = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
+            console.log("response", response?.data?.documents);
             if (response?.data?.status === "success") {
                 toast.success("Documents uploaded successfully!")
+                // setUploadedDocument(response?.data?.documents);
+                fetchDocument(OrderId);
+                extractFieldsApi(files);
             } else {
                 toast.error(response?.data?.error)
             }
-
         } catch (error) {
             console.error("Error uploading documents:", error);
             setErrorMessage("Failed to upload documents. Please try again.");
@@ -124,7 +183,9 @@ const OrderView = () => {
                                         <div className="col">
                                             <div className="d-flex section-box">
                                                 <label className="label-box">Customer Name :</label>
-                                                <div className="input-view">Shiv Shakti Singh</div>
+                                                <div className="input-view">
+                                                    <input type="text" className="form-control" value="Shiv" />
+                                                </div>
                                             </div>
                                             <div className="d-flex section-box">
                                                 <label className="label-box">Email :</label>
@@ -133,7 +194,7 @@ const OrderView = () => {
                                                 </div>
                                             </div>
                                             <div className="d-flex section-box">
-                                                <label className="label-box">Add 1 :</label>
+                                                <label className="label-box">Address 1 :</label>
                                                 <div className="input-view">
                                                     <input type="text" className="form-control" value="" />
                                                 </div>
@@ -174,13 +235,13 @@ const OrderView = () => {
                                             <div className="d-flex section-box">
                                                 <label className="label-box">Selected HAN :</label>
                                                 <div className="input-view">
-                                                    351354786293751376
+                                                    <input type="text" className="form-control" value="352356236625" />
                                                 </div>
                                             </div>
 
 
                                             <div className="d-flex section-box">
-                                                <label className="label-box">Add 2 :</label>
+                                                <label className="label-box">Address 2 :</label>
                                                 <div className="input-view">
                                                     <input type="text" className="form-control" value="" />
                                                 </div>
@@ -609,7 +670,7 @@ const OrderView = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="invoice-header-view">
+                                    {/* <div className="invoice-header-view">
                                         <span>Invoice</span>
                                     </div>
                                     <div className="invoice-list mb-4">
@@ -638,6 +699,36 @@ const OrderView = () => {
                                             <img src={invoice2} alt="" />
                                             <span className="mt-3">Report 2</span>
                                         </div>
+                                    </div> */}
+                                    <div className="invoice-header-view">
+                                        <span>Invoice</span>
+                                    </div>
+                                    <div className="grid-container">
+                                        {uploadedDocument.map((item, index) => {
+                                            const fileExtension = item.file.split(".").pop();
+                                            const isPdf = fileExtension === "pdf";
+
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className="grid-item">
+                                                    <a
+                                                        href={item.file}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="file-link">
+                                                        <img
+                                                            src={isPdf ? pdficon : wordicon}
+                                                            alt="File Icon"
+                                                            className="file-icon"
+                                                        />
+                                                        <div className="file-info">
+                                                            <span className="file-title">{item.name}</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>

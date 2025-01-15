@@ -174,7 +174,11 @@ const SuperAdminOrder = () => {
         },
         {
             name: 'Order ID',
-            selector: row => `#${row?.id}`,
+            selector: row => (
+                <>
+                    <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={() => handleOrderDetail(row)}>{row?.id}</span>
+                </>
+            ),
             sortable: true,
             width: '360px',
             left: true,
@@ -193,13 +197,9 @@ const SuperAdminOrder = () => {
                 const time = date.toTimeString().split(' ')[0];
                 return `${formattedDate} ${time}`;
             },
-            // width: '185px',
             sortable: true,
         },
-        // {
-        //     name: '',
-        //     left: true,
-        // },
+
         {
             name: 'Actions',
             selector: row => (

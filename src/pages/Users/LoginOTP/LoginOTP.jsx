@@ -220,7 +220,6 @@ const LoginOTP = () => {
                                             <div className="fw-medium feture-text">Global <br /> Network</div>
                                         </div>
                                     </div>
-                                    {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div> */}
                                     <div className="explore-btn" onClick={() => setShowSheduleModal(true)}>Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
                                 </div>
                             </div>
@@ -277,7 +276,6 @@ const LoginOTP = () => {
                 </div>
                 <ContactSupport show={isShow} handleClose={handleClose} handleSubmit={handleConatctSubmit} />
                 <ScheduleDemo show={isShowSheduleModal} handleClose={handleClose} handleSubmit={handleScheduleDemo} />
-
             </div>
         </>
     );
