@@ -1079,7 +1079,7 @@ body {
 .dashboard-content {
     flex-grow: 1;
     overflow-y: scroll;
-    padding-top: 140px;
+    padding-top: 90px;
     padding-left: 290px;
     /* padding-right: 35px; */
     background-color: #F8F8F8;
@@ -1088,7 +1088,7 @@ body {
 .dashboard-content-mobile {
     flex-grow: 1;
     overflow-y: scroll;
-    padding-top: 140px;
+    padding-top: 90px;
     padding-left: 140px;
     /* padding-right: 35px; */
     background-color: #F8F8F8;
@@ -1103,7 +1103,7 @@ body {
     flex-grow: 1;
     overflow-x: hidden;
     /* Ensures no scrolling or overflow */
-    padding: 150px 35px;
+    padding: 90px 35px;
     /* Adjust padding as needed */
     background-color: #FFF;
     word-wrap: break-word;
@@ -2361,8 +2361,10 @@ textarea.form-control {
 /* User Dashboard */
 
 .user-dashboard-title {
-    font-size: 32px;
-    font-weight: 600;
+    font-size: 30px;
+    font-weight: 700;
+    padding-bottom: 10px;
+    color: #442A59;
 }
 
 .user-description {

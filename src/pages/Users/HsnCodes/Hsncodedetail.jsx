@@ -21,9 +21,9 @@ const Hsncodedetail = () => {
                     {/* <div>
                         <p className=" mt-4 mb-4">Back</p>
                     </div> */}
-                    <h3 className="users-title mt-4 mb-4">HSN Codes Details</h3>
+                    <h3 className="users-title mt-0 mb-4">HSN Codes Details</h3>
 
-                    <div className="profile-bottom mt-5">
+                    <div className="profile-bottom mt-0">
                         <div className="row">
                             <h5 className="users-title profile-title mt-2 mb-4 mb-md-5">HSN Codes Details</h5>
 
@@ -53,7 +53,7 @@ const Hsncodedetail = () => {
                                             type="text"
                                             placeholder="Rudra PVT. LTD."
                                             value={state?.basic_duty_sch}
-                                            className=' mb-3 mb-md-0'
+                                            className='mb-3 mb-md-0'
                                             readOnly
                                         />
                                     </div>
@@ -62,7 +62,7 @@ const Hsncodedetail = () => {
                                         <input
                                             type="text"
                                             value={state?.description}
-                                            className=' mb-3 mb-md-0'
+                                            className='mb-3 mb-md-0'
                                             readOnly
                                         />
                                     </div>
@@ -71,7 +71,7 @@ const Hsncodedetail = () => {
                                         <input
                                             type="text"
                                             value={state?.remark || ""}
-                                            className=' mb-3 mb-md-0'
+                                            className='mb-3 mb-md-0'
                                             readOnly
                                         />
                                     </div>
@@ -112,7 +112,7 @@ const Hsncodedetail = () => {
                                         <input
                                             type="text"
                                             value={state?.import_policy}
-                                            className=' mb-3 mb-md-0'
+                                            className='mb-3 mb-md-0'
                                             readOnly
                                         />
                                     </div>

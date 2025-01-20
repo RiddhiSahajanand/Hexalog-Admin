@@ -109,7 +109,7 @@ const Hsncodes = () => {
         const response = await axios.get(`${API_URL}/duty-data/hsn?hsnCode=${defaultValue}`);
         setData(response?.data?.data);
     }
- 
+
     useEffect(() => {
         if (!searchTerm) {
             defaultSearchData();
@@ -122,8 +122,8 @@ const Hsncodes = () => {
     return (
         <div>
             <div>
-                <span className="user-dashboard-title">HSN Codes</span>
-                <p className="user-description">Search by HSN code or product name</p>
+                <h3 className="user-dashboard-title">HSN Codes</h3>
+                {/* <p className="user-description">Search by HSN code or product name</p> */}
                 {/* <input
                     type="text"
                     className="form-control user-search-box"
@@ -135,7 +135,7 @@ const Hsncodes = () => {
                     type="text"
                     name="searchTerm"
                     id="searchTerm"
-                    className="form-control user-search-box"
+                    className="form-control user-search-box mt-2"
                     placeholder="Search by HSN code or product name"
                     value={searchTerm}
                     onChange={handleSearch}

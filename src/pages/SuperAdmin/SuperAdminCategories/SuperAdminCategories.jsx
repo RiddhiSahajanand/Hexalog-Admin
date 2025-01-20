@@ -352,7 +352,7 @@ const SuperAdminCategories = () => {
         <div>
             <div className="user-bg-plan">
                 <div className="container-table ms-0" >
-                    <h3 className="users-title mb-4">Document Category</h3>
+                    <h3 className="users-title mb-3">Document Category</h3>
                     <div className="d-flex ">
                         {/* <div className="alphabet-filter d-flex flex-column me-3">
                             <span style={{ cursor: 'pointer', color: '#442A59', fontWeight: 'bold' }}>A-Z</span>
@@ -417,7 +417,7 @@ const SuperAdminCategories = () => {
                                 </div>
 
                             </div> */}
-                            <div className="d-flex justify-content-between  mb-5 gap-2">
+                            <div className="d-flex justify-content-between  mb-4 gap-2">
                                 <div className="d-flex align-items-center filtersection-view">
                                     <div className="input-group custom-search-box">
                                         <span className="input-text bg-white border-0">

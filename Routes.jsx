@@ -64,6 +64,7 @@ const AppRoutes = () => {
                 </Route>
                 <Route path="/hsn-codes/detail" element={<Hsncodedetail />} />
                 <Route path="/profile" element={<Profile />} />
+
             </Routes>
         </>
     )

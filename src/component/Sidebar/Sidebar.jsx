@@ -34,7 +34,7 @@ const SuperAdminSidebar = ({ setIsToogle }) => {
                 <div className={isMobile ? "sidebar-layout-mobile sidebar-view-section-mobile" : "sidebar-layout"}>
                     {isMobile ? (
                         <div className="mobile-sidebar">
-                            <ul className="mt-5" style={{ marginLeft: '8px' }}>
+                            <ul style={{ marginLeft: '8px', marginTop: '28px' }}>
                                 {pathName === `/super-admin/dashboard` ?
                                     <div className="mb-3">
                                         <a href="/super-admin/dashboard">
@@ -102,7 +102,7 @@ const SuperAdminSidebar = ({ setIsToogle }) => {
                         </div>
                     ) : (
                         <div className="siderbar">
-                            <ul className="mt-5">
+                            <ul className="mt-3">
                                 <div>
                                     {pathName === `/super-admin/dashboard` ?
                                         <div className={`mb-3 d-flex align-items-center `} style={{ cursor: 'pointer' }}>
