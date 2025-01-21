@@ -19,11 +19,14 @@ import wordicon from "../../../assets/word.png";
 
 import { useEffect, useRef, useState } from "react";
 import { Axios } from "../../../config/config";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Loader from "../../../component/Loader/Loader";
+import Documentmodal from "../../../component/Modal/documnetmodal/documnetmodal";
 
 const OrderView = () => {
+    const navigate = useNavigate();
+
     const fileInputRef = useRef(null);
     const token = localStorage.getItem("superadmin-login-token");
     const order = useLocation();
@@ -34,11 +37,15 @@ const OrderView = () => {
     const [uploadedDocument, setUploadedDocument] = useState([]);
     const [fieldData, setFieldData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    console.log("fieldData", fieldData?.CustomerName);
+    const [show, setShow] = useState(false);
+    console.log("uploadedDocument", uploadedDocument);
 
     const toggleView = (view) => {
         setOpenView(view);
     };
+    const handleClose = () => {
+        setShow(false);
+    }
     const getOrderDetail = async (id) => {
         try {
             let url = `/orders/${id}`;
@@ -67,9 +74,9 @@ const OrderView = () => {
         }
     }
 
-    const fetchDocument = async (id) => {
+    const fetchDocument = async () => {
         try {
-            let url = `/documents/orders/${id}`;
+            let url = `/documents/orders/${OrderId}`;
             const response = await Axios.get(url, {
                 headers: {
                     "access-token": `${token}`,
@@ -92,15 +99,25 @@ const OrderView = () => {
     }
 
     useEffect(() => {
-        fetchDocument(OrderId);
+        fetchDocument();
         getOrderDetail(OrderId)
     }, [OrderId])
-    const handleAddDocument = () => {
+
+
+    const fetchDocumentDetail = async () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
+    }
+
+    const handleAddDocument = () => {
+        // if (fileInputRef.current) {
+        //     fileInputRef.current.click();
+        // }
+        setShow(true);
     };
     const extractFieldsApi = async (files) => {
+        console.log("files", files);
         const formData = new FormData();
         files.forEach((file) => {
             formData.append("documentFile", file);
@@ -113,7 +130,6 @@ const OrderView = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            console.log("responseresponse12312121", response);
             if (response?.status === 200) {
                 setFieldData(response?.data?.extractedFields);
             } else {
@@ -127,42 +143,11 @@ const OrderView = () => {
         }
     }
 
-    const handleFileChange = async (event) => {
+    const handleFetchFileChange = async (event) => {
         const files = Array.from(event.target.files);
         setDocument(files);
-
-        // Prepare data for API
-        const formData = new FormData();
-        files.forEach((file) => {
-            formData.append("documentFiles", file);
-        });
-        formData.append("description", order?.state?.description);
-        formData.append("categoryId", "91c2daf4-ad4f-4a49-8eee-70bd5780ae7b");
-        formData.append("orderId", OrderId);
-
-        try {
-            // Call POST API
-            const response = await Axios.post("/documents", formData, {
-                headers: {
-                    "access-token": `${token}`,
-                    "Content-Type": "multipart/form-data",
-                },
-            });
-            console.log("response", response?.data?.documents);
-            if (response?.data?.status === "success") {
-                toast.success("Documents uploaded successfully!")
-                // setUploadedDocument(response?.data?.documents);
-                fetchDocument(OrderId);
-                extractFieldsApi(files);
-
-                setIsLoading(true);
-            } else {
-                toast.error(response?.data?.error)
-            }
-        } catch (error) {
-            console.error("Error uploading documents:", error);
-            setErrorMessage("Failed to upload documents. Please try again.");
-        }
+        extractFieldsApi(files);
+        setIsLoading(true)
     };
 
     return (
@@ -661,7 +646,7 @@ const OrderView = () => {
                                         <div className="second-section-header">
                                             <span className="documnet-title">Documents</span>
                                             <div className="d-flex align-items-center">
-                                                <span className="fetch-title">Fetch Details via OCR</span>
+                                                <span className="fetch-title " style={{ cursor: 'pointer' }} onClick={fetchDocumentDetail}>Fetch Details via OCR</span>
                                                 <div className="d-flex justify-content-end">
                                                     <div className="add-documnet-button" onClick={handleAddDocument}>
                                                         <span>+ Add Documents</span>
@@ -672,7 +657,7 @@ const OrderView = () => {
                                                     type="file"
                                                     ref={fileInputRef}
                                                     style={{ display: "none" }} // Hides the input from the UI
-                                                    onChange={handleFileChange}
+                                                    onChange={handleFetchFileChange}
                                                     accept=".pdf" // Accepts only PDF files
                                                     multiple
                                                 />
@@ -742,6 +727,7 @@ const OrderView = () => {
                                 </div>
                             </div>
                         </div>
+                        <Documentmodal show={show} handleClose={handleClose} OrderId={OrderId} order={order} fetchDocument={fetchDocument} />
                     </div>
                 }
             </div>

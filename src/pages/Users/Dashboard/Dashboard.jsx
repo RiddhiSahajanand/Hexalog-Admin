@@ -16,7 +16,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         { verificationStatusValue === "PENDING" ? setIsShow(true) : setIsShow(false) }
-    }, [verificationStatusValue]) 
+    }, [verificationStatusValue])
 
     const handleClose = () => {
         setVerificationStatusValue("");
