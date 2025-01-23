@@ -4,6 +4,14 @@ import Dashboard1 from "../../../assets/dashboard-1.png";
 import Dashboard2 from "../../../assets/dashboard-2.png";
 import Dashboard3 from "../../../assets/dashboard-3.png";
 import bgRectangle from "../../../assets/Rectangle 12.png";
+import rectangle from "../../../assets/rectangle.png";
+import dashboard1img from "../../../assets/dahboard1.png";
+import dashboard2img from "../../../assets/dashboard2.png";
+import dashboard3img from "../../../assets/dashboard3.png";
+
+// rectangle
+// dashboard1 
+
 import { useEffect, useState } from "react";
 
 const SuperAdminDashboard = () => {
@@ -41,7 +49,7 @@ const SuperAdminDashboard = () => {
                                 </div>
                             </div>
                         </div> */}
-                        <div style={{ maxWidth: '300px', cursor: 'pointer' }} onClick={handleCardOne}>
+                        {/* <div style={{ maxWidth: '300px', cursor: 'pointer' }} onClick={handleCardOne}>
                             <div className="card shadow-sm p-3 bg-white rounded text-center custom-card">
 
                                 <div className="striped-bg " style={{ backgroundImage: `url(${bgRectangle})`, position: 'relative' }}></div>
@@ -57,10 +65,69 @@ const SuperAdminDashboard = () => {
                                     <h5 className="card-title mt-4">Total Users</h5>
                                 </div>
                             </div>
+                        </div> */}
+
+                        <div style={{ maxWidth: '281px', cursor: 'pointer' }} onClick={handleCardOne}>
+                            <div className="card shadow-sm  bg-white  text-center custom-card">
+
+                                <div className="striped-bg " style={{ backgroundImage: `url(${rectangle})`, position: 'relative' }}></div>
+
+                                <div className="image-container">
+                                    <img
+                                        src={dashboard1img}
+                                        alt="Total Users"
+                                        className="rounded-circle profile-img"
+                                    />
+                                </div>
+                                <div className="">
+                                    <h5 className="card-title mt-4">Total Users</h5>
+                                    <h5 className="card-title mb-4">500</h5>
+                                </div>
+                            </div>
                         </div>
 
+                        <div style={{ maxWidth: '281px', cursor: 'pointer' }} onClick={handleCardOne}>
+                            <div className="card shadow-sm  bg-white  text-center custom-card">
+
+                                <div className="striped-bg " style={{ backgroundImage: `url(${rectangle})`, position: 'relative' }}></div>
+
+                                <div className="image-container">
+                                    <img
+                                        src={dashboard2img}
+                                        alt="Total Users"
+                                        className="rounded-circle profile-img"
+                                    />
+                                </div>
+                                <div className="">
+                                    <h5 className="card-title mt-4">Sub Admin Users</h5>
+                                    <h5 className="card-title mb-4">500</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style={{ maxWidth: '281px', cursor: 'pointer' }} onClick={handleCardOne}>
+                            <div className="card shadow-sm  bg-white  text-center custom-card">
+
+                                <div className="striped-bg " style={{ backgroundImage: `url(${rectangle})`, position: 'relative' }}></div>
+
+                                <div className="image-container">
+                                    <img
+                                        src={dashboard3img}
+                                        alt="Total Users"
+                                        className="rounded-circle profile-img"
+                                    />
+                                </div>
+                                <div className="">
+                                    <h5 className="card-title mt-4">Active Users</h5>
+                                    <h5 className="card-title mb-4">500</h5>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                         {/* Card 2 */}
-                        <div style={{ maxWidth: '300px', cursor: 'pointer' }} onClick={handleCardTwo}>
+                        {/* <div style={{ maxWidth: '300px', cursor: 'pointer' }} onClick={handleCardTwo}> 
                             <div className="card shadow-sm p-3 bg-white rounded text-center custom-card">
 
                                 <div className="striped-bg " style={{ backgroundImage: `url(${bgRectangle})`, position: 'relative' }}></div>
@@ -76,10 +143,10 @@ const SuperAdminDashboard = () => {
                                     <h5 className="card-title mt-4">Sub Admin Users</h5>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Card 3 */}
-                        <div style={{ maxWidth: '300px', cursor: 'pointer' }} onClick={handleCardThree}>
+                        {/* <div style={{ maxWidth: '300px', cursor: 'pointer' }} onClick={handleCardThree}>
                             <div className="card shadow-sm p-3 bg-white rounded text-center custom-card">
 
                                 <div className="striped-bg " style={{ backgroundImage: `url(${bgRectangle})`, position: 'relative' }}></div>
@@ -95,7 +162,7 @@ const SuperAdminDashboard = () => {
                                     <h5 className="card-title mt-4">Active Users</h5>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

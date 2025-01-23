@@ -802,12 +802,12 @@ body {
 .striped-bg {
     background-image: url('https://via.placeholder.com/150');
     /* Set your background image URL */
-    background-size: cover;
+    background-size: contain;
     /* Ensures the image covers the entire div */
-    background-position: center;
-    height: 120px;
-    width: 100%;
-    border-radius: 15px;
+    background-position: 100% 100%;
+    height: 100px;
+    /* width: 100%; */
+    /* border-radius: 15px; */
 }
 
 
@@ -821,6 +821,39 @@ body {
     height: 100%;
 }
 
+.card {
+    --bs-card-spacer-y: 1rem;
+    --bs-card-spacer-x: 1rem;
+    --bs-card-title-spacer-y: 0.5rem;
+    --bs-card-title-color: ;
+    --bs-card-subtitle-color: ;
+    --bs-card-border-width: 0px !important;
+    --bs-card-border-color: var(--bs-border-color-translucent);
+    --bs-card-border-radius: 2.375rem !important;
+    --bs-card-box-shadow: ;
+    --bs-card-inner-border-radius: calc(var(--bs-border-radius) -(var(--bs-border-width)));
+    --bs-card-cap-padding-y: 0.5rem;
+    --bs-card-cap-padding-x: 1rem;
+    --bs-card-cap-bg: rgba(var(--bs-body-color-rgb), 0.03);
+    --bs-card-cap-color: ;
+    --bs-card-height: ;
+    --bs-card-color: ;
+    --bs-card-bg: var(--bs-body-bg);
+    --bs-card-img-overlay-padding: 1rem;
+    --bs-card-group-margin: 0.75rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    height: var(--bs-card-height);
+    color: var(--bs-body-color);
+    word-wrap: break-word;
+    background-color: var(--bs-card-bg);
+    background-clip: border-box;
+    border: var(--bs-card-border-width) solid var(--bs-card-border-color);
+    border-radius: var(--bs-card-border-radius);
+}
+
 .image-container {
     display: flex;
     justify-content: center;
@@ -832,20 +865,20 @@ body {
 }
 
 .card img {
-    max-width: 175px;
+    max-width: 240px;
 }
 
 .profile-img {
-    width: 175px;
-    height: 175px;
+    width: 240px;
+    height: 240px;
     position: absolute;
-    bottom: 105px;
+    bottom: 55px;
 }
 
 .dashbord-bg-plan {
     position: relative;
     width: 100%;
-    height: calc(100vh - 137px);
+    height: calc(100vh - 90px);
     flex-grow: 1;
     background-image: url(./assets/Plane-4.png);
     background-repeat: no-repeat;
@@ -1732,7 +1765,7 @@ body {
 
 .modal-view-section {
     background-color: #F7F2FF;
-    border-radius: 27px;
+    border-radius: 10px;
     padding: 60px;
 }
 
@@ -2538,6 +2571,14 @@ textarea.form-control {
     border-radius: 8px;
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+.checkbox-container {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
 }
 
 @media (max-width:786px) {

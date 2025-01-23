@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Axios } from "../../../config/config";
 import toast from "react-hot-toast";
+import ScheduleDemo from "../../../component/Modal/scheduledemo/ScheduleDemo";
 
 const Changepassword = () => {
 
@@ -18,6 +19,7 @@ const Changepassword = () => {
     const [showOldPassword, setShowOldPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false); // For new password visibility toggle
     const [showRePassword, setShowRePassword] = useState(false); // For re-enter password visibility toggle
+    const [isShowSheduleModal, setShowSheduleModal] = useState(false);
 
 
     const [oldPassword, setOldPassword] = useState('');
@@ -30,6 +32,9 @@ const Changepassword = () => {
     const loginValue = localStorage.getItem('loginValue');
     const userId = localStorage.getItem('userId');
 
+    const handleClose = () => {
+        setShowSheduleModal(false);
+    }
 
     // Function to toggle password visibility for New Password field
     const toggleOldPasswordVisibility = () => {
@@ -123,6 +128,9 @@ const Changepassword = () => {
             }
         }
     };
+    const handleScheduleDemo = () => {
+        setShowSheduleModal(false);
+    }
 
     return (
         <>
@@ -163,10 +171,10 @@ const Changepassword = () => {
                                         </div>
                                     </div>
                                     {/* <div className="schedule-demo">Schedule Demo <img src={Arrow} alt="" style={{ width: '10px' }} /></div> */}
-                                    <div className="explore-btn">Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
+                                    <div className="explore-btn" onClick={() => setShowSheduleModal(true)}>Schedule Demo <img src={rightArrow} alt="" style={{ height: '12px', width: '10px', marginTop: '6px', marginLeft: '8px' }} /> </div>
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center "  >
+                            <div className="col-12 col-lg-6 d-flex justify-content-center align-items-center">
                                 <div className="right-section" style={{ width: '550px', height: '650px' }} >
                                     <p className="change-password-title">Change Password</p>
                                     <p className="change-password-text ">Enter a new password to change Password!</p>
@@ -240,6 +248,7 @@ const Changepassword = () => {
                                             <p className="text-center" style={{ color: '#F62D2D' }}>{errorMessage}</p>
                                         )}
                                         <div className="create-password-btn" onClick={handleSubmit}>Submit</div>
+                                        <ScheduleDemo show={isShowSheduleModal} handleClose={handleClose} handleSubmit={handleScheduleDemo} />
 
                                     </form>
                                 </div>

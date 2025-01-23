@@ -152,7 +152,7 @@ const Hsncodes = () => {
                                     <th>Import Duty</th>
                                     <th>Customs Duty</th>
                                     <th>Excise Duty</th>
-                                    <th>Regulatory<br />Info</th>
+                                    <th>Regulatory Info</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -160,17 +160,17 @@ const Hsncodes = () => {
                                     data.map((item, index) => {
                                         return (
                                             <tr key={index}>
-                                                <td style={{ width: "150px", color: '#9261E0', textDecoration: "underline", cursor: 'pointer' }} onClick={() => handleHSNCode(item)}>{item.hsn_code || " - "}</td>
-                                                <td style={{ color: "#000", width: "220px", height: "60px", overflow: "hidden", textOverflow: "ellipsis", verticalAlign: "center" }}>
+                                                <td style={{ width: "180px", color: '#9261E0', textDecoration: "underline", cursor: 'pointer' }} onClick={() => handleHSNCode(item)}>{item.hsn_code || " - "}</td>
+                                                <td style={{ color: "#000", width: "250px", height: "60px", overflow: "hidden", textOverflow: "ellipsis", verticalAlign: "center" }}>
                                                     <div style={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", whiteSpace: "normal" }}>
                                                         {item.description}
                                                     </div>
                                                 </td>
-                                                <td style={{ width: "180px" }}>{item.igst || " - "}</td>
-                                                <td style={{ width: "180px" }}>{item.basic_duty_sch || "-"}</td>
-                                                <td style={{ width: "180px" }}>{item.duty_percent || " - "}</td>
-                                                <td style={{ width: "180px" }}>{item.sws || " - "}</td>
-                                                <td style={{ width: "220px", height: "60px", overflow: "hidden", textOverflow: "ellipsis", verticalAlign: "center" }}>
+                                                <td style={{ width: "150px" }}>{item.igst || "-"}</td>
+                                                <td style={{ width: "150px" }}>{item.basic_duty_sch || "-"}</td>
+                                                <td style={{ width: "170px" }}>{item.duty_percent || " - "}</td>
+                                                <td style={{ width: "150px" }}>{item.sws || " - "}</td>
+                                                <td style={{ height: "60px", overflow: "hidden", textOverflow: "ellipsis", verticalAlign: "center" }}>
                                                     <div style={{ overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", whiteSpace: "normal" }}>
                                                         {item.chapter || "-"}
                                                     </div>

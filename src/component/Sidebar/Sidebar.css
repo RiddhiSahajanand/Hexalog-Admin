@@ -12,10 +12,10 @@ Sidebar custom styling .nav-link.active {
     color: #000;
 }
 
-.card {
+/* .card {
     border: none;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
+} */
 
 /* .card img {
     max-width: 100px;

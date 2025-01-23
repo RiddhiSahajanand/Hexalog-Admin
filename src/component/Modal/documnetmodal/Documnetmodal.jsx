@@ -54,6 +54,10 @@ const Documentmodal = ({ show, handleClose, OrderId, order, fetchDocument }) => 
             setErrorMessage(" category and document are required.");
             return;
         }
+        if (formData.document.length > 5) {
+            setErrorMessage("You can upload maximun 5 document");
+            return;
+        }
 
         const formDataObj = new FormData();
         formDataObj.append("categoryId", formData.category);
@@ -78,6 +82,8 @@ const Documentmodal = ({ show, handleClose, OrderId, order, fetchDocument }) => 
                     category: '',
                     document: ''
                 })
+                setErrorMessage("")
+
             } else {
                 toast.error(response?.data?.error)
             }
@@ -90,6 +96,11 @@ const Documentmodal = ({ show, handleClose, OrderId, order, fetchDocument }) => 
 
     const handleCloseModal = () => {
         handleClose();
+        setFormData({
+            category: '',
+            document: ''
+        })
+        setErrorMessage("")
     }
 
     return (
@@ -134,7 +145,7 @@ const Documentmodal = ({ show, handleClose, OrderId, order, fetchDocument }) => 
                                 </select>
                             </div>
                             <div className="form-group flex-column mb-3 position-relative">
-                                <span htmlFor="document" style={{ fontSize: '14px', color: '#442A59' }}>Chooes Document :</span>
+                                <span htmlFor="document" style={{ fontSize: '14px', color: '#442A59' }}>Choose Document :</span>
                                 <input
                                     type="file"
                                     name="document"
@@ -144,6 +155,7 @@ const Documentmodal = ({ show, handleClose, OrderId, order, fetchDocument }) => 
                                         setFormData({ ...formData, document: files }); // Update the state with the files
                                         setErrorMessage("");
                                     }}
+                                    maxLength={5}
                                     className={`form-control custom-input mt-1 ${errorMessage && !formData.gst_number ? 'input-error' : ''}`}
                                 />
                             </div>

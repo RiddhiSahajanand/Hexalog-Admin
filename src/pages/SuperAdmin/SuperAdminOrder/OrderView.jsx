@@ -38,14 +38,30 @@ const OrderView = () => {
     const [fieldData, setFieldData] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [show, setShow] = useState(false);
-    console.log("uploadedDocument", uploadedDocument);
+    const [selectedIds, setSelectedIds] = useState([]);
+
+    console.log("selectedIds", selectedIds);
 
     const toggleView = (view) => {
         setOpenView(view);
     };
     const handleClose = () => {
         setShow(false);
+        setFieldData({})
     }
+
+    const handleCheckboxChange = (itemId) => {
+        setSelectedIds((prevSelected) => {
+            if (prevSelected.includes(itemId)) {
+                // If the ID is already selected, remove it
+                return prevSelected.filter((id) => id !== itemId);
+            } else {
+                // Otherwise, add it
+                return [...prevSelected, itemId];
+            }
+        });
+    };
+
     const getOrderDetail = async (id) => {
         try {
             let url = `/orders/${id}`;
@@ -103,10 +119,44 @@ const OrderView = () => {
         getOrderDetail(OrderId)
     }, [OrderId])
 
+    const fetchExtractFieldsBatch = async () => {
+
+        const documentIds = selectedIds.map((id) => id);
+        console.log("documentIds", documentIds);
+        setIsLoading(true);
+        try {
+            // Call POST API
+            const response = await Axios.post("/documents/extract-fields-batch", { documentIds }, {
+                headers: {
+                    "access-token": `${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log("response", response);
+            if (response?.status === 200) {
+                // setFieldData(response?.data?.extractedFields);
+                toast.success("Fields extraction completed");
+                setSelectedIds([]);
+                setFieldData({});
+            } else {
+                toast.error(response?.data?.error)
+            }
+        } catch (error) {
+            console.error("Error uploading documents:", error);
+            setErrorMessage("Failed to upload documents. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
 
     const fetchDocumentDetail = async () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
+        if (selectedIds.length === 0) {
+            if (fileInputRef.current) {
+                fileInputRef.current.click();
+            }
+        } else {
+            fetchExtractFieldsBatch();
         }
     }
 
@@ -117,7 +167,6 @@ const OrderView = () => {
         setShow(true);
     };
     const extractFieldsApi = async (files) => {
-        console.log("files", files);
         const formData = new FormData();
         files.forEach((file) => {
             formData.append("documentFile", file);
@@ -702,14 +751,21 @@ const OrderView = () => {
                                                 const isPdf = fileExtension === "pdf";
 
                                                 return (
-                                                    <div
-                                                        key={index}
-                                                        className="grid-item">
+                                                    <div key={index} className="grid-item">
+                                                        {/* Checkbox in the top-right corner */}
+                                                        <div className="checkbox-container">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={selectedIds.includes(item.id)} // Check if the ID is in selectedIds
+                                                                onChange={() => handleCheckboxChange(item.id)} // Pass only the ID
+                                                            />
+                                                        </div>
                                                         <a
                                                             href={item.file}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="file-link">
+                                                            className="file-link"
+                                                        >
                                                             <img
                                                                 src={isPdf ? pdficon : wordicon}
                                                                 alt="File Icon"
@@ -723,6 +779,49 @@ const OrderView = () => {
                                                 );
                                             })}
                                         </div>
+
+                                        {/* Category Name÷ */}
+                                        {/* <div className="grid-container">
+                                            {Object.entries(
+                                                uploadedDocument.reduce((acc, item) => {
+                                                    const { categoryId } = item;
+                                                    if (!acc[categoryId]) {
+                                                        acc[categoryId] = [];
+                                                    }
+                                                    acc[categoryId].push(item);
+                                                    return acc;
+                                                }, {})
+                                            ).map(([categoryId, items]) => (
+                                                <div key={categoryId} className="category-section">
+                                                    <p>Category: Category1</p>
+                                                    <div className="category-grid">
+                                                        {items.map((item, index) => {
+                                                            const fileExtension = item.file.split(".").pop();
+                                                            const isPdf = fileExtension === "pdf";
+                                                            return (
+                                                                <div key={index} className="grid-item">
+                                                                    <a
+                                                                        href={item.file}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                        className="file-link"
+                                                                    >
+                                                                        <img
+                                                                            src={isPdf ? pdficon : wordicon}
+                                                                            alt="File Icon"
+                                                                            className="file-icon"
+                                                                        />
+                                                                        <div className="file-info">
+                                                                            <span className="file-title">{item.name}</span>
+                                                                        </div>
+                                                                    </a>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div> */}
                                     </div>
                                 </div>
                             </div>
