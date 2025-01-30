@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Axios } from '../../../config/config';
 import toast from 'react-hot-toast';
 
-const Documentmodal = ({ show, handleClose, OrderId, order, fetchDocument }) => {
+const Documentmodal = ({ show, handleClose, OrderId, order, fetchDocument, extractFieldsApi, setIsLoading, setFieldData }) => {
 
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -66,7 +66,9 @@ const Documentmodal = ({ show, handleClose, OrderId, order, fetchDocument }) => 
         });
         formDataObj.append("orderId", OrderId);
         formDataObj.append("description", order?.state?.description)
-
+        console.log('====================================');
+        console.log("formData.document", formData.document.length);
+        console.log('====================================');
         try {
             const response = await Axios.post("/documents", formDataObj, {
                 headers: {
@@ -83,6 +85,12 @@ const Documentmodal = ({ show, handleClose, OrderId, order, fetchDocument }) => 
                     document: ''
                 })
                 setErrorMessage("")
+                if (formData?.document.length === 1) {
+                    extractFieldsApi(formData?.document);
+                    setIsLoading(true)
+                } else if (formData?.document.length > 1) {
+                    setFieldData({});
+                }
 
             } else {
                 toast.error(response?.data?.error)

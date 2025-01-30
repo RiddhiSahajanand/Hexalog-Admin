@@ -523,11 +523,12 @@ body {
 
 .register-bg-two {
     width: 100%;
-    height: 95vh;
+    height: 100vh;
     background-image: url(./assets/Plane-2.png);
     background-repeat: no-repeat;
     background-position: top right;
     background-size: 10%;
+    /* overflow: scroll; */
 }
 
 .register-title {
@@ -904,13 +905,22 @@ body {
 .user-bg-plan {
     position: relative;
     width: 100%;
-    height: 100vh;
+    /* height: 100vh; */
     flex-grow: 1;
     background-image: url(./assets/Plane5.png);
     background-repeat: no-repeat;
     background-position: bottom right;
     bottom: 0;
-    overflow: hidden;
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    /*  scrollbar-width: none;
+
+    -ms-overflow-style: none;
+    */
 }
 
 .roles-bg-plan {
@@ -1753,8 +1763,12 @@ body {
 
 .custom-modal {
     background-color: transparent !important;
-    overflow: hidden;
+    overflow: scroll;
     /* border-radius: 120px; */
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 .custom-modal .modal-header {

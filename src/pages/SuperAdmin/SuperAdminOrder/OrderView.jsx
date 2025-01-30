@@ -39,6 +39,7 @@ const OrderView = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [show, setShow] = useState(false);
     const [selectedIds, setSelectedIds] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     console.log("selectedIds", selectedIds);
 
@@ -51,13 +52,16 @@ const OrderView = () => {
     }
 
     const handleCheckboxChange = (itemId) => {
+        console.log('====================================');
+        console.log("itemId", itemId);
+        console.log('====================================');
+        setSelectedFiles(itemId?.file)
         setSelectedIds((prevSelected) => {
-            if (prevSelected.includes(itemId)) {
-                // If the ID is already selected, remove it
-                return prevSelected.filter((id) => id !== itemId);
+            if (prevSelected.includes(itemId.id)) {
+                return prevSelected.filter((id) => id !== itemId.id);
             } else {
                 // Otherwise, add it
-                return [...prevSelected, itemId];
+                return [...prevSelected, itemId.id];
             }
         });
     };
@@ -148,6 +152,35 @@ const OrderView = () => {
             setIsLoading(false);
         }
     }
+    const fetchSingleExtractFieldsBatch = async () => {
+
+        const documentIds = selectedIds.map((id) => id);
+        console.log("documentIds", documentIds);
+        setIsLoading(true);
+        try {
+            // Call POST API
+            const response = await Axios.post("/documents/extract-fields-batch", { documentIds }, {
+                headers: {
+                    "access-token": `${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            console.log("fetchSingleExtractFieldsBatch", response?.data?.results[0]?.extractedFields);
+            if (response?.status === 200) {
+                // setFieldData(response?.data?.extractedFields);
+                toast.success("Fields extraction completed");
+                setSelectedIds([]);
+                setFieldData(response?.data?.results[0]?.extractedFields);
+            } else {
+                toast.error(response?.data?.error)
+            }
+        } catch (error) {
+            console.error("Error uploading documents:", error);
+            setErrorMessage("Failed to upload documents. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
 
     const fetchDocumentDetail = async () => {
@@ -155,7 +188,10 @@ const OrderView = () => {
             if (fileInputRef.current) {
                 fileInputRef.current.click();
             }
-        } else {
+        } else if (selectedIds.length === 1) {
+            fetchSingleExtractFieldsBatch();
+        }
+        else {
             fetchExtractFieldsBatch();
         }
     }
@@ -165,6 +201,7 @@ const OrderView = () => {
         //     fileInputRef.current.click();
         // }
         setShow(true);
+        setFieldData({});
     };
     const extractFieldsApi = async (files) => {
         const formData = new FormData();
@@ -757,7 +794,7 @@ const OrderView = () => {
                                                             <input
                                                                 type="checkbox"
                                                                 checked={selectedIds.includes(item.id)} // Check if the ID is in selectedIds
-                                                                onChange={() => handleCheckboxChange(item.id)} // Pass only the ID
+                                                                onChange={() => handleCheckboxChange(item)} // Pass only the ID
                                                             />
                                                         </div>
                                                         <a
@@ -826,7 +863,7 @@ const OrderView = () => {
                                 </div>
                             </div>
                         </div>
-                        <Documentmodal show={show} handleClose={handleClose} OrderId={OrderId} order={order} fetchDocument={fetchDocument} />
+                        <Documentmodal show={show} handleClose={handleClose} OrderId={OrderId} order={order} fetchDocument={fetchDocument} extractFieldsApi={extractFieldsApi} setIsLoading={setIsLoading} setFieldData={setFieldData} />
                     </div>
                 }
             </div>

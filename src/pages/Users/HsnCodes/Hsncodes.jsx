@@ -93,9 +93,16 @@ const Hsncodes = () => {
             const numericValue = value.replace(/\s+/g, '');
             if (/^\d+$/.test(numericValue)) {
                 response = await axios.get(`${API_URL}/duty-data/hsn?hsnCode=${value}`);
+                console.log('====================================');
+                console.log("numericValueresponse", response);
+                console.log('====================================');
                 setData(response?.data?.data);
             } else {
                 response = await axios.get(`${API_URL}/duty-data/search?searchTerm=${value}`);
+                console.log('====================================');
+                console.log("searchTermRessss", response?.data?.data);
+                console.log('====================================');
+
                 setData(response?.data?.data?.hits);
             }
         } catch (error) {
@@ -156,7 +163,7 @@ const Hsncodes = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.length > 0 ? (
+                                {data?.length > 0 ? (
                                     data.map((item, index) => {
                                         return (
                                             <tr key={index}>
