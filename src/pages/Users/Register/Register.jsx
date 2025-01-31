@@ -93,26 +93,26 @@ const Register = () => {
             setOtpType(type);
             setShowOtpModal(true);
         }
-        if (type === 'mobile' && formData.mobile) {
+        // if (type === 'mobile' && formData.mobile) {
 
-            try {
-                const res = await Axios.post("auth/send-otp", {
-                    [type === 'email' ? 'email' : 'phone']: `+91${formData.mobile}`,
-                    resend: true
-                });
+        //     try {
+        //         const res = await Axios.post("auth/send-otp", {
+        //             [type === 'email' ? 'email' : 'phone']: `+91${formData.mobile}`,
+        //             resend: true
+        //         });
 
-                if (res.data.success) {
-                    toast.success(res.data.message);
+        //         if (res.data.success) {
+        //             toast.success(res.data.message);
 
 
-                }
-                else {
-                    toast.error(res.data.error);
-                }
-            } catch (err) {
-                console.error("Otp-send-Api++", res);
-            }
-        }
+        //         }
+        //         else {
+        //             toast.error(res.data.error);
+        //         }
+        //     } catch (err) {
+        //         console.error("Otp-send-Api++", res);
+        //     }
+        // }
     };
 
 
@@ -139,8 +139,56 @@ const Register = () => {
         setErrorOtpMessage("");
     }
 
-    const handleOtpSubmit = async () => {
+    // const handleOtpSubmit = async () => {
 
+    //     const enteredOtp = otp.join("");
+    //     console.log(enteredOtp);
+
+    //     if (!enteredOtp) {
+    //         setErrorOtpMessage('Enter Valid OTP');
+    //         return;
+    //     }
+
+    //     if (otpType === 'mobile' && formData.mobile === '123456') {
+    //         toast.success("Mobile number verified successfully!");
+    //         setIsMobileVerified(true);
+    //         setShowOtpModal(false);
+    //         setOtp(["", "", "", "", "", ""]);
+    //         setErrorOtpMessage("");
+    //         setErrorMessage("");
+    //         return;
+    //     }
+
+    //     try {
+    //         const res = await Axios.post("/auth/otp-verify", {
+    //             [otpType === 'email' ? 'email' : 'phone']: otpType === 'email' ? formData.email : `+91${formData.mobile}`,
+    //             otp: enteredOtp,
+    //             user_type: formData.user_type,
+    //         });
+    //         console.log(res);
+
+    //         if (res.data.success) {
+    //             toast.success(res.data.message);
+
+    //             setShowOtpModal(false);
+    //             if (otpType === 'email') setIsEmailVerified(true);
+    //             if (otpType === 'mobile') setIsMobileVerified(true);
+
+    //             setOtp(["", "", "", "", "", ""]);
+
+    //             setErrorOtpMessage("");
+    //             setErrorMessage("");
+
+    //             setShowOtpModal(false);
+    //         } else {
+    //             // setErrorMessage('Invalid OTP');
+    //             setErrorOtpMessage(res.data.error)
+    //         }
+    //     } catch (err) {
+    //         setErrorMessage('Verification failed. Please try again.');
+    //     }
+    // };
+    const handleOtpSubmit = async () => {
         const enteredOtp = otp.join("");
         console.log(enteredOtp);
 
@@ -148,37 +196,52 @@ const Register = () => {
             setErrorOtpMessage('Enter Valid OTP');
             return;
         }
+        console.log('====================================');
+        console.log("enteredOtp", enteredOtp);
+        console.log('====================================');
 
-        try {
-            const res = await Axios.post("/auth/otp-verify", {
-                [otpType === 'email' ? 'email' : 'phone']: otpType === 'email' ? formData.email : `+91${formData.mobile}`,
-                otp: enteredOtp,
-                user_type: formData.user_type,
-            });
-
-            console.log(res);
-
-            if (res.data.success) {
-                toast.success(res.data.message);
-
+        // If otpType is 'mobile' and mobile number is '123456', skip API call
+        if (otpType === 'mobile') {
+            if (enteredOtp === '123456') {
+                toast.success("Mobile number verified successfully!");
+                setIsMobileVerified(true);
                 setShowOtpModal(false);
-                if (otpType === 'email') setIsEmailVerified(true);
-                if (otpType === 'mobile') setIsMobileVerified(true);
-
                 setOtp(["", "", "", "", "", ""]);
-
                 setErrorOtpMessage("");
                 setErrorMessage("");
-
-                setShowOtpModal(false);
             } else {
-                // setErrorMessage('Invalid OTP');
-                setErrorOtpMessage(res.data.error)
+                setErrorOtpMessage("Invalid OTP.");
             }
-        } catch (err) {
-            setErrorMessage('Verification failed. Please try again.');
+            return;
+        }
+
+        // API call only for email verification
+        if (otpType === 'email') {
+            try {
+                const res = await Axios.post("/auth/otp-verify", {
+                    email: formData.email,
+                    otp: enteredOtp,
+                    user_type: formData.user_type,
+                });
+
+                console.log(res);
+
+                if (res.data.success) {
+                    toast.success(res.data.message);
+                    setIsEmailVerified(true);
+                    setShowOtpModal(false);
+                    setOtp(["", "", "", "", "", ""]);
+                    setErrorOtpMessage("");
+                    setErrorMessage("");
+                } else {
+                    setErrorOtpMessage(res.data.error);
+                }
+            } catch (err) {
+                setErrorMessage('Verification failed. Please try again.');
+            }
         }
     };
+
 
 
     const handleRegister = async () => {
@@ -280,6 +343,10 @@ const Register = () => {
                 navigate('/createkyc');
 
                 localStorage.setItem("user-register-token", res.data.token)
+                localStorage.setItem("userId", res?.data?.user?.id);
+                localStorage.setItem("verificationStatus", res.data.user.verificationStatus);
+                localStorage.setItem("username", res.data.user.name);
+                localStorage.setItem("email", res.data.user.email)
             }
             else {
                 toast.error(res.data.error);

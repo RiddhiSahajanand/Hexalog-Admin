@@ -649,6 +649,19 @@ body {
     font-weight: 600;
 }
 
+.back-btn {
+    background-color: #442A59;
+    border-radius: 4px;
+    color: #fff;
+    height: 40px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+
 .dummy-explore-btn {
     background-color: transparent;
     border-radius: 4px;
@@ -1332,7 +1345,7 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    padding: 3rem 0rem 1rem 0rem;
+    padding: 0rem 0rem 1rem 0rem;
 }
 
 @media (max-width:512px) {
@@ -1952,6 +1965,8 @@ button.btn-primary:active {
     outline: none;
 }
 
+
+
 button.btn-outline-secondary {
     border-color: #cfcfcf;
     color: #7e57c2;
@@ -2429,7 +2444,7 @@ textarea.form-control {
     border: 1px solid #7899B2;
     border-radius: 20px;
     overflow: hidden;
-    margin: 20px 40px 40px 0;
+    margin: 20px 40px 0px 0;
     /* Ensures rounded corners */
     background-color: #fff;
 }
@@ -2472,7 +2487,7 @@ textarea.form-control {
 }
 
 .custom-table td {
-    padding: 20px 16px;
+    padding: 10px 16px;
     border-bottom: 1px solid #7899B2;
     text-align: left;
     color: #1E668B;

@@ -76,14 +76,14 @@ export function UserLayout({ isToogle, setIsToogle }) {
         }
     }, [userlogintoken])
 
-    useEffect(() => {
-        setIsLoading(true);
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
+    // useEffect(() => {
+    //     setIsLoading(true);
+    //     const timer = setTimeout(() => {
+    //         setIsLoading(false);
+    //     }, 2000);
 
-        return () => clearTimeout(timer);
-    }, [location]);
+    //     return () => clearTimeout(timer);
+    // }, [location]);
     return (
 
         <>
@@ -96,12 +96,16 @@ export function UserLayout({ isToogle, setIsToogle }) {
                     <div>
                         <UserSideBar setIsToogle={setIsToogle} />
                     </div>
-                    {isLoading === true ? <Loader /> :
+                    {/* {isLoading === true ? <Loader /> :
                         <div
                             className={isToogle ? "dashboard-content-mobile flex-grow-1 overflow-auto" : "dashboard-content flex-grow-1 overflow-auto"} >
                             <Outlet />
                         </div>
-                    }
+                    } */}
+                    <div
+                        className={isToogle ? "dashboard-content-mobile flex-grow-1 overflow-auto" : "dashboard-content flex-grow-1 overflow-auto"} >
+                        <Outlet />
+                    </div>
                 </div>
             </div>
         </>

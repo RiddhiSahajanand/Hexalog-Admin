@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { UserTopBar } from "../../../component/Topbar/Topbar";
 import { useEffect, useState } from "react";
 import { Axios } from "../../../config/config";
@@ -6,22 +6,33 @@ import toast from "react-hot-toast";
 
 const Hsncodedetail = () => {
     const { state } = useLocation();
+    const navigate = useNavigate()
     const [hsnData, setHsnData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState()
+    console.log('====================================');
+    console.log("page", page);
+    console.log('====================================');
 
-    const userRegisterToken = localStorage.getItem('user-register-token');
-    const userLoginToken = localStorage.getItem('user-login-token');
+    useEffect(() => {
+        const currentPage = localStorage.getItem("CurrentPage");
+        setPage(JSON.parse(currentPage));
+    }, [state])
 
+    const handleBack = () => {
+        navigate("/hsn-codes");
+        localStorage.setItem("savedPage", page)
+    }
 
     return (
         <>
             <div>
                 <UserTopBar />
                 <div className='user-profile'>
-                    {/* <div>
-                        <p className=" mt-4 mb-4">Back</p>
-                    </div> */}
-                    <h3 className="users-title mt-0 mb-4">HSN Codes Details</h3>
+                    <div className="d-flex justify-content-between">
+                        <h3 className="users-title mt-0 mb-4">HSN Codes Details</h3>
+                        <div className="back-btn" onClick={() => handleBack()}>Back  </div>
+                    </div>
 
                     <div className="profile-bottom mt-0">
                         <div className="row">
@@ -51,7 +62,6 @@ const Hsncodedetail = () => {
                                         <label for="username">Basic Duty Sch:</label>
                                         <input
                                             type="text"
-                                            placeholder="Rudra PVT. LTD."
                                             value={state?.basic_duty_sch}
                                             className='mb-3 mb-md-0'
                                             readOnly
